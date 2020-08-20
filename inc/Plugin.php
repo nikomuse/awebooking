@@ -151,7 +151,9 @@ final class Plugin extends Container {
 		$this->alias( 'logger', LoggerInterface::class );
 		$this->alias( 'multilingual', Multilingual::class );
 
-		$this->alias( Request::class, 'Awethemes\\Http\\Request' );
+        if (Request::class != 'Awethemes\\Http\\Request') {
+            $this->alias(Request::class, 'Awethemes\\Http\\Request');
+        }
 	}
 
 	/**

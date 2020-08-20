@@ -2,7 +2,7 @@
 
 namespace AweBooking\Admin\Providers;
 
-use CMB2_hookup;
+use CMB2_Hookup;
 use CMB2_Type_Colorpicker;
 use AweBooking\Support\Service_Provider;
 
@@ -58,8 +58,8 @@ class Scripts_Service_Provider extends Service_Provider {
 		if ( 'widgets' === $screen->id
 			|| 'awebooking_route' === $screen->base
 			|| in_array( $screen->id, abrs_admin_screens() ) ) {
-			CMB2_hookup::enqueue_cmb_js();
-			CMB2_hookup::enqueue_cmb_css();
+            CMB2_Hookup::enqueue_cmb_js();
+            CMB2_Hookup::enqueue_cmb_css();
 
 			// Preapre setup CMB2, @see CMB2::add_field().
 			add_filter( 'wp_prepare_attachment_for_js', [ 'CMB2_Type_File_Base', 'prepare_image_sizes_for_js' ], 10, 3 );

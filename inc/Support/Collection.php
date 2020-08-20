@@ -5,18 +5,17 @@ namespace AweBooking\Support;
 use Illuminate\Support\Collection as Illuminate_Collection;
 
 class Collection extends Illuminate_Collection {
-	/**
-	 * Dump the collection and end the script.
-	 *
-	 * @return void
-	 */
-	public function dd() {
-		http_response_code( 500 );
-
-		call_user_func_array( [ $this, 'dump' ], func_get_args() );
-
-		die( 1 );
-	}
+    /**
+     * Dump the collection and end the script.
+     *
+     * @param  mixed  ...$args
+     * @return void
+     */
+    public function dd(...$args) {
+        http_response_code( 500 );
+        call_user_func_array([$this, 'dump'], $args);
+        die( 1 );
+    }
 
 	/**
 	 * Dump the collection.
