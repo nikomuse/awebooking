@@ -238,7 +238,7 @@ abstract class Abstract_Scheduler {
 
 		extract( $vars, EXTR_SKIP ); // @codingStandardsIgnoreLine
 
-		include trailingslashit( __DIR__ ) . 'views/' . $template;
+		include apply_filters('abrs_calendar_template_dir', trailingslashit( __DIR__ ) . 'views/', $template) . $template;
 	}
 
 	/**
