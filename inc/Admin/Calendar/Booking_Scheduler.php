@@ -113,12 +113,14 @@ class Booking_Scheduler extends Abstract_Scheduler {
 
 	/**
 	 * Display the actions.
-	 *
+	 * &ForceInteractive : we add the "li" book action.
+     *
 	 * @return void
 	 */
 	protected function display_actions() { ?>
 		<li><a href="#" data-schedule-action="block"><i class="dashicons dashicons-lock"></i><span><?php echo esc_html__( 'Set as Blocked', 'awebooking' ); ?></span></a></li>
 		<li><a href="#" data-schedule-action="unblock"><i class="dashicons dashicons-unlock"></i><span><?php echo esc_html__( 'Clear Blocked', 'awebooking' ); ?></span></a></li>
+        <li><a href="#" data-schedule-action="book"><i class="dashicons dashicons-unlock"></i><span><?php echo esc_html__( 'Book', 'awebooking' ); ?></span></a></li>
 		<?php
 	}
 

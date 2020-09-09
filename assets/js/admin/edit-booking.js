@@ -137,9 +137,7 @@ function _createClass(Constructor, protoProps, staticProps) {
     });
   };
 
-  var EditBooking =
-  /*#__PURE__*/
-  function () {
+  var EditBooking = /*#__PURE__*/function () {
     /**
      * Constructor.
      *

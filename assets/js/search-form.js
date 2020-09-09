@@ -246,6 +246,7 @@ function formatDateString(dateString, format) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+// ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: external "jQuery"
@@ -358,9 +359,7 @@ function isEquals(a, b) {
  */
 
 
-var control_Control =
-/*#__PURE__*/
-function () {
+var control_Control = /*#__PURE__*/function () {
   function Control(element) {
     _classCallCheck(this, Control);
 
@@ -622,9 +621,7 @@ function SearchForm_createClass(Constructor, protoProps, staticProps) {
 
 
 
-var SearchForm_SearchForm =
-/*#__PURE__*/
-function () {
+var SearchForm_SearchForm = /*#__PURE__*/function () {
   function SearchForm(root, instance) {
     SearchForm_classCallCheck(this, SearchForm);
 
@@ -790,9 +787,7 @@ function old_createClass(Constructor, protoProps, staticProps) {
 
 
 
-var old_SearchFormModel =
-/*#__PURE__*/
-function () {
+var old_SearchFormModel = /*#__PURE__*/function () {
   function SearchFormModel(data) {
     var _this = this;
 
@@ -827,9 +822,7 @@ function () {
   return SearchFormModel;
 }();
 
-var old_OldSearchForm =
-/*#__PURE__*/
-function () {
+var old_OldSearchForm = /*#__PURE__*/function () {
   function OldSearchForm(el, form) {
     var _this2 = this;
 

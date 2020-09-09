@@ -2,9 +2,11 @@
 
 namespace AweBooking\Admin\Controllers;
 
+use AweBooking\Model\Booking;
 use WP_Error;
 use WPLibs\Http\Request;
 use AweBooking\Admin\Calendar\Booking_Scheduler;
+use AweBooking\Model\Booking\Room_Item;
 
 class Calendar_Controller extends Controller {
 	/**
@@ -58,6 +60,45 @@ class Calendar_Controller extends Controller {
 			case 'unblock':
 				$updated = abrs_unblock_room( $room, $timespan );
 				break;
+            /*
+             * START &ForceInteractive : add book action management to book directly from calendar
+             */
+            case 'book':
+                $timespan = abrs_timespan( $request->get( 'start_date' ), $request->get( 'end_date' ), 1 );
+                $room_type_id = $room->get_attribute('room_type');
+
+                /** @var \AweBooking\Availability\Room_Rate $room_rate */
+                $room_rate = abrs_retrieve_room_rate([
+                    'room_type' => $room_type_id,
+                    'check_in' => $request->get( 'start_date' ),
+                    'check_out' => $request->get( 'end_date' )
+                ]);
+                $rate_plan = $room_rate->get_rate_plan();
+
+                $booking = new Booking();
+                $booking->set_status('draft');
+                $booking->save();
+
+                $room_item = ( new Room_Item )->fill([
+                    'name'           => $room->get( 'name' ),
+                    'room_id'        => $room->get_id(),
+                    'booking_id'     => $booking->get_id(),
+                    'room_type_id'   => $room_type_id,
+                    'rate_plan_id'   => $rate_plan->get_id(),
+                    'adults'         => 1,
+                    'children'       => 0,
+                    'infants'        => 0,
+                ]);
+
+                $room_item->set_timespan( $timespan );
+                $room_item->set_total( $room_rate->get_rate() );
+                $room_item->save();
+
+                return $this->redirect()->to( get_edit_post_link( $booking->get_id(), 'raw' ) );
+                break;
+            /**
+             * END &ForceInteractive
+             */
 		}
 
 		return $this->redirect()->back( abrs_admin_route( '/calendar' ) );

@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -184,7 +184,7 @@ module.exports = function IsPropertyDescriptor(ES, Desc) {
 		'[[Writable]]': true
 	};
 
-    for (var key in Desc) { // eslint-disable-line
+	for (var key in Desc) { // eslint-disable-line no-restricted-syntax
 		if (has(Desc, key) && !allowed[key]) {
 			return false;
 		}
@@ -242,14 +242,14 @@ module.exports = isSymbol;
 
 
 var define = __webpack_require__("82c2");
-var bind = __webpack_require__("D3zA");
+var callBind = __webpack_require__("RLeF");
 
 var implementation = __webpack_require__("yN6O");
 var getPolyfill = __webpack_require__("22yB");
 var polyfill = getPolyfill();
 var shim = __webpack_require__("v3P4");
 
-var boundFlat = bind.call(Function.call, polyfill);
+var boundFlat = callBind(polyfill);
 
 define(boundFlat, {
 	getPolyfill: getPolyfill,
@@ -492,29 +492,6 @@ function getNumberOfCalendarMonthWeeks(month) {
 
 /***/ }),
 
-/***/ "0V1h":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var GetIntrinsic = __webpack_require__("6ayh");
-
-var originalGetProto = GetIntrinsic('%Object.getPrototypeOf%', true);
-var $ArrayProto = GetIntrinsic('%Array.prototype%');
-
-module.exports = originalGetProto || (
-	// eslint-disable-next-line no-proto
-	[].__proto__ === $ArrayProto
-		? function (O) {
-			return O.__proto__; // eslint-disable-line no-proto
-		}
-		: null
-);
-
-
-/***/ }),
-
 /***/ "0XP8":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -542,6 +519,36 @@ LeftArrow.defaultProps = {
 };
 var _default = LeftArrow;
 exports["default"] = _default;
+
+/***/ }),
+
+/***/ "0yco":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var GetIntrinsic = __webpack_require__("6ayh");
+
+var $Math = GetIntrinsic('%Math%');
+
+var ToNumber = __webpack_require__("u1xu");
+var $isNaN = __webpack_require__("IFfy");
+var $isFinite = __webpack_require__("xhJ2");
+var $sign = __webpack_require__("WXWk");
+
+var $floor = $Math.floor;
+var $abs = $Math.abs;
+
+// http://www.ecma-international.org/ecma-262/5.1/#sec-9.4
+
+module.exports = function ToInteger(value) {
+	var number = ToNumber(value);
+	if ($isNaN(number)) { return 0; }
+	if (number === 0 || !$isFinite(number)) { return number; }
+	return $sign(number) * $floor($abs(number));
+};
+
 
 /***/ }),
 
@@ -586,7 +593,7 @@ var _CloseButton = _interopRequireDefault(__webpack_require__("xEte"));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var TOP_LEFT = 'top-left';
 exports.TOP_LEFT = TOP_LEFT;
@@ -757,7 +764,7 @@ function (_ref) {
       ref: this.setShowKeyboardShortcutsButtonRef,
       onClick: this.onShowKeyboardShortcutsButtonClick,
       ariaLabel: toggleButtonText
-    }), renderKeyboardShortcutsButton || _react["default"].createElement("button", (0, _extends2["default"])({
+    }), !renderKeyboardShortcutsButton && _react["default"].createElement("button", (0, _extends2["default"])({
       ref: this.setShowKeyboardShortcutsButtonRef
     }, (0, _reactWithStyles.css)(styles.DayPickerKeyboardShortcuts_buttonReset, styles.DayPickerKeyboardShortcuts_show, bottomRight && styles.DayPickerKeyboardShortcuts_show__bottomRight, topRight && styles.DayPickerKeyboardShortcuts_show__topRight, topLeft && styles.DayPickerKeyboardShortcuts_show__topLeft), {
       type: "button",
@@ -950,7 +957,7 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 11:
+/***/ 12:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__("G+CP");
@@ -958,7 +965,7 @@ module.exports = __webpack_require__("G+CP");
 
 /***/ }),
 
-/***/ 12:
+/***/ 13:
 /***/ (function(module, exports) {
 
 /* (ignored) */
@@ -1056,6 +1063,73 @@ if (false) { var throwOnDirectAccess, ReactIs; } else {
 
 /***/ }),
 
+/***/ "1Fze":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var GetIntrinsic = __webpack_require__("6ayh");
+
+var $TypeError = GetIntrinsic('%TypeError%');
+var $Number = GetIntrinsic('%Number%');
+var $RegExp = GetIntrinsic('%RegExp%');
+var $parseInteger = GetIntrinsic('%parseInt%');
+
+var callBound = __webpack_require__("Khql");
+var regexTester = __webpack_require__("D6qd");
+var isPrimitive = __webpack_require__("E1iy");
+
+var $strSlice = callBound('String.prototype.slice');
+var isBinary = regexTester(/^0b[01]+$/i);
+var isOctal = regexTester(/^0o[0-7]+$/i);
+var isInvalidHexLiteral = regexTester(/^[-+]0x[0-9a-f]+$/i);
+var nonWS = ['\u0085', '\u200b', '\ufffe'].join('');
+var nonWSregex = new $RegExp('[' + nonWS + ']', 'g');
+var hasNonWS = regexTester(nonWSregex);
+
+// whitespace from: https://es5.github.io/#x15.5.4.20
+// implementation from https://github.com/es-shims/es5-shim/blob/v3.4.0/es5-shim.js#L1304-L1324
+var ws = [
+	'\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003',
+	'\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028',
+	'\u2029\uFEFF'
+].join('');
+var trimRegex = new RegExp('(^[' + ws + ']+)|([' + ws + ']+$)', 'g');
+var $replace = callBound('String.prototype.replace');
+var $trim = function (value) {
+	return $replace(value, trimRegex, '');
+};
+
+var ToPrimitive = __webpack_require__("zkC3");
+
+// https://www.ecma-international.org/ecma-262/6.0/#sec-tonumber
+
+module.exports = function ToNumber(argument) {
+	var value = isPrimitive(argument) ? argument : ToPrimitive(argument, $Number);
+	if (typeof value === 'symbol') {
+		throw new $TypeError('Cannot convert a Symbol value to a number');
+	}
+	if (typeof value === 'string') {
+		if (isBinary(value)) {
+			return ToNumber($parseInteger($strSlice(value, 2), 2));
+		} else if (isOctal(value)) {
+			return ToNumber($parseInteger($strSlice(value, 2), 8));
+		} else if (hasNonWS(value) || isInvalidHexLiteral(value)) {
+			return NaN;
+		} else {
+			var trimmed = $trim(value);
+			if (trimmed !== value) {
+				return ToNumber(trimmed);
+			}
+		}
+	}
+	return $Number(value);
+};
+
+
+/***/ }),
+
 /***/ "1KsK":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1081,1474 +1155,24 @@ module.exports = function isArguments(value) {
 
 /***/ }),
 
-/***/ "1RUG":
+/***/ "1Soo":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var has = __webpack_require__("oNNP");
-var toPrimitive = __webpack_require__("i1el");
-var keys = __webpack_require__("1seS");
-var inspect = __webpack_require__("JxQ3");
-
 var GetIntrinsic = __webpack_require__("6ayh");
 
-var $TypeError = GetIntrinsic('%TypeError%');
-var $RangeError = GetIntrinsic('%RangeError%');
-var $SyntaxError = GetIntrinsic('%SyntaxError%');
 var $Array = GetIntrinsic('%Array%');
-var $ArrayPrototype = $Array.prototype;
-var $String = GetIntrinsic('%String%');
-var $Object = GetIntrinsic('%Object%');
-var $Number = GetIntrinsic('%Number%');
-var $Symbol = GetIntrinsic('%Symbol%', true);
-var $RegExp = GetIntrinsic('%RegExp%');
-var $Date = GetIntrinsic('%Date%');
-var $Function = GetIntrinsic('%Function%');
-var $preventExtensions = $Object.preventExtensions;
 
-var hasSymbols = __webpack_require__("UVaH")();
+// eslint-disable-next-line global-require
+var toStr = !$Array.isArray && __webpack_require__("Khql")('Object.prototype.toString');
 
-var assertRecord = __webpack_require__("xG2L");
-var $isNaN = __webpack_require__("IFfy");
-var $isFinite = __webpack_require__("xhJ2");
-var MAX_ARRAY_LENGTH = Math.pow(2, 32) - 1;
-var MAX_SAFE_INTEGER = __webpack_require__("sqVN");
+// https://www.ecma-international.org/ecma-262/6.0/#sec-isarray
 
-var assign = __webpack_require__("DGeY");
-var sign = __webpack_require__("WXWk");
-var mod = __webpack_require__("u1Mj");
-var isPrimitive = __webpack_require__("E1iy");
-var forEach = __webpack_require__("yjl6");
-var every = __webpack_require__("BWkc");
-var isSamePropertyDescriptor = __webpack_require__("A/aO");
-var isPropertyDescriptor = __webpack_require__("//3U");
-var parseInteger = parseInt;
-var callBound = __webpack_require__("Khql");
-var regexTester = __webpack_require__("D6qd");
-var getIteratorMethod = __webpack_require__("UsSR");
-var getSymbolDescription = __webpack_require__("SrsA");
-
-var $PromiseThen = callBound('Promise.prototype.then', true);
-var arraySlice = callBound('Array.prototype.slice');
-var strSlice = callBound('String.prototype.slice');
-var $indexOf = callBound('Array.prototype.indexOf');
-var $push = callBound('Array.prototype.push');
-
-var isBinary = regexTester(/^0b[01]+$/i);
-var isOctal = regexTester(/^0o[0-7]+$/i);
-var isDigit = regexTester(/^[0-9]$/);
-var regexExec = callBound('RegExp.prototype.exec');
-var nonWS = ['\u0085', '\u200b', '\ufffe'].join('');
-var nonWSregex = new $RegExp('[' + nonWS + ']', 'g');
-var hasNonWS = regexTester(nonWSregex);
-var isInvalidHexLiteral = regexTester(/^[-+]0x[0-9a-f]+$/i);
-var $charCodeAt = callBound('String.prototype.charCodeAt');
-var $isEnumerable = callBound('Object.prototype.propertyIsEnumerable');
-
-var toStr = callBound('Object.prototype.toString');
-
-var $NumberValueOf = callBound('Number.prototype.valueOf');
-var $BooleanValueOf = callBound('Boolean.prototype.valueOf');
-var $StringValueOf = callBound('String.prototype.valueOf');
-var $DateValueOf = callBound('Date.prototype.valueOf');
-var $SymbolToString = callBound('Symbol.prototype.toString', true);
-
-var $floor = Math.floor;
-var $abs = Math.abs;
-
-var $ObjectCreate = $Object.create;
-var $gOPD = $Object.getOwnPropertyDescriptor;
-var $gOPN = $Object.getOwnPropertyNames;
-var $gOPS = $Object.getOwnPropertySymbols;
-var $isExtensible = $Object.isExtensible;
-var $defineProperty = $Object.defineProperty;
-var $setProto = __webpack_require__("M1+t");
-
-var DefineOwnProperty = function DefineOwnProperty(ES, O, P, desc) {
-	if (!$defineProperty) {
-		if (!ES.IsDataDescriptor(desc)) {
-			// ES3 does not support getters/setters
-			return false;
-		}
-		if (!desc['[[Configurable]]'] || !desc['[[Writable]]']) {
-			return false;
-		}
-
-		// fallback for ES3
-		if (P in O && $isEnumerable(O, P) !== !!desc['[[Enumerable]]']) {
-			// a non-enumerable existing property
-			return false;
-		}
-
-		// property does not exist at all, or exists but is enumerable
-		var V = desc['[[Value]]'];
-		O[P] = V; // will use [[Define]]
-		return ES.SameValue(O[P], V);
-	}
-	$defineProperty(O, P, ES.FromPropertyDescriptor(desc));
-	return true;
+module.exports = $Array.isArray || function IsArray(argument) {
+	return toStr(argument) === '[object Array]';
 };
-
-// whitespace from: https://es5.github.io/#x15.5.4.20
-// implementation from https://github.com/es-shims/es5-shim/blob/v3.4.0/es5-shim.js#L1304-L1324
-var ws = [
-	'\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003',
-	'\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028',
-	'\u2029\uFEFF'
-].join('');
-var trimRegex = new RegExp('(^[' + ws + ']+)|([' + ws + ']+$)', 'g');
-var $replace = callBound('String.prototype.replace');
-var trim = function (value) {
-	return $replace(value, trimRegex, '');
-};
-
-var ES5 = __webpack_require__("DwGB");
-
-var hasRegExpMatcher = __webpack_require__("2Nju");
-
-// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-abstract-operations
-var ES6 = assign(assign({}, ES5), {
-
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-call-f-v-args
-	Call: function Call(F, V) {
-		var args = arguments.length > 2 ? arguments[2] : [];
-		if (!this.IsCallable(F)) {
-			throw new $TypeError(inspect(F) + ' is not a function');
-		}
-		return F.apply(V, args);
-	},
-
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-toprimitive
-	ToPrimitive: toPrimitive,
-
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-toboolean
-	// ToBoolean: ES5.ToBoolean,
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-tonumber
-	ToNumber: function ToNumber(argument) {
-		var value = isPrimitive(argument) ? argument : toPrimitive(argument, $Number);
-		if (typeof value === 'symbol') {
-			throw new $TypeError('Cannot convert a Symbol value to a number');
-		}
-		if (typeof value === 'string') {
-			if (isBinary(value)) {
-				return this.ToNumber(parseInteger(strSlice(value, 2), 2));
-			} else if (isOctal(value)) {
-				return this.ToNumber(parseInteger(strSlice(value, 2), 8));
-			} else if (hasNonWS(value) || isInvalidHexLiteral(value)) {
-				return NaN;
-			} else {
-				var trimmed = trim(value);
-				if (trimmed !== value) {
-					return this.ToNumber(trimmed);
-				}
-			}
-		}
-		return $Number(value);
-	},
-
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tointeger
-	// ToInteger: ES5.ToNumber,
-
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-toint32
-	// ToInt32: ES5.ToInt32,
-
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-touint32
-	// ToUint32: ES5.ToUint32,
-
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-toint16
-	ToInt16: function ToInt16(argument) {
-		var int16bit = this.ToUint16(argument);
-		return int16bit >= 0x8000 ? int16bit - 0x10000 : int16bit;
-	},
-
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-touint16
-	// ToUint16: ES5.ToUint16,
-
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-toint8
-	ToInt8: function ToInt8(argument) {
-		var int8bit = this.ToUint8(argument);
-		return int8bit >= 0x80 ? int8bit - 0x100 : int8bit;
-	},
-
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-touint8
-	ToUint8: function ToUint8(argument) {
-		var number = this.ToNumber(argument);
-		if ($isNaN(number) || number === 0 || !$isFinite(number)) { return 0; }
-		var posInt = sign(number) * $floor($abs(number));
-		return mod(posInt, 0x100);
-	},
-
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-touint8clamp
-	ToUint8Clamp: function ToUint8Clamp(argument) {
-		var number = this.ToNumber(argument);
-		if ($isNaN(number) || number <= 0) { return 0; }
-		if (number >= 0xFF) { return 0xFF; }
-		var f = $floor(argument);
-		if (f + 0.5 < number) { return f + 1; }
-		if (number < f + 0.5) { return f; }
-		if (f % 2 !== 0) { return f + 1; }
-		return f;
-	},
-
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tostring
-	ToString: function ToString(argument) {
-		if (typeof argument === 'symbol') {
-			throw new $TypeError('Cannot convert a Symbol value to a string');
-		}
-		return $String(argument);
-	},
-
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-toobject
-	ToObject: function ToObject(value) {
-		this.RequireObjectCoercible(value);
-		return $Object(value);
-	},
-
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-topropertykey
-	ToPropertyKey: function ToPropertyKey(argument) {
-		var key = this.ToPrimitive(argument, $String);
-		return typeof key === 'symbol' ? key : this.ToString(key);
-	},
-
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength
-	ToLength: function ToLength(argument) {
-		var len = this.ToInteger(argument);
-		if (len <= 0) { return 0; } // includes converting -0 to +0
-		if (len > MAX_SAFE_INTEGER) { return MAX_SAFE_INTEGER; }
-		return len;
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-canonicalnumericindexstring
-	CanonicalNumericIndexString: function CanonicalNumericIndexString(argument) {
-		if (toStr(argument) !== '[object String]') {
-			throw new $TypeError('must be a string');
-		}
-		if (argument === '-0') { return -0; }
-		var n = this.ToNumber(argument);
-		if (this.SameValue(this.ToString(n), argument)) { return n; }
-		return void 0;
-	},
-
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-requireobjectcoercible
-	RequireObjectCoercible: ES5.CheckObjectCoercible,
-
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-isarray
-	IsArray: $Array.isArray || function IsArray(argument) {
-		return toStr(argument) === '[object Array]';
-	},
-
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-iscallable
-	// IsCallable: ES5.IsCallable,
-
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-isconstructor
-	IsConstructor: function IsConstructor(argument) {
-		return typeof argument === 'function' && !!argument.prototype; // unfortunately there's no way to truly check this without try/catch `new argument` or Proxy
-	},
-
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-isextensible-o
-	IsExtensible: $preventExtensions
-		? function IsExtensible(obj) {
-			if (isPrimitive(obj)) {
-				return false;
-			}
-			return $isExtensible(obj);
-		}
-		: function isExtensible(obj) { return true; }, // eslint-disable-line no-unused-vars
-
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-isinteger
-	IsInteger: function IsInteger(argument) {
-		if (typeof argument !== 'number' || $isNaN(argument) || !$isFinite(argument)) {
-			return false;
-		}
-		var abs = $abs(argument);
-		return $floor(abs) === abs;
-	},
-
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-ispropertykey
-	IsPropertyKey: function IsPropertyKey(argument) {
-		return typeof argument === 'string' || typeof argument === 'symbol';
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-isregexp
-	IsRegExp: function IsRegExp(argument) {
-		if (!argument || typeof argument !== 'object') {
-			return false;
-		}
-		if (hasSymbols) {
-			var isRegExp = argument[$Symbol.match];
-			if (typeof isRegExp !== 'undefined') {
-				return ES5.ToBoolean(isRegExp);
-			}
-		}
-		return hasRegExpMatcher(argument);
-	},
-
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevalue
-	// SameValue: ES5.SameValue,
-
-	// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero
-	SameValueZero: function SameValueZero(x, y) {
-		return (x === y) || ($isNaN(x) && $isNaN(y));
-	},
-
-	/**
-	 * 7.3.2 GetV (V, P)
-	 * 1. Assert: IsPropertyKey(P) is true.
-	 * 2. Let O be ToObject(V).
-	 * 3. ReturnIfAbrupt(O).
-	 * 4. Return O.[[Get]](P, V).
-	 */
-	GetV: function GetV(V, P) {
-		// 7.3.2.1
-		if (!this.IsPropertyKey(P)) {
-			throw new $TypeError('Assertion failed: IsPropertyKey(P) is not true');
-		}
-
-		// 7.3.2.2-3
-		var O = this.ToObject(V);
-
-		// 7.3.2.4
-		return O[P];
-	},
-
-	/**
-	 * 7.3.9 - https://ecma-international.org/ecma-262/6.0/#sec-getmethod
-	 * 1. Assert: IsPropertyKey(P) is true.
-	 * 2. Let func be GetV(O, P).
-	 * 3. ReturnIfAbrupt(func).
-	 * 4. If func is either undefined or null, return undefined.
-	 * 5. If IsCallable(func) is false, throw a TypeError exception.
-	 * 6. Return func.
-	 */
-	GetMethod: function GetMethod(O, P) {
-		// 7.3.9.1
-		if (!this.IsPropertyKey(P)) {
-			throw new $TypeError('Assertion failed: IsPropertyKey(P) is not true');
-		}
-
-		// 7.3.9.2
-		var func = this.GetV(O, P);
-
-		// 7.3.9.4
-		if (func == null) {
-			return void 0;
-		}
-
-		// 7.3.9.5
-		if (!this.IsCallable(func)) {
-			throw new $TypeError(P + 'is not a function');
-		}
-
-		// 7.3.9.6
-		return func;
-	},
-
-	/**
-	 * 7.3.1 Get (O, P) - https://ecma-international.org/ecma-262/6.0/#sec-get-o-p
-	 * 1. Assert: Type(O) is Object.
-	 * 2. Assert: IsPropertyKey(P) is true.
-	 * 3. Return O.[[Get]](P, O).
-	 */
-	Get: function Get(O, P) {
-		// 7.3.1.1
-		if (this.Type(O) !== 'Object') {
-			throw new $TypeError('Assertion failed: Type(O) is not Object');
-		}
-		// 7.3.1.2
-		if (!this.IsPropertyKey(P)) {
-			throw new $TypeError('Assertion failed: IsPropertyKey(P) is not true, got ' + inspect(P));
-		}
-		// 7.3.1.3
-		return O[P];
-	},
-
-	Type: function Type(x) {
-		if (typeof x === 'symbol') {
-			return 'Symbol';
-		}
-		return ES5.Type(x);
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-speciesconstructor
-	SpeciesConstructor: function SpeciesConstructor(O, defaultConstructor) {
-		if (this.Type(O) !== 'Object') {
-			throw new $TypeError('Assertion failed: Type(O) is not Object');
-		}
-		var C = O.constructor;
-		if (typeof C === 'undefined') {
-			return defaultConstructor;
-		}
-		if (this.Type(C) !== 'Object') {
-			throw new $TypeError('O.constructor is not an Object');
-		}
-		var S = hasSymbols && $Symbol.species ? C[$Symbol.species] : void 0;
-		if (S == null) {
-			return defaultConstructor;
-		}
-		if (this.IsConstructor(S)) {
-			return S;
-		}
-		throw new $TypeError('no constructor found');
-	},
-
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-frompropertydescriptor
-	FromPropertyDescriptor: function FromPropertyDescriptor(Desc) {
-		if (typeof Desc === 'undefined') {
-			return Desc;
-		}
-
-		assertRecord(this, 'Property Descriptor', 'Desc', Desc);
-
-		var obj = {};
-		if ('[[Value]]' in Desc) {
-			obj.value = Desc['[[Value]]'];
-		}
-		if ('[[Writable]]' in Desc) {
-			obj.writable = Desc['[[Writable]]'];
-		}
-		if ('[[Get]]' in Desc) {
-			obj.get = Desc['[[Get]]'];
-		}
-		if ('[[Set]]' in Desc) {
-			obj.set = Desc['[[Set]]'];
-		}
-		if ('[[Enumerable]]' in Desc) {
-			obj.enumerable = Desc['[[Enumerable]]'];
-		}
-		if ('[[Configurable]]' in Desc) {
-			obj.configurable = Desc['[[Configurable]]'];
-		}
-		return obj;
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-completepropertydescriptor
-	CompletePropertyDescriptor: function CompletePropertyDescriptor(Desc) {
-		assertRecord(this, 'Property Descriptor', 'Desc', Desc);
-
-		if (this.IsGenericDescriptor(Desc) || this.IsDataDescriptor(Desc)) {
-			if (!has(Desc, '[[Value]]')) {
-				Desc['[[Value]]'] = void 0;
-			}
-			if (!has(Desc, '[[Writable]]')) {
-				Desc['[[Writable]]'] = false;
-			}
-		} else {
-			if (!has(Desc, '[[Get]]')) {
-				Desc['[[Get]]'] = void 0;
-			}
-			if (!has(Desc, '[[Set]]')) {
-				Desc['[[Set]]'] = void 0;
-			}
-		}
-		if (!has(Desc, '[[Enumerable]]')) {
-			Desc['[[Enumerable]]'] = false;
-		}
-		if (!has(Desc, '[[Configurable]]')) {
-			Desc['[[Configurable]]'] = false;
-		}
-		return Desc;
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-set-o-p-v-throw
-	Set: function Set(O, P, V, Throw) {
-		if (this.Type(O) !== 'Object') {
-			throw new $TypeError('O must be an Object');
-		}
-		if (!this.IsPropertyKey(P)) {
-			throw new $TypeError('P must be a Property Key');
-		}
-		if (this.Type(Throw) !== 'Boolean') {
-			throw new $TypeError('Throw must be a Boolean');
-		}
-		if (Throw) {
-			O[P] = V;
-			return true;
-		} else {
-			try {
-				O[P] = V;
-			} catch (e) {
-				return false;
-			}
-		}
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-hasownproperty
-	HasOwnProperty: function HasOwnProperty(O, P) {
-		if (this.Type(O) !== 'Object') {
-			throw new $TypeError('O must be an Object');
-		}
-		if (!this.IsPropertyKey(P)) {
-			throw new $TypeError('P must be a Property Key');
-		}
-		return has(O, P);
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-hasproperty
-	HasProperty: function HasProperty(O, P) {
-		if (this.Type(O) !== 'Object') {
-			throw new $TypeError('O must be an Object');
-		}
-		if (!this.IsPropertyKey(P)) {
-			throw new $TypeError('P must be a Property Key');
-		}
-		return P in O;
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-isconcatspreadable
-	IsConcatSpreadable: function IsConcatSpreadable(O) {
-		if (this.Type(O) !== 'Object') {
-			return false;
-		}
-		if (hasSymbols && typeof $Symbol.isConcatSpreadable === 'symbol') {
-			var spreadable = this.Get(O, Symbol.isConcatSpreadable);
-			if (typeof spreadable !== 'undefined') {
-				return this.ToBoolean(spreadable);
-			}
-		}
-		return this.IsArray(O);
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-invoke
-	Invoke: function Invoke(O, P) {
-		if (!this.IsPropertyKey(P)) {
-			throw new $TypeError('P must be a Property Key');
-		}
-		var argumentsList = arraySlice(arguments, 2);
-		var func = this.GetV(O, P);
-		return this.Call(func, O, argumentsList);
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-getiterator
-	GetIterator: function GetIterator(obj, method) {
-		var actualMethod = method;
-		if (arguments.length < 2) {
-			actualMethod = getIteratorMethod(this, obj);
-		}
-		var iterator = this.Call(actualMethod, obj);
-		if (this.Type(iterator) !== 'Object') {
-			throw new $TypeError('iterator must return an object');
-		}
-
-		return iterator;
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-iteratornext
-	IteratorNext: function IteratorNext(iterator, value) {
-		var result = this.Invoke(iterator, 'next', arguments.length < 2 ? [] : [value]);
-		if (this.Type(result) !== 'Object') {
-			throw new $TypeError('iterator next must return an object');
-		}
-		return result;
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-iteratorcomplete
-	IteratorComplete: function IteratorComplete(iterResult) {
-		if (this.Type(iterResult) !== 'Object') {
-			throw new $TypeError('Assertion failed: Type(iterResult) is not Object');
-		}
-		return this.ToBoolean(this.Get(iterResult, 'done'));
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-iteratorvalue
-	IteratorValue: function IteratorValue(iterResult) {
-		if (this.Type(iterResult) !== 'Object') {
-			throw new $TypeError('Assertion failed: Type(iterResult) is not Object');
-		}
-		return this.Get(iterResult, 'value');
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-iteratorstep
-	IteratorStep: function IteratorStep(iterator) {
-		var result = this.IteratorNext(iterator);
-		var done = this.IteratorComplete(result);
-		return done === true ? false : result;
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-iteratorclose
-	IteratorClose: function IteratorClose(iterator, completion) {
-		if (this.Type(iterator) !== 'Object') {
-			throw new $TypeError('Assertion failed: Type(iterator) is not Object');
-		}
-		if (!this.IsCallable(completion)) {
-			throw new $TypeError('Assertion failed: completion is not a thunk for a Completion Record');
-		}
-		var completionThunk = completion;
-
-		var iteratorReturn = this.GetMethod(iterator, 'return');
-
-		if (typeof iteratorReturn === 'undefined') {
-			return completionThunk();
-		}
-
-		var completionRecord;
-		try {
-			var innerResult = this.Call(iteratorReturn, iterator, []);
-		} catch (e) {
-			// if we hit here, then "e" is the innerResult completion that needs re-throwing
-
-			// if the completion is of type "throw", this will throw.
-			completionRecord = completionThunk();
-			completionThunk = null; // ensure it's not called twice.
-
-			// if not, then return the innerResult completion
-			throw e;
-		}
-		completionRecord = completionThunk(); // if innerResult worked, then throw if the completion does
-		completionThunk = null; // ensure it's not called twice.
-
-		if (this.Type(innerResult) !== 'Object') {
-			throw new $TypeError('iterator .return must return an object');
-		}
-
-		return completionRecord;
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-createiterresultobject
-	CreateIterResultObject: function CreateIterResultObject(value, done) {
-		if (this.Type(done) !== 'Boolean') {
-			throw new $TypeError('Assertion failed: Type(done) is not Boolean');
-		}
-		return {
-			value: value,
-			done: done
-		};
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-regexpexec
-	RegExpExec: function RegExpExec(R, S) {
-		if (this.Type(R) !== 'Object') {
-			throw new $TypeError('R must be an Object');
-		}
-		if (this.Type(S) !== 'String') {
-			throw new $TypeError('S must be a String');
-		}
-		var exec = this.Get(R, 'exec');
-		if (this.IsCallable(exec)) {
-			var result = this.Call(exec, R, [S]);
-			if (result === null || this.Type(result) === 'Object') {
-				return result;
-			}
-			throw new $TypeError('"exec" method must return `null` or an Object');
-		}
-		return regexExec(R, S);
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-arrayspeciescreate
-	ArraySpeciesCreate: function ArraySpeciesCreate(originalArray, length) {
-		if (!this.IsInteger(length) || length < 0) {
-			throw new $TypeError('Assertion failed: length must be an integer >= 0');
-		}
-		var len = length === 0 ? 0 : length;
-		var C;
-		var isArray = this.IsArray(originalArray);
-		if (isArray) {
-			C = this.Get(originalArray, 'constructor');
-			// TODO: figure out how to make a cross-realm normal Array, a same-realm Array
-			// if (this.IsConstructor(C)) {
-			// 	if C is another realm's Array, C = undefined
-			// 	Object.getPrototypeOf(Object.getPrototypeOf(Object.getPrototypeOf(Array))) === null ?
-			// }
-			if (this.Type(C) === 'Object' && hasSymbols && $Symbol.species) {
-				C = this.Get(C, $Symbol.species);
-				if (C === null) {
-					C = void 0;
-				}
-			}
-		}
-		if (typeof C === 'undefined') {
-			return $Array(len);
-		}
-		if (!this.IsConstructor(C)) {
-			throw new $TypeError('C must be a constructor');
-		}
-		return new C(len); // this.Construct(C, len);
-	},
-
-	CreateDataProperty: function CreateDataProperty(O, P, V) {
-		if (this.Type(O) !== 'Object') {
-			throw new $TypeError('Assertion failed: Type(O) is not Object');
-		}
-		if (!this.IsPropertyKey(P)) {
-			throw new $TypeError('Assertion failed: IsPropertyKey(P) is not true');
-		}
-		var oldDesc = $gOPD(O, P);
-		var extensible = oldDesc || this.IsExtensible(O);
-		var immutable = oldDesc && (!oldDesc.writable || !oldDesc.configurable);
-		if (immutable || !extensible) {
-			return false;
-		}
-		return DefineOwnProperty(this, O, P, {
-			'[[Configurable]]': true,
-			'[[Enumerable]]': true,
-			'[[Value]]': V,
-			'[[Writable]]': true
-		});
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-createdatapropertyorthrow
-	CreateDataPropertyOrThrow: function CreateDataPropertyOrThrow(O, P, V) {
-		if (this.Type(O) !== 'Object') {
-			throw new $TypeError('Assertion failed: Type(O) is not Object');
-		}
-		if (!this.IsPropertyKey(P)) {
-			throw new $TypeError('Assertion failed: IsPropertyKey(P) is not true');
-		}
-		var success = this.CreateDataProperty(O, P, V);
-		if (!success) {
-			throw new $TypeError('unable to create data property');
-		}
-		return success;
-	},
-
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-objectcreate
-	ObjectCreate: function ObjectCreate(proto, internalSlotsList) {
-		if (proto !== null && this.Type(proto) !== 'Object') {
-			throw new $TypeError('Assertion failed: proto must be null or an object');
-		}
-		var slots = arguments.length < 2 ? [] : internalSlotsList;
-		if (slots.length > 0) {
-			throw new $SyntaxError('es-abstract does not yet support internal slots');
-		}
-
-		if (proto === null && !$ObjectCreate) {
-			throw new $SyntaxError('native Object.create support is required to create null objects');
-		}
-
-		return $ObjectCreate(proto);
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-advancestringindex
-	AdvanceStringIndex: function AdvanceStringIndex(S, index, unicode) {
-		if (this.Type(S) !== 'String') {
-			throw new $TypeError('S must be a String');
-		}
-		if (!this.IsInteger(index) || index < 0 || index > MAX_SAFE_INTEGER) {
-			throw new $TypeError('Assertion failed: length must be an integer >= 0 and <= 2**53');
-		}
-		if (this.Type(unicode) !== 'Boolean') {
-			throw new $TypeError('Assertion failed: unicode must be a Boolean');
-		}
-		if (!unicode) {
-			return index + 1;
-		}
-		var length = S.length;
-		if ((index + 1) >= length) {
-			return index + 1;
-		}
-
-		var first = $charCodeAt(S, index);
-		if (first < 0xD800 || first > 0xDBFF) {
-			return index + 1;
-		}
-
-		var second = $charCodeAt(S, index + 1);
-		if (second < 0xDC00 || second > 0xDFFF) {
-			return index + 1;
-		}
-
-		return index + 2;
-	},
-
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-createmethodproperty
-	CreateMethodProperty: function CreateMethodProperty(O, P, V) {
-		if (this.Type(O) !== 'Object') {
-			throw new $TypeError('Assertion failed: Type(O) is not Object');
-		}
-
-		if (!this.IsPropertyKey(P)) {
-			throw new $TypeError('Assertion failed: IsPropertyKey(P) is not true');
-		}
-
-		var newDesc = {
-			'[[Configurable]]': true,
-			'[[Enumerable]]': false,
-			'[[Value]]': V,
-			'[[Writable]]': true
-		};
-		return DefineOwnProperty(this, O, P, newDesc);
-	},
-
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-definepropertyorthrow
-	DefinePropertyOrThrow: function DefinePropertyOrThrow(O, P, desc) {
-		if (this.Type(O) !== 'Object') {
-			throw new $TypeError('Assertion failed: Type(O) is not Object');
-		}
-
-		if (!this.IsPropertyKey(P)) {
-			throw new $TypeError('Assertion failed: IsPropertyKey(P) is not true');
-		}
-
-		var Desc = isPropertyDescriptor(this, desc) ? desc : this.ToPropertyDescriptor(desc);
-		if (!isPropertyDescriptor(this, Desc)) {
-			throw new $TypeError('Assertion failed: Desc is not a valid Property Descriptor');
-		}
-
-		return DefineOwnProperty(this, O, P, Desc);
-	},
-
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-deletepropertyorthrow
-	DeletePropertyOrThrow: function DeletePropertyOrThrow(O, P) {
-		if (this.Type(O) !== 'Object') {
-			throw new $TypeError('Assertion failed: Type(O) is not Object');
-		}
-
-		if (!this.IsPropertyKey(P)) {
-			throw new $TypeError('Assertion failed: IsPropertyKey(P) is not true');
-		}
-
-		var success = delete O[P];
-		if (!success) {
-			throw new TypeError('Attempt to delete property failed.');
-		}
-		return success;
-	},
-
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-enumerableownnames
-	EnumerableOwnNames: function EnumerableOwnNames(O) {
-		if (this.Type(O) !== 'Object') {
-			throw new $TypeError('Assertion failed: Type(O) is not Object');
-		}
-
-		return keys(O);
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-properties-of-the-number-prototype-object
-	thisNumberValue: function thisNumberValue(value) {
-		if (this.Type(value) === 'Number') {
-			return value;
-		}
-
-		return $NumberValueOf(value);
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-properties-of-the-boolean-prototype-object
-	thisBooleanValue: function thisBooleanValue(value) {
-		if (this.Type(value) === 'Boolean') {
-			return value;
-		}
-
-		return $BooleanValueOf(value);
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-properties-of-the-string-prototype-object
-	thisStringValue: function thisStringValue(value) {
-		if (this.Type(value) === 'String') {
-			return value;
-		}
-
-		return $StringValueOf(value);
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-properties-of-the-date-prototype-object
-	thisTimeValue: function thisTimeValue(value) {
-		return $DateValueOf(value);
-	},
-
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-setintegritylevel
-	SetIntegrityLevel: function SetIntegrityLevel(O, level) {
-		if (this.Type(O) !== 'Object') {
-			throw new $TypeError('Assertion failed: Type(O) is not Object');
-		}
-		if (level !== 'sealed' && level !== 'frozen') {
-			throw new $TypeError('Assertion failed: `level` must be `"sealed"` or `"frozen"`');
-		}
-		if (!$preventExtensions) {
-			throw new $SyntaxError('SetIntegrityLevel requires native `Object.preventExtensions` support');
-		}
-		var status = $preventExtensions(O);
-		if (!status) {
-			return false;
-		}
-		if (!$gOPN) {
-			throw new $SyntaxError('SetIntegrityLevel requires native `Object.getOwnPropertyNames` support');
-		}
-		var theKeys = $gOPN(O);
-		var ES = this;
-		if (level === 'sealed') {
-			forEach(theKeys, function (k) {
-				ES.DefinePropertyOrThrow(O, k, { configurable: false });
-			});
-		} else if (level === 'frozen') {
-			forEach(theKeys, function (k) {
-				var currentDesc = $gOPD(O, k);
-				if (typeof currentDesc !== 'undefined') {
-					var desc;
-					if (ES.IsAccessorDescriptor(ES.ToPropertyDescriptor(currentDesc))) {
-						desc = { configurable: false };
-					} else {
-						desc = { configurable: false, writable: false };
-					}
-					ES.DefinePropertyOrThrow(O, k, desc);
-				}
-			});
-		}
-		return true;
-	},
-
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-testintegritylevel
-	TestIntegrityLevel: function TestIntegrityLevel(O, level) {
-		if (this.Type(O) !== 'Object') {
-			throw new $TypeError('Assertion failed: Type(O) is not Object');
-		}
-		if (level !== 'sealed' && level !== 'frozen') {
-			throw new $TypeError('Assertion failed: `level` must be `"sealed"` or `"frozen"`');
-		}
-		var status = this.IsExtensible(O);
-		if (status) {
-			return false;
-		}
-		var theKeys = $gOPN(O);
-		var ES = this;
-		return theKeys.length === 0 || every(theKeys, function (k) {
-			var currentDesc = $gOPD(O, k);
-			if (typeof currentDesc !== 'undefined') {
-				if (currentDesc.configurable) {
-					return false;
-				}
-				if (level === 'frozen' && ES.IsDataDescriptor(ES.ToPropertyDescriptor(currentDesc)) && currentDesc.writable) {
-					return false;
-				}
-			}
-			return true;
-		});
-	},
-
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-ordinaryhasinstance
-	OrdinaryHasInstance: function OrdinaryHasInstance(C, O) {
-		if (this.IsCallable(C) === false) {
-			return false;
-		}
-		if (this.Type(O) !== 'Object') {
-			return false;
-		}
-		var P = this.Get(C, 'prototype');
-		if (this.Type(P) !== 'Object') {
-			throw new $TypeError('OrdinaryHasInstance called on an object with an invalid prototype property.');
-		}
-		return O instanceof C;
-	},
-
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-ordinaryhasproperty
-	OrdinaryHasProperty: function OrdinaryHasProperty(O, P) {
-		if (this.Type(O) !== 'Object') {
-			throw new $TypeError('Assertion failed: Type(O) is not Object');
-		}
-		if (!this.IsPropertyKey(P)) {
-			throw new $TypeError('Assertion failed: P must be a Property Key');
-		}
-		return P in O;
-	},
-
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-instanceofoperator
-	InstanceofOperator: function InstanceofOperator(O, C) {
-		if (this.Type(O) !== 'Object') {
-			throw new $TypeError('Assertion failed: Type(O) is not Object');
-		}
-		var instOfHandler = hasSymbols && $Symbol.hasInstance ? this.GetMethod(C, $Symbol.hasInstance) : void 0;
-		if (typeof instOfHandler !== 'undefined') {
-			return this.ToBoolean(this.Call(instOfHandler, C, [O]));
-		}
-		if (!this.IsCallable(C)) {
-			throw new $TypeError('`C` is not Callable');
-		}
-		return this.OrdinaryHasInstance(C, O);
-	},
-
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-ispromise
-	IsPromise: function IsPromise(x) {
-		if (this.Type(x) !== 'Object') {
-			return false;
-		}
-		if (!$PromiseThen) { // Promises are not supported
-			return false;
-		}
-		try {
-			$PromiseThen(x); // throws if not a promise
-		} catch (e) {
-			return false;
-		}
-		return true;
-	},
-
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-abstract-equality-comparison
-	'Abstract Equality Comparison': function AbstractEqualityComparison(x, y) {
-		var xType = this.Type(x);
-		var yType = this.Type(y);
-		if (xType === yType) {
-			return x === y; // ES6+ specified this shortcut anyways.
-		}
-		if (x == null && y == null) {
-			return true;
-		}
-		if (xType === 'Number' && yType === 'String') {
-			return this['Abstract Equality Comparison'](x, this.ToNumber(y));
-		}
-		if (xType === 'String' && yType === 'Number') {
-			return this['Abstract Equality Comparison'](this.ToNumber(x), y);
-		}
-		if (xType === 'Boolean') {
-			return this['Abstract Equality Comparison'](this.ToNumber(x), y);
-		}
-		if (yType === 'Boolean') {
-			return this['Abstract Equality Comparison'](x, this.ToNumber(y));
-		}
-		if ((xType === 'String' || xType === 'Number' || xType === 'Symbol') && yType === 'Object') {
-			return this['Abstract Equality Comparison'](x, this.ToPrimitive(y));
-		}
-		if (xType === 'Object' && (yType === 'String' || yType === 'Number' || yType === 'Symbol')) {
-			return this['Abstract Equality Comparison'](this.ToPrimitive(x), y);
-		}
-		return false;
-	},
-
-	// eslint-disable-next-line max-lines-per-function, max-statements, id-length, max-params
-	ValidateAndApplyPropertyDescriptor: function ValidateAndApplyPropertyDescriptor(O, P, extensible, Desc, current) {
-		// this uses the ES2017+ logic, since it fixes a number of bugs in the ES2015 logic.
-		var oType = this.Type(O);
-		if (oType !== 'Undefined' && oType !== 'Object') {
-			throw new $TypeError('Assertion failed: O must be undefined or an Object');
-		}
-		if (this.Type(extensible) !== 'Boolean') {
-			throw new $TypeError('Assertion failed: extensible must be a Boolean');
-		}
-		if (!isPropertyDescriptor(this, Desc)) {
-			throw new $TypeError('Assertion failed: Desc must be a Property Descriptor');
-		}
-		if (this.Type(current) !== 'Undefined' && !isPropertyDescriptor(this, current)) {
-			throw new $TypeError('Assertion failed: current must be a Property Descriptor, or undefined');
-		}
-		if (oType !== 'Undefined' && !this.IsPropertyKey(P)) {
-			throw new $TypeError('Assertion failed: if O is not undefined, P must be a Property Key');
-		}
-		if (this.Type(current) === 'Undefined') {
-			if (!extensible) {
-				return false;
-			}
-			if (this.IsGenericDescriptor(Desc) || this.IsDataDescriptor(Desc)) {
-				if (oType !== 'Undefined') {
-					DefineOwnProperty(this, O, P, {
-						'[[Configurable]]': Desc['[[Configurable]]'],
-						'[[Enumerable]]': Desc['[[Enumerable]]'],
-						'[[Value]]': Desc['[[Value]]'],
-						'[[Writable]]': Desc['[[Writable]]']
-					});
-				}
-			} else {
-				if (!this.IsAccessorDescriptor(Desc)) {
-					throw new $TypeError('Assertion failed: Desc is not an accessor descriptor');
-				}
-				if (oType !== 'Undefined') {
-					return DefineOwnProperty(this, O, P, Desc);
-				}
-			}
-			return true;
-		}
-		if (this.IsGenericDescriptor(Desc) && !('[[Configurable]]' in Desc) && !('[[Enumerable]]' in Desc)) {
-			return true;
-		}
-		if (isSamePropertyDescriptor(this, Desc, current)) {
-			return true; // removed by ES2017, but should still be correct
-		}
-		// "if every field in Desc is absent, return true" can't really match the assertion that it's a Property Descriptor
-		if (!current['[[Configurable]]']) {
-			if (Desc['[[Configurable]]']) {
-				return false;
-			}
-			if ('[[Enumerable]]' in Desc && !Desc['[[Enumerable]]'] === !!current['[[Enumerable]]']) {
-				return false;
-			}
-		}
-		if (this.IsGenericDescriptor(Desc)) {
-			// no further validation is required.
-		} else if (this.IsDataDescriptor(current) !== this.IsDataDescriptor(Desc)) {
-			if (!current['[[Configurable]]']) {
-				return false;
-			}
-			if (this.IsDataDescriptor(current)) {
-				if (oType !== 'Undefined') {
-					DefineOwnProperty(this, O, P, {
-						'[[Configurable]]': current['[[Configurable]]'],
-						'[[Enumerable]]': current['[[Enumerable]]'],
-						'[[Get]]': undefined
-					});
-				}
-			} else if (oType !== 'Undefined') {
-				DefineOwnProperty(this, O, P, {
-					'[[Configurable]]': current['[[Configurable]]'],
-					'[[Enumerable]]': current['[[Enumerable]]'],
-					'[[Value]]': undefined
-				});
-			}
-		} else if (this.IsDataDescriptor(current) && this.IsDataDescriptor(Desc)) {
-			if (!current['[[Configurable]]'] && !current['[[Writable]]']) {
-				if ('[[Writable]]' in Desc && Desc['[[Writable]]']) {
-					return false;
-				}
-				if ('[[Value]]' in Desc && !this.SameValue(Desc['[[Value]]'], current['[[Value]]'])) {
-					return false;
-				}
-				return true;
-			}
-		} else if (this.IsAccessorDescriptor(current) && this.IsAccessorDescriptor(Desc)) {
-			if (!current['[[Configurable]]']) {
-				if ('[[Set]]' in Desc && !this.SameValue(Desc['[[Set]]'], current['[[Set]]'])) {
-					return false;
-				}
-				if ('[[Get]]' in Desc && !this.SameValue(Desc['[[Get]]'], current['[[Get]]'])) {
-					return false;
-				}
-				return true;
-			}
-		} else {
-			throw new $TypeError('Assertion failed: current and Desc are not both data, both accessors, or one accessor and one data.');
-		}
-		if (oType !== 'Undefined') {
-			return DefineOwnProperty(this, O, P, Desc);
-		}
-		return true;
-	},
-
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-ordinarydefineownproperty
-	OrdinaryDefineOwnProperty: function OrdinaryDefineOwnProperty(O, P, Desc) {
-		if (this.Type(O) !== 'Object') {
-			throw new $TypeError('Assertion failed: O must be an Object');
-		}
-		if (!this.IsPropertyKey(P)) {
-			throw new $TypeError('Assertion failed: P must be a Property Key');
-		}
-		if (!isPropertyDescriptor(this, Desc)) {
-			throw new $TypeError('Assertion failed: Desc must be a Property Descriptor');
-		}
-		var desc = $gOPD(O, P);
-		var current = desc && this.ToPropertyDescriptor(desc);
-		var extensible = this.IsExtensible(O);
-		return this.ValidateAndApplyPropertyDescriptor(O, P, extensible, Desc, current);
-	},
-
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-ordinarygetownproperty
-	OrdinaryGetOwnProperty: function OrdinaryGetOwnProperty(O, P) {
-		if (this.Type(O) !== 'Object') {
-			throw new $TypeError('Assertion failed: O must be an Object');
-		}
-		if (!this.IsPropertyKey(P)) {
-			throw new $TypeError('Assertion failed: P must be a Property Key');
-		}
-		if (!has(O, P)) {
-			return void 0;
-		}
-		if (!$gOPD) {
-			// ES3 fallback
-			var arrayLength = this.IsArray(O) && P === 'length';
-			var regexLastIndex = this.IsRegExp(O) && P === 'lastIndex';
-			return {
-				'[[Configurable]]': !(arrayLength || regexLastIndex),
-				'[[Enumerable]]': $isEnumerable(O, P),
-				'[[Value]]': O[P],
-				'[[Writable]]': true
-			};
-		}
-		return this.ToPropertyDescriptor($gOPD(O, P));
-	},
-
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-arraycreate
-	ArrayCreate: function ArrayCreate(length) {
-		if (!this.IsInteger(length) || length < 0) {
-			throw new $TypeError('Assertion failed: `length` must be an integer Number >= 0');
-		}
-		if (length > MAX_ARRAY_LENGTH) {
-			throw new $RangeError('length is greater than (2**32 - 1)');
-		}
-		var proto = arguments.length > 1 ? arguments[1] : $ArrayPrototype;
-		var A = []; // steps 5 - 7, and 9
-		if (proto !== $ArrayPrototype) { // step 8
-			if (!$setProto) {
-				throw new $SyntaxError('ArrayCreate: a `proto` argument that is not `Array.prototype` is not supported in an environment that does not support setting the [[Prototype]]');
-			}
-			$setProto(A, proto);
-		}
-		if (length !== 0) { // bypasses the need for step 2
-			A.length = length;
-		}
-		/* step 10, the above as a shortcut for the below
-		this.OrdinaryDefineOwnProperty(A, 'length', {
-			'[[Configurable]]': false,
-			'[[Enumerable]]': false,
-			'[[Value]]': length,
-			'[[Writable]]': true
-		});
-		*/
-		return A;
-	},
-
-	// eslint-disable-next-line max-statements, max-lines-per-function
-	ArraySetLength: function ArraySetLength(A, Desc) {
-		if (!this.IsArray(A)) {
-			throw new $TypeError('Assertion failed: A must be an Array');
-		}
-		if (!isPropertyDescriptor(this, Desc)) {
-			throw new $TypeError('Assertion failed: Desc must be a Property Descriptor');
-		}
-		if (!('[[Value]]' in Desc)) {
-			return this.OrdinaryDefineOwnProperty(A, 'length', Desc);
-		}
-		var newLenDesc = assign({}, Desc);
-		var newLen = this.ToUint32(Desc['[[Value]]']);
-		var numberLen = this.ToNumber(Desc['[[Value]]']);
-		if (newLen !== numberLen) {
-			throw new $RangeError('Invalid array length');
-		}
-		newLenDesc['[[Value]]'] = newLen;
-		var oldLenDesc = this.OrdinaryGetOwnProperty(A, 'length');
-		if (!this.IsDataDescriptor(oldLenDesc)) {
-			throw new $TypeError('Assertion failed: an array had a non-data descriptor on `length`');
-		}
-		var oldLen = oldLenDesc['[[Value]]'];
-		if (newLen >= oldLen) {
-			return this.OrdinaryDefineOwnProperty(A, 'length', newLenDesc);
-		}
-		if (!oldLenDesc['[[Writable]]']) {
-			return false;
-		}
-		var newWritable;
-		if (!('[[Writable]]' in newLenDesc) || newLenDesc['[[Writable]]']) {
-			newWritable = true;
-		} else {
-			newWritable = false;
-			newLenDesc['[[Writable]]'] = true;
-		}
-		var succeeded = this.OrdinaryDefineOwnProperty(A, 'length', newLenDesc);
-		if (!succeeded) {
-			return false;
-		}
-		while (newLen < oldLen) {
-			oldLen -= 1;
-			var deleteSucceeded = delete A[this.ToString(oldLen)];
-			if (!deleteSucceeded) {
-				newLenDesc['[[Value]]'] = oldLen + 1;
-				if (!newWritable) {
-					newLenDesc['[[Writable]]'] = false;
-					this.OrdinaryDefineOwnProperty(A, 'length', newLenDesc);
-					return false;
-				}
-			}
-		}
-		if (!newWritable) {
-			return this.OrdinaryDefineOwnProperty(A, 'length', { '[[Writable]]': false });
-		}
-		return true;
-	},
-
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-createhtml
-	CreateHTML: function CreateHTML(string, tag, attribute, value) {
-		if (this.Type(tag) !== 'String' || this.Type(attribute) !== 'String') {
-			throw new $TypeError('Assertion failed: `tag` and `attribute` must be strings');
-		}
-		var str = this.RequireObjectCoercible(string);
-		var S = this.ToString(str);
-		var p1 = '<' + tag;
-		if (attribute !== '') {
-			var V = this.ToString(value);
-			var escapedV = $replace(V, /\x22/g, '&quot;');
-			p1 += '\x20' + attribute + '\x3D\x22' + escapedV + '\x22';
-		}
-		return p1 + '>' + S + '</' + tag + '>';
-	},
-
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-getownpropertykeys
-	GetOwnPropertyKeys: function GetOwnPropertyKeys(O, Type) {
-		if (this.Type(O) !== 'Object') {
-			throw new $TypeError('Assertion failed: Type(O) is not Object');
-		}
-		if (Type === 'Symbol') {
-			return hasSymbols && $gOPS ? $gOPS(O) : [];
-		}
-		if (Type === 'String') {
-			if (!$gOPN) {
-				return keys(O);
-			}
-			return $gOPN(O);
-		}
-		throw new $TypeError('Assertion failed: `Type` must be `"String"` or `"Symbol"`');
-	},
-
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-symboldescriptivestring
-	SymbolDescriptiveString: function SymbolDescriptiveString(sym) {
-		if (this.Type(sym) !== 'Symbol') {
-			throw new $TypeError('Assertion failed: `sym` must be a Symbol');
-		}
-		return $SymbolToString(sym);
-	},
-
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-getsubstitution
-	// eslint-disable-next-line max-statements, max-params, max-lines-per-function
-	GetSubstitution: function GetSubstitution(matched, str, position, captures, replacement) {
-		if (this.Type(matched) !== 'String') {
-			throw new $TypeError('Assertion failed: `matched` must be a String');
-		}
-		var matchLength = matched.length;
-
-		if (this.Type(str) !== 'String') {
-			throw new $TypeError('Assertion failed: `str` must be a String');
-		}
-		var stringLength = str.length;
-
-		if (!this.IsInteger(position) || position < 0 || position > stringLength) {
-			throw new $TypeError('Assertion failed: `position` must be a nonnegative integer, and less than or equal to the length of `string`, got ' + inspect(position));
-		}
-
-		var ES = this;
-		var isStringOrHole = function (capture, index, arr) { return ES.Type(capture) === 'String' || !(index in arr); };
-		if (!this.IsArray(captures) || !every(captures, isStringOrHole)) {
-			throw new $TypeError('Assertion failed: `captures` must be a List of Strings, got ' + inspect(captures));
-		}
-
-		if (this.Type(replacement) !== 'String') {
-			throw new $TypeError('Assertion failed: `replacement` must be a String');
-		}
-
-		var tailPos = position + matchLength;
-		var m = captures.length;
-
-		var result = '';
-		for (var i = 0; i < replacement.length; i += 1) {
-			// if this is a $, and it's not the end of the replacement
-			var current = replacement[i];
-			var isLast = (i + 1) >= replacement.length;
-			var nextIsLast = (i + 2) >= replacement.length;
-			if (current === '$' && !isLast) {
-				var next = replacement[i + 1];
-				if (next === '$') {
-					result += '$';
-					i += 1;
-				} else if (next === '&') {
-					result += matched;
-					i += 1;
-				} else if (next === '`') {
-					result += position === 0 ? '' : strSlice(str, 0, position - 1);
-					i += 1;
-				} else if (next === "'") {
-					result += tailPos >= stringLength ? '' : strSlice(str, tailPos);
-					i += 1;
-				} else {
-					var nextNext = nextIsLast ? null : replacement[i + 2];
-					if (isDigit(next) && next !== '0' && (nextIsLast || !isDigit(nextNext))) {
-						// $1 through $9, and not followed by a digit
-						var n = parseInteger(next, 10);
-						// if (n > m, impl-defined)
-						result += (n <= m && this.Type(captures[n - 1]) === 'Undefined') ? '' : captures[n - 1];
-						i += 1;
-					} else if (isDigit(next) && (nextIsLast || isDigit(nextNext))) {
-						// $00 through $99
-						var nn = next + nextNext;
-						var nnI = parseInteger(nn, 10) - 1;
-						// if nn === '00' or nn > m, impl-defined
-						result += (nn <= m && this.Type(captures[nnI]) === 'Undefined') ? '' : captures[nnI];
-						i += 2;
-					} else {
-						result += '$';
-					}
-				}
-			} else {
-				// the final $, or else not a $
-				result += replacement[i];
-			}
-		}
-		return result;
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-todatestring
-	ToDateString: function ToDateString(tv) {
-		if (this.Type(tv) !== 'Number') {
-			throw new $TypeError('Assertion failed: `tv` must be a Number');
-		}
-		if ($isNaN(tv)) {
-			return 'Invalid Date';
-		}
-		return $Date(tv);
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-createlistfromarraylike
-	CreateListFromArrayLike: function CreateListFromArrayLike(obj) {
-		var elementTypes = arguments.length > 1
-			? arguments[1]
-			: ['Undefined', 'Null', 'Boolean', 'String', 'Symbol', 'Number', 'Object'];
-
-		if (this.Type(obj) !== 'Object') {
-			throw new $TypeError('Assertion failed: `obj` must be an Object');
-		}
-		if (!this.IsArray(elementTypes)) {
-			throw new $TypeError('Assertion failed: `elementTypes`, if provided, must be an array');
-		}
-		var len = this.ToLength(this.Get(obj, 'length'));
-		var list = [];
-		var index = 0;
-		while (index < len) {
-			var indexName = this.ToString(index);
-			var next = this.Get(obj, indexName);
-			var nextType = this.Type(next);
-			if ($indexOf(elementTypes, nextType) < 0) {
-				throw new $TypeError('item type ' + nextType + ' is not a valid elementType');
-			}
-			$push(list, next);
-			index += 1;
-		}
-		return list;
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-getprototypefromconstructor
-	GetPrototypeFromConstructor: function GetPrototypeFromConstructor(constructor, intrinsicDefaultProto) {
-		var intrinsic = GetIntrinsic(intrinsicDefaultProto); // throws if not a valid intrinsic
-		if (!this.IsConstructor(constructor)) {
-			throw new $TypeError('Assertion failed: `constructor` must be a constructor');
-		}
-		var proto = this.Get(constructor, 'prototype');
-		if (this.Type(proto) !== 'Object') {
-			if (!(constructor instanceof $Function)) {
-				// ignore other realms, for now
-				throw new $TypeError('cross-realm constructors not currently supported');
-			}
-			proto = intrinsic;
-		}
-		return proto;
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-setfunctionname
-	SetFunctionName: function SetFunctionName(F, name) {
-		if (typeof F !== 'function') {
-			throw new $TypeError('Assertion failed: `F` must be a function');
-		}
-		if (!this.IsExtensible(F) || has(F, 'name')) {
-			throw new $TypeError('Assertion failed: `F` must be extensible, and must not have a `name` own property');
-		}
-		var nameType = this.Type(name);
-		if (nameType !== 'Symbol' && nameType !== 'String') {
-			throw new $TypeError('Assertion failed: `name` must be a Symbol or a String');
-		}
-		if (nameType === 'Symbol') {
-			var description = getSymbolDescription(name);
-			// eslint-disable-next-line no-param-reassign
-			name = typeof description === 'undefined' ? '' : '[' + description + ']';
-		}
-		if (arguments.length > 2) {
-			var prefix = arguments[2];
-			// eslint-disable-next-line no-param-reassign
-			name = prefix + ' ' + name;
-		}
-		return this.DefinePropertyOrThrow(F, 'name', {
-			'[[Value]]': name,
-			'[[Writable]]': false,
-			'[[Enumerable]]': false,
-			'[[Configurable]]': true
-		});
-	}
-});
-
-delete ES6.CheckObjectCoercible; // renamed in ES6 to RequireObjectCoercible
-
-module.exports = ES6;
 
 
 /***/ }),
@@ -2769,6 +1393,35 @@ function addEventListener(target, eventName, listener, options) {
 
 /***/ }),
 
+/***/ "1l3A":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var GetIntrinsic = __webpack_require__("6ayh");
+
+var $Math = GetIntrinsic('%Math%');
+
+var $floor = $Math.floor;
+var $abs = $Math.abs;
+
+var $isNaN = __webpack_require__("IFfy");
+var $isFinite = __webpack_require__("xhJ2");
+
+// https://www.ecma-international.org/ecma-262/6.0/#sec-isinteger
+
+module.exports = function IsInteger(argument) {
+	if (typeof argument !== 'number' || $isNaN(argument) || !$isFinite(argument)) {
+		return false;
+	}
+	var abs = $abs(argument);
+	return $floor(abs) === abs;
+};
+
+
+/***/ }),
+
 /***/ "1seS":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2805,6 +1458,33 @@ keysShim.shim = function shimObjectKeys() {
 };
 
 module.exports = keysShim;
+
+
+/***/ }),
+
+/***/ "1u+m":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var numberIsNaN = function (value) {
+	return value !== value;
+};
+
+module.exports = function is(a, b) {
+	if (a === 0 && b === 0) {
+		return 1 / a === 1 / b;
+	}
+	if (a === b) {
+		return true;
+	}
+	if (numberIsNaN(a) && numberIsNaN(b)) {
+		return true;
+	}
+	return false;
+};
+
 
 
 /***/ }),
@@ -2892,49 +1572,106 @@ module.exports = _interopRequireWildcard;
 
 /***/ }),
 
+/***/ "2GRh":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var GetIntrinsic = __webpack_require__("6ayh");
+
+var $TypeError = GetIntrinsic('%TypeError%');
+
+var inspect = __webpack_require__("JxQ3");
+
+var IsPropertyKey = __webpack_require__("rCmP");
+var Type = __webpack_require__("RIFg");
+
+/**
+ * 7.3.1 Get (O, P) - https://ecma-international.org/ecma-262/6.0/#sec-get-o-p
+ * 1. Assert: Type(O) is Object.
+ * 2. Assert: IsPropertyKey(P) is true.
+ * 3. Return O.[[Get]](P, O).
+ */
+
+module.exports = function Get(O, P) {
+	// 7.3.1.1
+	if (Type(O) !== 'Object') {
+		throw new $TypeError('Assertion failed: Type(O) is not Object');
+	}
+	// 7.3.1.2
+	if (!IsPropertyKey(P)) {
+		throw new $TypeError('Assertion failed: IsPropertyKey(P) is not true, got ' + inspect(P));
+	}
+	// 7.3.1.3
+	return O[P];
+};
+
+
+/***/ }),
+
 /***/ "2Nju":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var has = __webpack_require__("oNNP");
-var regexExec = RegExp.prototype.exec;
-var gOPD = Object.getOwnPropertyDescriptor;
+var hasSymbols = __webpack_require__("UVaH")();
+var hasToStringTag = hasSymbols && typeof Symbol.toStringTag === 'symbol';
+var hasOwnProperty;
+var regexExec;
+var isRegexMarker;
+var badStringifier;
 
-var tryRegexExecCall = function tryRegexExec(value) {
-	try {
-		var lastIndex = value.lastIndex;
-		value.lastIndex = 0;
+if (hasToStringTag) {
+	hasOwnProperty = Function.call.bind(Object.prototype.hasOwnProperty);
+	regexExec = Function.call.bind(RegExp.prototype.exec);
+	isRegexMarker = {};
 
-		regexExec.call(value);
-		return true;
-	} catch (e) {
-		return false;
-	} finally {
-		value.lastIndex = lastIndex;
+	var throwRegexMarker = function () {
+		throw isRegexMarker;
+	};
+	badStringifier = {
+		toString: throwRegexMarker,
+		valueOf: throwRegexMarker
+	};
+
+	if (typeof Symbol.toPrimitive === 'symbol') {
+		badStringifier[Symbol.toPrimitive] = throwRegexMarker;
 	}
-};
+}
+
 var toStr = Object.prototype.toString;
+var gOPD = Object.getOwnPropertyDescriptor;
 var regexClass = '[object RegExp]';
-var hasToStringTag = typeof Symbol === 'function' && typeof Symbol.toStringTag === 'symbol';
 
-module.exports = function isRegex(value) {
-	if (!value || typeof value !== 'object') {
-		return false;
+module.exports = hasToStringTag
+	// eslint-disable-next-line consistent-return
+	? function isRegex(value) {
+		if (!value || typeof value !== 'object') {
+			return false;
+		}
+
+		var descriptor = gOPD(value, 'lastIndex');
+		var hasLastIndexDataProperty = descriptor && hasOwnProperty(descriptor, 'value');
+		if (!hasLastIndexDataProperty) {
+			return false;
+		}
+
+		try {
+			regexExec(value, badStringifier);
+		} catch (e) {
+			return e === isRegexMarker;
+		}
 	}
-	if (!hasToStringTag) {
+	: function isRegex(value) {
+		// In older browsers, typeof regex incorrectly returns 'function'
+		if (!value || (typeof value !== 'object' && typeof value !== 'function')) {
+			return false;
+		}
+
 		return toStr.call(value) === regexClass;
-	}
-
-	var descriptor = gOPD(value, 'lastIndex');
-	var hasLastIndexDataProperty = descriptor && has(descriptor, 'value');
-	if (!hasLastIndexDataProperty) {
-		return false;
-	}
-
-	return tryRegexExecCall(value);
-};
+	};
 
 
 /***/ }),
@@ -3084,112 +1821,6 @@ function noflip(value) {
 
 /***/ }),
 
-/***/ "2gq3":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var ES2015 = __webpack_require__("1RUG");
-var GetIntrinsic = __webpack_require__("6ayh");
-var assign = __webpack_require__("DGeY");
-var $setProto = __webpack_require__("M1+t");
-
-var callBound = __webpack_require__("Khql");
-var getIteratorMethod = __webpack_require__("UsSR");
-
-var $TypeError = GetIntrinsic('%TypeError%');
-var $arrayPush = callBound('Array.prototype.push');
-var $getProto = __webpack_require__("0V1h");
-
-var ES2016 = assign(assign({}, ES2015), {
-	// https://www.ecma-international.org/ecma-262/7.0/#sec-samevaluenonnumber
-	SameValueNonNumber: function SameValueNonNumber(x, y) {
-		if (typeof x === 'number' || typeof x !== typeof y) {
-			throw new TypeError('SameValueNonNumber requires two non-number values of the same type.');
-		}
-		return this.SameValue(x, y);
-	},
-
-	// https://www.ecma-international.org/ecma-262/7.0/#sec-iterabletoarraylike
-	IterableToArrayLike: function IterableToArrayLike(items) {
-		var usingIterator = getIteratorMethod(this, items);
-		if (typeof usingIterator !== 'undefined') {
-			var iterator = this.GetIterator(items, usingIterator);
-			var values = [];
-			var next = true;
-			while (next) {
-				next = this.IteratorStep(iterator);
-				if (next) {
-					var nextValue = this.IteratorValue(next);
-					$arrayPush(values, nextValue);
-				}
-			}
-			return values;
-		}
-
-		return this.ToObject(items);
-	},
-
-	// https://ecma-international.org/ecma-262/7.0/#sec-ordinarygetprototypeof
-	OrdinaryGetPrototypeOf: function (O) {
-		if (this.Type(O) !== 'Object') {
-			throw new $TypeError('Assertion failed: O must be an Object');
-		}
-		if (!$getProto) {
-			throw new $TypeError('This environment does not support fetching prototypes.');
-		}
-		return $getProto(O);
-	},
-
-	// https://ecma-international.org/ecma-262/7.0/#sec-ordinarysetprototypeof
-	OrdinarySetPrototypeOf: function (O, V) {
-		if (this.Type(V) !== 'Object' && this.Type(V) !== 'Null') {
-			throw new $TypeError('Assertion failed: V must be Object or Null');
-		}
-		/*
-		var extensible = this.IsExtensible(O);
-		var current = this.OrdinaryGetPrototypeOf(O);
-		if (this.SameValue(V, current)) {
-			return true;
-		}
-		if (!extensible) {
-			return false;
-		}
-		*/
-		try {
-			$setProto(O, V);
-		} catch (e) {
-			return false;
-		}
-		return this.OrdinaryGetPrototypeOf(O) === V;
-		/*
-		var p = V;
-		var done = false;
-		while (!done) {
-			if (p === null) {
-				done = true;
-			} else if (this.SameValue(p, O)) {
-				return false;
-			} else {
-				if (wat) {
-					done = true;
-				} else {
-					p = p.[[Prototype]];
-				}
-			}
-		 }
-		 O.[[Prototype]] = V;
-		 return true;
-		 */
-	}
-});
-
-module.exports = ES2016;
-
-
-/***/ }),
-
 /***/ "2mql":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3241,11 +1872,14 @@ var MEMO_STATICS = {
 };
 var TYPE_STATICS = {};
 TYPE_STATICS[reactIs.ForwardRef] = FORWARD_REF_STATICS;
+TYPE_STATICS[reactIs.Memo] = MEMO_STATICS;
 
 function getStatics(component) {
+  // React v16.11 and below
   if (reactIs.isMemo(component)) {
     return MEMO_STATICS;
-  }
+  } // React v16.12 and above
+
 
   return TYPE_STATICS[component['$$typeof']] || REACT_STATICS;
 }
@@ -3359,6 +1993,45 @@ module.exports = __webpack_require__("50qU");
 
 /***/ }),
 
+/***/ "45zb":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var hasToStringTag = typeof Symbol === 'function' && typeof Symbol.toStringTag === 'symbol';
+var toStr = Object.prototype.toString;
+
+var isStandardArguments = function isArguments(value) {
+	if (hasToStringTag && value && typeof value === 'object' && Symbol.toStringTag in value) {
+		return false;
+	}
+	return toStr.call(value) === '[object Arguments]';
+};
+
+var isLegacyArguments = function isArguments(value) {
+	if (isStandardArguments(value)) {
+		return true;
+	}
+	return value !== null &&
+		typeof value === 'object' &&
+		typeof value.length === 'number' &&
+		value.length >= 0 &&
+		toStr.call(value) !== '[object Array]' &&
+		toStr.call(value.callee) === '[object Function]';
+};
+
+var supportsStandardArguments = (function () {
+	return isStandardArguments(arguments);
+}());
+
+isStandardArguments.isLegacyArguments = isLegacyArguments; // for tests
+
+module.exports = supportsStandardArguments ? isStandardArguments : isLegacyArguments;
+
+
+/***/ }),
+
 /***/ "4CzF":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3424,7 +2097,7 @@ var _constants = __webpack_require__("Fv1B");
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var propTypes =  false ? undefined : {};
 var defaultProps = {
@@ -4356,6 +3029,32 @@ module.exports = __webpack_require__("Fv1B");
 
 /***/ }),
 
+/***/ "5xAX":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var define = __webpack_require__("82c2");
+var callBind = __webpack_require__("RLeF");
+
+var implementation = __webpack_require__("VwiP");
+var getPolyfill = __webpack_require__("V+xs");
+var shim = __webpack_require__("HH6Z");
+
+var flagsBound = callBind(implementation);
+
+define(flagsBound, {
+	getPolyfill: getPolyfill,
+	implementation: implementation,
+	shim: shim
+});
+
+module.exports = flagsBound;
+
+
+/***/ }),
+
 /***/ "5yQQ":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4370,7 +3069,11 @@ module.exports = function getPolyfill() {
 			return document.contains;
 		}
 		if (document.body && document.body.contains) {
-			return document.body.contains;
+			try {
+				if (typeof document.body.contains.call(document, '') === 'boolean') {
+					return document.body.contains;
+				}
+			} catch (e) { /**/ }
 		}
 	}
 	return implementation;
@@ -4414,13 +3117,36 @@ function isNextMonth(a, b) {
 	SharedArrayBuffer,
 */
 
-var undefined; // eslint-disable-line no-shadow-restricted-names
+var undefined;
 
 var $TypeError = TypeError;
 
-var ThrowTypeError = Object.getOwnPropertyDescriptor
-	? (function () { return Object.getOwnPropertyDescriptor(arguments, 'callee').get; }())
-	: function () { throw new $TypeError(); };
+var $gOPD = Object.getOwnPropertyDescriptor;
+if ($gOPD) {
+	try {
+		$gOPD({}, '');
+	} catch (e) {
+		$gOPD = null; // this is IE 8, which has a broken gOPD
+	}
+}
+
+var throwTypeError = function () { throw new $TypeError(); };
+var ThrowTypeError = $gOPD
+	? (function () {
+		try {
+			// eslint-disable-next-line no-unused-expressions, no-caller, no-restricted-properties
+			arguments.callee; // IE 8 does not throw here
+			return throwTypeError;
+		} catch (calleeThrows) {
+			try {
+				// IE 8 throws on Object.getOwnPropertyDescriptor(arguments, '')
+				return $gOPD(arguments, 'callee').get;
+			} catch (gOPDthrows) {
+				return throwTypeError;
+			}
+		}
+	}())
+	: throwTypeError;
 
 var hasSymbols = __webpack_require__("UVaH")();
 
@@ -4437,115 +3163,115 @@ var asyncGenIterator = asyncGen ? asyncGen() : undefined;
 var TypedArray = typeof Uint8Array === 'undefined' ? undefined : getProto(Uint8Array);
 
 var INTRINSICS = {
-	'$ %Array%': Array,
-	'$ %ArrayBuffer%': typeof ArrayBuffer === 'undefined' ? undefined : ArrayBuffer,
-	'$ %ArrayBufferPrototype%': typeof ArrayBuffer === 'undefined' ? undefined : ArrayBuffer.prototype,
-	'$ %ArrayIteratorPrototype%': hasSymbols ? getProto([][Symbol.iterator]()) : undefined,
-	'$ %ArrayPrototype%': Array.prototype,
-	'$ %ArrayProto_entries%': Array.prototype.entries,
-	'$ %ArrayProto_forEach%': Array.prototype.forEach,
-	'$ %ArrayProto_keys%': Array.prototype.keys,
-	'$ %ArrayProto_values%': Array.prototype.values,
-	'$ %AsyncFromSyncIteratorPrototype%': undefined,
-	'$ %AsyncFunction%': asyncFunction,
-	'$ %AsyncFunctionPrototype%': asyncFunction ? asyncFunction.prototype : undefined,
-	'$ %AsyncGenerator%': asyncGen ? getProto(asyncGenIterator) : undefined,
-	'$ %AsyncGeneratorFunction%': asyncGenFunction,
-	'$ %AsyncGeneratorPrototype%': asyncGenFunction ? asyncGenFunction.prototype : undefined,
-	'$ %AsyncIteratorPrototype%': asyncGenIterator && hasSymbols && Symbol.asyncIterator ? asyncGenIterator[Symbol.asyncIterator]() : undefined,
-	'$ %Atomics%': typeof Atomics === 'undefined' ? undefined : Atomics,
-	'$ %Boolean%': Boolean,
-	'$ %BooleanPrototype%': Boolean.prototype,
-	'$ %DataView%': typeof DataView === 'undefined' ? undefined : DataView,
-	'$ %DataViewPrototype%': typeof DataView === 'undefined' ? undefined : DataView.prototype,
-	'$ %Date%': Date,
-	'$ %DatePrototype%': Date.prototype,
-	'$ %decodeURI%': decodeURI,
-	'$ %decodeURIComponent%': decodeURIComponent,
-	'$ %encodeURI%': encodeURI,
-	'$ %encodeURIComponent%': encodeURIComponent,
-	'$ %Error%': Error,
-	'$ %ErrorPrototype%': Error.prototype,
-	'$ %eval%': eval, // eslint-disable-line no-eval
-	'$ %EvalError%': EvalError,
-	'$ %EvalErrorPrototype%': EvalError.prototype,
-	'$ %Float32Array%': typeof Float32Array === 'undefined' ? undefined : Float32Array,
-	'$ %Float32ArrayPrototype%': typeof Float32Array === 'undefined' ? undefined : Float32Array.prototype,
-	'$ %Float64Array%': typeof Float64Array === 'undefined' ? undefined : Float64Array,
-	'$ %Float64ArrayPrototype%': typeof Float64Array === 'undefined' ? undefined : Float64Array.prototype,
-	'$ %Function%': Function,
-	'$ %FunctionPrototype%': Function.prototype,
-	'$ %Generator%': generator ? getProto(generator()) : undefined,
-	'$ %GeneratorFunction%': generatorFunction,
-	'$ %GeneratorPrototype%': generatorFunction ? generatorFunction.prototype : undefined,
-	'$ %Int8Array%': typeof Int8Array === 'undefined' ? undefined : Int8Array,
-	'$ %Int8ArrayPrototype%': typeof Int8Array === 'undefined' ? undefined : Int8Array.prototype,
-	'$ %Int16Array%': typeof Int16Array === 'undefined' ? undefined : Int16Array,
-	'$ %Int16ArrayPrototype%': typeof Int16Array === 'undefined' ? undefined : Int8Array.prototype,
-	'$ %Int32Array%': typeof Int32Array === 'undefined' ? undefined : Int32Array,
-	'$ %Int32ArrayPrototype%': typeof Int32Array === 'undefined' ? undefined : Int32Array.prototype,
-	'$ %isFinite%': isFinite,
-	'$ %isNaN%': isNaN,
-	'$ %IteratorPrototype%': hasSymbols ? getProto(getProto([][Symbol.iterator]())) : undefined,
-	'$ %JSON%': JSON,
-	'$ %JSONParse%': JSON.parse,
-	'$ %Map%': typeof Map === 'undefined' ? undefined : Map,
-	'$ %MapIteratorPrototype%': typeof Map === 'undefined' || !hasSymbols ? undefined : getProto(new Map()[Symbol.iterator]()),
-	'$ %MapPrototype%': typeof Map === 'undefined' ? undefined : Map.prototype,
-	'$ %Math%': Math,
-	'$ %Number%': Number,
-	'$ %NumberPrototype%': Number.prototype,
-	'$ %Object%': Object,
-	'$ %ObjectPrototype%': Object.prototype,
-	'$ %ObjProto_toString%': Object.prototype.toString,
-	'$ %ObjProto_valueOf%': Object.prototype.valueOf,
-	'$ %parseFloat%': parseFloat,
-	'$ %parseInt%': parseInt,
-	'$ %Promise%': typeof Promise === 'undefined' ? undefined : Promise,
-	'$ %PromisePrototype%': typeof Promise === 'undefined' ? undefined : Promise.prototype,
-	'$ %PromiseProto_then%': typeof Promise === 'undefined' ? undefined : Promise.prototype.then,
-	'$ %Promise_all%': typeof Promise === 'undefined' ? undefined : Promise.all,
-	'$ %Promise_reject%': typeof Promise === 'undefined' ? undefined : Promise.reject,
-	'$ %Promise_resolve%': typeof Promise === 'undefined' ? undefined : Promise.resolve,
-	'$ %Proxy%': typeof Proxy === 'undefined' ? undefined : Proxy,
-	'$ %RangeError%': RangeError,
-	'$ %RangeErrorPrototype%': RangeError.prototype,
-	'$ %ReferenceError%': ReferenceError,
-	'$ %ReferenceErrorPrototype%': ReferenceError.prototype,
-	'$ %Reflect%': typeof Reflect === 'undefined' ? undefined : Reflect,
-	'$ %RegExp%': RegExp,
-	'$ %RegExpPrototype%': RegExp.prototype,
-	'$ %Set%': typeof Set === 'undefined' ? undefined : Set,
-	'$ %SetIteratorPrototype%': typeof Set === 'undefined' || !hasSymbols ? undefined : getProto(new Set()[Symbol.iterator]()),
-	'$ %SetPrototype%': typeof Set === 'undefined' ? undefined : Set.prototype,
-	'$ %SharedArrayBuffer%': typeof SharedArrayBuffer === 'undefined' ? undefined : SharedArrayBuffer,
-	'$ %SharedArrayBufferPrototype%': typeof SharedArrayBuffer === 'undefined' ? undefined : SharedArrayBuffer.prototype,
-	'$ %String%': String,
-	'$ %StringIteratorPrototype%': hasSymbols ? getProto(''[Symbol.iterator]()) : undefined,
-	'$ %StringPrototype%': String.prototype,
-	'$ %Symbol%': hasSymbols ? Symbol : undefined,
-	'$ %SymbolPrototype%': hasSymbols ? Symbol.prototype : undefined,
-	'$ %SyntaxError%': SyntaxError,
-	'$ %SyntaxErrorPrototype%': SyntaxError.prototype,
-	'$ %ThrowTypeError%': ThrowTypeError,
-	'$ %TypedArray%': TypedArray,
-	'$ %TypedArrayPrototype%': TypedArray ? TypedArray.prototype : undefined,
-	'$ %TypeError%': $TypeError,
-	'$ %TypeErrorPrototype%': $TypeError.prototype,
-	'$ %Uint8Array%': typeof Uint8Array === 'undefined' ? undefined : Uint8Array,
-	'$ %Uint8ArrayPrototype%': typeof Uint8Array === 'undefined' ? undefined : Uint8Array.prototype,
-	'$ %Uint8ClampedArray%': typeof Uint8ClampedArray === 'undefined' ? undefined : Uint8ClampedArray,
-	'$ %Uint8ClampedArrayPrototype%': typeof Uint8ClampedArray === 'undefined' ? undefined : Uint8ClampedArray.prototype,
-	'$ %Uint16Array%': typeof Uint16Array === 'undefined' ? undefined : Uint16Array,
-	'$ %Uint16ArrayPrototype%': typeof Uint16Array === 'undefined' ? undefined : Uint16Array.prototype,
-	'$ %Uint32Array%': typeof Uint32Array === 'undefined' ? undefined : Uint32Array,
-	'$ %Uint32ArrayPrototype%': typeof Uint32Array === 'undefined' ? undefined : Uint32Array.prototype,
-	'$ %URIError%': URIError,
-	'$ %URIErrorPrototype%': URIError.prototype,
-	'$ %WeakMap%': typeof WeakMap === 'undefined' ? undefined : WeakMap,
-	'$ %WeakMapPrototype%': typeof WeakMap === 'undefined' ? undefined : WeakMap.prototype,
-	'$ %WeakSet%': typeof WeakSet === 'undefined' ? undefined : WeakSet,
-	'$ %WeakSetPrototype%': typeof WeakSet === 'undefined' ? undefined : WeakSet.prototype
+	'%Array%': Array,
+	'%ArrayBuffer%': typeof ArrayBuffer === 'undefined' ? undefined : ArrayBuffer,
+	'%ArrayBufferPrototype%': typeof ArrayBuffer === 'undefined' ? undefined : ArrayBuffer.prototype,
+	'%ArrayIteratorPrototype%': hasSymbols ? getProto([][Symbol.iterator]()) : undefined,
+	'%ArrayPrototype%': Array.prototype,
+	'%ArrayProto_entries%': Array.prototype.entries,
+	'%ArrayProto_forEach%': Array.prototype.forEach,
+	'%ArrayProto_keys%': Array.prototype.keys,
+	'%ArrayProto_values%': Array.prototype.values,
+	'%AsyncFromSyncIteratorPrototype%': undefined,
+	'%AsyncFunction%': asyncFunction,
+	'%AsyncFunctionPrototype%': asyncFunction ? asyncFunction.prototype : undefined,
+	'%AsyncGenerator%': asyncGen ? getProto(asyncGenIterator) : undefined,
+	'%AsyncGeneratorFunction%': asyncGenFunction,
+	'%AsyncGeneratorPrototype%': asyncGenFunction ? asyncGenFunction.prototype : undefined,
+	'%AsyncIteratorPrototype%': asyncGenIterator && hasSymbols && Symbol.asyncIterator ? asyncGenIterator[Symbol.asyncIterator]() : undefined,
+	'%Atomics%': typeof Atomics === 'undefined' ? undefined : Atomics,
+	'%Boolean%': Boolean,
+	'%BooleanPrototype%': Boolean.prototype,
+	'%DataView%': typeof DataView === 'undefined' ? undefined : DataView,
+	'%DataViewPrototype%': typeof DataView === 'undefined' ? undefined : DataView.prototype,
+	'%Date%': Date,
+	'%DatePrototype%': Date.prototype,
+	'%decodeURI%': decodeURI,
+	'%decodeURIComponent%': decodeURIComponent,
+	'%encodeURI%': encodeURI,
+	'%encodeURIComponent%': encodeURIComponent,
+	'%Error%': Error,
+	'%ErrorPrototype%': Error.prototype,
+	'%eval%': eval, // eslint-disable-line no-eval
+	'%EvalError%': EvalError,
+	'%EvalErrorPrototype%': EvalError.prototype,
+	'%Float32Array%': typeof Float32Array === 'undefined' ? undefined : Float32Array,
+	'%Float32ArrayPrototype%': typeof Float32Array === 'undefined' ? undefined : Float32Array.prototype,
+	'%Float64Array%': typeof Float64Array === 'undefined' ? undefined : Float64Array,
+	'%Float64ArrayPrototype%': typeof Float64Array === 'undefined' ? undefined : Float64Array.prototype,
+	'%Function%': Function,
+	'%FunctionPrototype%': Function.prototype,
+	'%Generator%': generator ? getProto(generator()) : undefined,
+	'%GeneratorFunction%': generatorFunction,
+	'%GeneratorPrototype%': generatorFunction ? generatorFunction.prototype : undefined,
+	'%Int8Array%': typeof Int8Array === 'undefined' ? undefined : Int8Array,
+	'%Int8ArrayPrototype%': typeof Int8Array === 'undefined' ? undefined : Int8Array.prototype,
+	'%Int16Array%': typeof Int16Array === 'undefined' ? undefined : Int16Array,
+	'%Int16ArrayPrototype%': typeof Int16Array === 'undefined' ? undefined : Int8Array.prototype,
+	'%Int32Array%': typeof Int32Array === 'undefined' ? undefined : Int32Array,
+	'%Int32ArrayPrototype%': typeof Int32Array === 'undefined' ? undefined : Int32Array.prototype,
+	'%isFinite%': isFinite,
+	'%isNaN%': isNaN,
+	'%IteratorPrototype%': hasSymbols ? getProto(getProto([][Symbol.iterator]())) : undefined,
+	'%JSON%': typeof JSON === 'object' ? JSON : undefined,
+	'%JSONParse%': typeof JSON === 'object' ? JSON.parse : undefined,
+	'%Map%': typeof Map === 'undefined' ? undefined : Map,
+	'%MapIteratorPrototype%': typeof Map === 'undefined' || !hasSymbols ? undefined : getProto(new Map()[Symbol.iterator]()),
+	'%MapPrototype%': typeof Map === 'undefined' ? undefined : Map.prototype,
+	'%Math%': Math,
+	'%Number%': Number,
+	'%NumberPrototype%': Number.prototype,
+	'%Object%': Object,
+	'%ObjectPrototype%': Object.prototype,
+	'%ObjProto_toString%': Object.prototype.toString,
+	'%ObjProto_valueOf%': Object.prototype.valueOf,
+	'%parseFloat%': parseFloat,
+	'%parseInt%': parseInt,
+	'%Promise%': typeof Promise === 'undefined' ? undefined : Promise,
+	'%PromisePrototype%': typeof Promise === 'undefined' ? undefined : Promise.prototype,
+	'%PromiseProto_then%': typeof Promise === 'undefined' ? undefined : Promise.prototype.then,
+	'%Promise_all%': typeof Promise === 'undefined' ? undefined : Promise.all,
+	'%Promise_reject%': typeof Promise === 'undefined' ? undefined : Promise.reject,
+	'%Promise_resolve%': typeof Promise === 'undefined' ? undefined : Promise.resolve,
+	'%Proxy%': typeof Proxy === 'undefined' ? undefined : Proxy,
+	'%RangeError%': RangeError,
+	'%RangeErrorPrototype%': RangeError.prototype,
+	'%ReferenceError%': ReferenceError,
+	'%ReferenceErrorPrototype%': ReferenceError.prototype,
+	'%Reflect%': typeof Reflect === 'undefined' ? undefined : Reflect,
+	'%RegExp%': RegExp,
+	'%RegExpPrototype%': RegExp.prototype,
+	'%Set%': typeof Set === 'undefined' ? undefined : Set,
+	'%SetIteratorPrototype%': typeof Set === 'undefined' || !hasSymbols ? undefined : getProto(new Set()[Symbol.iterator]()),
+	'%SetPrototype%': typeof Set === 'undefined' ? undefined : Set.prototype,
+	'%SharedArrayBuffer%': typeof SharedArrayBuffer === 'undefined' ? undefined : SharedArrayBuffer,
+	'%SharedArrayBufferPrototype%': typeof SharedArrayBuffer === 'undefined' ? undefined : SharedArrayBuffer.prototype,
+	'%String%': String,
+	'%StringIteratorPrototype%': hasSymbols ? getProto(''[Symbol.iterator]()) : undefined,
+	'%StringPrototype%': String.prototype,
+	'%Symbol%': hasSymbols ? Symbol : undefined,
+	'%SymbolPrototype%': hasSymbols ? Symbol.prototype : undefined,
+	'%SyntaxError%': SyntaxError,
+	'%SyntaxErrorPrototype%': SyntaxError.prototype,
+	'%ThrowTypeError%': ThrowTypeError,
+	'%TypedArray%': TypedArray,
+	'%TypedArrayPrototype%': TypedArray ? TypedArray.prototype : undefined,
+	'%TypeError%': $TypeError,
+	'%TypeErrorPrototype%': $TypeError.prototype,
+	'%Uint8Array%': typeof Uint8Array === 'undefined' ? undefined : Uint8Array,
+	'%Uint8ArrayPrototype%': typeof Uint8Array === 'undefined' ? undefined : Uint8Array.prototype,
+	'%Uint8ClampedArray%': typeof Uint8ClampedArray === 'undefined' ? undefined : Uint8ClampedArray,
+	'%Uint8ClampedArrayPrototype%': typeof Uint8ClampedArray === 'undefined' ? undefined : Uint8ClampedArray.prototype,
+	'%Uint16Array%': typeof Uint16Array === 'undefined' ? undefined : Uint16Array,
+	'%Uint16ArrayPrototype%': typeof Uint16Array === 'undefined' ? undefined : Uint16Array.prototype,
+	'%Uint32Array%': typeof Uint32Array === 'undefined' ? undefined : Uint32Array,
+	'%Uint32ArrayPrototype%': typeof Uint32Array === 'undefined' ? undefined : Uint32Array.prototype,
+	'%URIError%': URIError,
+	'%URIErrorPrototype%': URIError.prototype,
+	'%WeakMap%': typeof WeakMap === 'undefined' ? undefined : WeakMap,
+	'%WeakMapPrototype%': typeof WeakMap === 'undefined' ? undefined : WeakMap.prototype,
+	'%WeakSet%': typeof WeakSet === 'undefined' ? undefined : WeakSet,
+	'%WeakSetPrototype%': typeof WeakSet === 'undefined' ? undefined : WeakSet.prototype
 };
 
 var bind = __webpack_require__("D3zA");
@@ -4564,37 +3290,87 @@ var stringToPath = function stringToPath(string) {
 /* end adaptation */
 
 var getBaseIntrinsic = function getBaseIntrinsic(name, allowMissing) {
-	var key = '$ ' + name;
-	if (!(key in INTRINSICS)) {
+	if (!(name in INTRINSICS)) {
 		throw new SyntaxError('intrinsic ' + name + ' does not exist!');
 	}
 
 	// istanbul ignore if // hopefully this is impossible to test :-)
-	if (typeof INTRINSICS[key] === 'undefined' && !allowMissing) {
+	if (typeof INTRINSICS[name] === 'undefined' && !allowMissing) {
 		throw new $TypeError('intrinsic ' + name + ' exists, but is not available. Please file an issue!');
 	}
 
-	return INTRINSICS[key];
+	return INTRINSICS[name];
 };
 
 module.exports = function GetIntrinsic(name, allowMissing) {
+	if (typeof name !== 'string' || name.length === 0) {
+		throw new TypeError('intrinsic name must be a non-empty string');
+	}
 	if (arguments.length > 1 && typeof allowMissing !== 'boolean') {
 		throw new TypeError('"allowMissing" argument must be a boolean');
 	}
 
 	var parts = stringToPath(name);
 
-	if (parts.length === 0) {
-		return getBaseIntrinsic(name, allowMissing);
-	}
-
-	var value = getBaseIntrinsic('%' + parts[0] + '%', allowMissing);
+	var value = getBaseIntrinsic('%' + (parts.length > 0 ? parts[0] : '') + '%', allowMissing);
 	for (var i = 1; i < parts.length; i += 1) {
 		if (value != null) {
-			value = value[parts[i]];
+			if ($gOPD && (i + 1) >= parts.length) {
+				var desc = $gOPD(value, parts[i]);
+				if (!allowMissing && !(parts[i] in value)) {
+					throw new $TypeError('base intrinsic for ' + name + ' exists, but the property is not available.');
+				}
+				value = desc ? (desc.get || desc.value) : value[parts[i]];
+			} else {
+				value = value[parts[i]];
+			}
 		}
 	}
 	return value;
+};
+
+
+/***/ }),
+
+/***/ "7IBh":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var assertRecord = __webpack_require__("xG2L");
+
+var Type = __webpack_require__("RIFg");
+
+// https://www.ecma-international.org/ecma-262/6.0/#sec-frompropertydescriptor
+
+module.exports = function FromPropertyDescriptor(Desc) {
+	if (typeof Desc === 'undefined') {
+		return Desc;
+	}
+
+	assertRecord(Type, 'Property Descriptor', 'Desc', Desc);
+
+	var obj = {};
+	if ('[[Value]]' in Desc) {
+		obj.value = Desc['[[Value]]'];
+	}
+	if ('[[Writable]]' in Desc) {
+		obj.writable = Desc['[[Writable]]'];
+	}
+	if ('[[Get]]' in Desc) {
+		obj.get = Desc['[[Get]]'];
+	}
+	if ('[[Set]]' in Desc) {
+		obj.set = Desc['[[Set]]'];
+	}
+	if ('[[Enumerable]]' in Desc) {
+		obj.enumerable = Desc['[[Enumerable]]'];
+	}
+	if ('[[Configurable]]' in Desc) {
+		obj.configurable = Desc['[[Configurable]]'];
+	}
+	return obj;
 };
 
 
@@ -4604,7 +3380,12 @@ module.exports = function GetIntrinsic(name, allowMissing) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+// ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "Portal", function() { return /* reexport */ PortalCompat; });
+__webpack_require__.d(__webpack_exports__, "PortalWithState", function() { return /* reexport */ es_PortalWithState; });
 
 // EXTERNAL MODULE: external "ReactDOM"
 var external_ReactDOM_ = __webpack_require__("faye");
@@ -4867,7 +3648,7 @@ var PortalWithState_PortalWithState = function (_React$Component) {
       if (!this.state.active) {
         return;
       }
-      var root = this.portalNode.props.node || this.portalNode.defaultNode;
+      var root = this.portalNode && (this.portalNode.props.node || this.portalNode.defaultNode);
       if (!root || root.contains(e.target) || e.button && e.button !== 0) {
         return;
       }
@@ -4912,8 +3693,6 @@ PortalWithState_PortalWithState.defaultProps = {
 
 /* harmony default export */ var es_PortalWithState = (PortalWithState_PortalWithState);
 // CONCATENATED MODULE: ./node_modules/react-portal/es/index.js
-/* concated harmony reexport Portal */__webpack_require__.d(__webpack_exports__, "Portal", function() { return PortalCompat; });
-/* concated harmony reexport PortalWithState */__webpack_require__.d(__webpack_exports__, "PortalWithState", function() { return es_PortalWithState; });
 
 
 
@@ -5200,6 +3979,64 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
+/***/ "9N1e":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var GetIntrinsic = __webpack_require__("6ayh");
+
+var $TypeError = GetIntrinsic('%TypeError%');
+
+var isPropertyDescriptor = __webpack_require__("//3U");
+var DefineOwnProperty = __webpack_require__("Km29");
+
+var FromPropertyDescriptor = __webpack_require__("7IBh");
+var IsAccessorDescriptor = __webpack_require__("toeb");
+var IsDataDescriptor = __webpack_require__("hNTQ");
+var IsPropertyKey = __webpack_require__("rCmP");
+var SameValue = __webpack_require__("9sGd");
+var ToPropertyDescriptor = __webpack_require__("GPGZ");
+var Type = __webpack_require__("RIFg");
+
+// https://www.ecma-international.org/ecma-262/6.0/#sec-definepropertyorthrow
+
+module.exports = function DefinePropertyOrThrow(O, P, desc) {
+	if (Type(O) !== 'Object') {
+		throw new $TypeError('Assertion failed: Type(O) is not Object');
+	}
+
+	if (!IsPropertyKey(P)) {
+		throw new $TypeError('Assertion failed: IsPropertyKey(P) is not true');
+	}
+
+	var Desc = isPropertyDescriptor({
+		Type: Type,
+		IsDataDescriptor: IsDataDescriptor,
+		IsAccessorDescriptor: IsAccessorDescriptor
+	}, desc) ? desc : ToPropertyDescriptor(desc);
+	if (!isPropertyDescriptor({
+		Type: Type,
+		IsDataDescriptor: IsDataDescriptor,
+		IsAccessorDescriptor: IsAccessorDescriptor
+	}, Desc)) {
+		throw new $TypeError('Assertion failed: Desc is not a valid Property Descriptor');
+	}
+
+	return DefineOwnProperty(
+		IsDataDescriptor,
+		SameValue,
+		FromPropertyDescriptor,
+		O,
+		P,
+		Desc
+	);
+};
+
+
+/***/ }),
+
 /***/ "9VuS":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5265,7 +4102,7 @@ var _constants = __webpack_require__("Fv1B");
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var propTypes =  false ? undefined : {};
 var defaultProps = {
@@ -6052,29 +4889,22 @@ module.exports = globalCache;
 
 /***/ }),
 
-/***/ "A/aO":
+/***/ "9sGd":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var every = __webpack_require__("BWkc");
+var $isNaN = __webpack_require__("IFfy");
 
-module.exports = function isSamePropertyDescriptor(ES, D1, D2) {
-	var fields = [
-		'[[Configurable]]',
-		'[[Enumerable]]',
-		'[[Get]]',
-		'[[Set]]',
-		'[[Value]]',
-		'[[Writable]]'
-	];
-	return every(fields, function (field) {
-		if ((field in D1) !== (field in D2)) {
-			return false;
-		}
-		return ES.SameValue(D1[field], D2[field]);
-	});
+// http://www.ecma-international.org/ecma-262/5.1/#sec-9.12
+
+module.exports = function SameValue(x, y) {
+	if (x === y) { // 0 === -0, but they are not identical.
+		if (x === 0) { return 1 / x === 1 / y; }
+		return true;
+	}
+	return $isNaN(x) && $isNaN(y);
 };
 
 
@@ -6234,24 +5064,6 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ "BWkc":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function every(array, predicate) {
-	for (var i = 0; i < array.length; i += 1) {
-		if (!predicate(array[i], i, array)) {
-			return false;
-		}
-	}
-	return true;
-};
-
-
-/***/ }),
-
 /***/ "Bh6R":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6279,7 +5091,7 @@ exports["default"] = _default;
 /***/ (function(module, exports) {
 
 function _nonIterableSpread() {
-  throw new TypeError("Invalid attempt to spread non-iterable instance");
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 
 module.exports = _nonIterableSpread;
@@ -6369,7 +5181,7 @@ var _getPooledMoment = _interopRequireDefault(__webpack_require__("gtaZ"));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var propTypes =  false ? undefined : {};
 var defaultProps = {
@@ -6392,6 +5204,7 @@ var defaultProps = {
   isDayBlocked: function isDayBlocked() {},
   isDayHighlighted: function isDayHighlighted() {},
   getMinNightsForHoverDate: function getMinNightsForHoverDate() {},
+  daysViolatingMinNightsCanBeClicked: false,
   // DayPicker props
   renderMonthText: null,
   renderWeekHeaderElement: null,
@@ -6409,6 +5222,8 @@ var defaultProps = {
   renderNavPrevButton: null,
   renderNavNextButton: null,
   noNavButtons: false,
+  noNavNextButton: false,
+  noNavPrevButton: false,
   onPrevMonthClick: function onPrevMonthClick() {},
   onNextMonthClick: function onNextMonthClick() {},
   onOutsideClick: function onOutsideClick() {},
@@ -6566,7 +5381,8 @@ function (_ref) {
     _this.onNextMonthClick = _this.onNextMonthClick.bind((0, _assertThisInitialized2["default"])(_this));
     _this.onMonthChange = _this.onMonthChange.bind((0, _assertThisInitialized2["default"])(_this));
     _this.onYearChange = _this.onYearChange.bind((0, _assertThisInitialized2["default"])(_this));
-    _this.onMultiplyScrollableMonths = _this.onMultiplyScrollableMonths.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onGetNextScrollableMonths = _this.onGetNextScrollableMonths.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onGetPrevScrollableMonths = _this.onGetPrevScrollableMonths.bind((0, _assertThisInitialized2["default"])(_this));
     _this.getFirstFocusableDay = _this.getFirstFocusableDay.bind((0, _assertThisInitialized2["default"])(_this));
     return _this;
   }
@@ -6832,9 +5648,10 @@ function (_ref) {
         onDatesChange = _this$props2.onDatesChange,
         startDateOffset = _this$props2.startDateOffset,
         endDateOffset = _this$props2.endDateOffset,
-        disabled = _this$props2.disabled;
+        disabled = _this$props2.disabled,
+        daysViolatingMinNightsCanBeClicked = _this$props2.daysViolatingMinNightsCanBeClicked;
     if (e) e.preventDefault();
-    if (this.isBlocked(day)) return;
+    if (this.isBlocked(day, !daysViolatingMinNightsCanBeClicked)) return;
     var _this$props3 = this.props,
         startDate = _this$props3.startDate,
         endDate = _this$props3.endDate;
@@ -6910,6 +5727,12 @@ function (_ref) {
             endDate: endDate
           });
         }
+      } else if (daysViolatingMinNightsCanBeClicked && this.doesNotMeetMinimumNights(day)) {
+        endDate = day;
+        onDatesChange({
+          startDate: startDate,
+          endDate: endDate
+        });
       } else if (disabled !== _constants.START_DATE) {
         startDate = day;
         endDate = null;
@@ -7210,7 +6033,7 @@ function (_ref) {
     });
   };
 
-  _proto.onMultiplyScrollableMonths = function onMultiplyScrollableMonths() {
+  _proto.onGetNextScrollableMonths = function onGetNextScrollableMonths() {
     var _this$props10 = this.props,
         numberOfMonths = _this$props10.numberOfMonths,
         enableOutsideDays = _this$props10.enableOutsideDays;
@@ -7225,15 +6048,30 @@ function (_ref) {
     });
   };
 
+  _proto.onGetPrevScrollableMonths = function onGetPrevScrollableMonths() {
+    var _this$props11 = this.props,
+        numberOfMonths = _this$props11.numberOfMonths,
+        enableOutsideDays = _this$props11.enableOutsideDays;
+    var _this$state6 = this.state,
+        currentMonth = _this$state6.currentMonth,
+        visibleDays = _this$state6.visibleDays;
+    var firstPreviousMonth = currentMonth.clone().subtract(numberOfMonths, 'month');
+    var newVisibleDays = (0, _getVisibleDays["default"])(firstPreviousMonth, numberOfMonths, enableOutsideDays, true);
+    this.setState({
+      currentMonth: firstPreviousMonth.clone(),
+      visibleDays: _objectSpread({}, visibleDays, {}, this.getModifiers(newVisibleDays))
+    });
+  };
+
   _proto.getFirstFocusableDay = function getFirstFocusableDay(newMonth) {
     var _this3 = this;
 
-    var _this$props11 = this.props,
-        startDate = _this$props11.startDate,
-        endDate = _this$props11.endDate,
-        focusedInput = _this$props11.focusedInput,
-        minimumNights = _this$props11.minimumNights,
-        numberOfMonths = _this$props11.numberOfMonths;
+    var _this$props12 = this.props,
+        startDate = _this$props12.startDate,
+        endDate = _this$props12.endDate,
+        focusedInput = _this$props12.focusedInput,
+        minimumNights = _this$props12.minimumNights,
+        numberOfMonths = _this$props12.numberOfMonths;
     var focusedDate = newMonth.clone().startOf('month');
 
     if (focusedInput === _constants.START_DATE && startDate) {
@@ -7313,9 +6151,9 @@ function (_ref) {
 
   _proto.shouldDisableMonthNavigation = function shouldDisableMonthNavigation(date, visibleMonth) {
     if (!date) return false;
-    var _this$props12 = this.props,
-        numberOfMonths = _this$props12.numberOfMonths,
-        enableOutsideDays = _this$props12.enableOutsideDays;
+    var _this$props13 = this.props,
+        numberOfMonths = _this$props13.numberOfMonths,
+        enableOutsideDays = _this$props13.enableOutsideDays;
     return (0, _isDayVisible["default"])(date, visibleMonth, numberOfMonths, enableOutsideDays);
   };
 
@@ -7352,11 +6190,11 @@ function (_ref) {
   };
 
   _proto.doesNotMeetMinimumNights = function doesNotMeetMinimumNights(day) {
-    var _this$props13 = this.props,
-        startDate = _this$props13.startDate,
-        isOutsideRange = _this$props13.isOutsideRange,
-        focusedInput = _this$props13.focusedInput,
-        minimumNights = _this$props13.minimumNights;
+    var _this$props14 = this.props,
+        startDate = _this$props14.startDate,
+        isOutsideRange = _this$props14.isOutsideRange,
+        focusedInput = _this$props14.focusedInput,
+        minimumNights = _this$props14.minimumNights;
     if (focusedInput !== _constants.END_DATE) return false;
 
     if (startDate) {
@@ -7368,9 +6206,9 @@ function (_ref) {
   };
 
   _proto.doesNotMeetMinNightsForHoveredStartDate = function doesNotMeetMinNightsForHoveredStartDate(day, hoverDate) {
-    var _this$props14 = this.props,
-        focusedInput = _this$props14.focusedInput,
-        getMinNightsForHoverDate = _this$props14.getMinNightsForHoverDate;
+    var _this$props15 = this.props,
+        focusedInput = _this$props15.focusedInput,
+        getMinNightsForHoverDate = _this$props15.getMinNightsForHoverDate;
     if (focusedInput !== _constants.END_DATE) return false;
 
     if (hoverDate && !this.isBlocked(hoverDate)) {
@@ -7383,10 +6221,10 @@ function (_ref) {
   };
 
   _proto.isDayAfterHoveredStartDate = function isDayAfterHoveredStartDate(day) {
-    var _this$props15 = this.props,
-        startDate = _this$props15.startDate,
-        endDate = _this$props15.endDate,
-        minimumNights = _this$props15.minimumNights;
+    var _this$props16 = this.props,
+        startDate = _this$props16.startDate,
+        endDate = _this$props16.endDate,
+        minimumNights = _this$props16.minimumNights;
 
     var _ref2 = this.state || {},
         hoverDate = _ref2.hoverDate;
@@ -7408,9 +6246,9 @@ function (_ref) {
   };
 
   _proto.isInHoveredSpan = function isInHoveredSpan(day) {
-    var _this$props16 = this.props,
-        startDate = _this$props16.startDate,
-        endDate = _this$props16.endDate;
+    var _this$props17 = this.props,
+        startDate = _this$props17.startDate,
+        endDate = _this$props17.endDate;
 
     var _ref4 = this.state || {},
         hoverDate = _ref4.hoverDate;
@@ -7422,9 +6260,9 @@ function (_ref) {
   };
 
   _proto.isInSelectedSpan = function isInSelectedSpan(day) {
-    var _this$props17 = this.props,
-        startDate = _this$props17.startDate,
-        endDate = _this$props17.endDate;
+    var _this$props18 = this.props,
+        startDate = _this$props18.startDate,
+        endDate = _this$props18.endDate;
     return day.isBetween(startDate, endDate, 'days');
   };
 
@@ -7439,10 +6277,11 @@ function (_ref) {
   };
 
   _proto.isBlocked = function isBlocked(day) {
-    var _this$props18 = this.props,
-        isDayBlocked = _this$props18.isDayBlocked,
-        isOutsideRange = _this$props18.isOutsideRange;
-    return isDayBlocked(day) || isOutsideRange(day) || this.doesNotMeetMinimumNights(day);
+    var blockDaysViolatingMinNights = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+    var _this$props19 = this.props,
+        isDayBlocked = _this$props19.isDayBlocked,
+        isOutsideRange = _this$props19.isOutsideRange;
+    return isDayBlocked(day) || isOutsideRange(day) || blockDaysViolatingMinNights && this.doesNotMeetMinimumNights(day);
   };
 
   _proto.isToday = function isToday(day) {
@@ -7460,9 +6299,9 @@ function (_ref) {
   };
 
   _proto.isFirstPossibleEndDateForHoveredStartDate = function isFirstPossibleEndDateForHoveredStartDate(day, hoverDate) {
-    var _this$props19 = this.props,
-        focusedInput = _this$props19.focusedInput,
-        getMinNightsForHoverDate = _this$props19.getMinNightsForHoverDate;
+    var _this$props20 = this.props,
+        focusedInput = _this$props20.focusedInput,
+        getMinNightsForHoverDate = _this$props20.getMinNightsForHoverDate;
     if (focusedInput !== _constants.END_DATE || !hoverDate || this.isBlocked(hoverDate)) return false;
     var minNights = getMinNightsForHoverDate(hoverDate);
     var firstAvailableEndDate = hoverDate.clone().add(minNights, 'days');
@@ -7475,10 +6314,10 @@ function (_ref) {
   };
 
   _proto.isDayBeforeHoveredEndDate = function isDayBeforeHoveredEndDate(day) {
-    var _this$props20 = this.props,
-        startDate = _this$props20.startDate,
-        endDate = _this$props20.endDate,
-        minimumNights = _this$props20.minimumNights;
+    var _this$props21 = this.props,
+        startDate = _this$props21.startDate,
+        endDate = _this$props21.endDate,
+        minimumNights = _this$props21.minimumNights;
 
     var _ref5 = this.state || {},
         hoverDate = _ref5.hoverDate;
@@ -7487,52 +6326,54 @@ function (_ref) {
   };
 
   _proto.render = function render() {
-    var _this$props21 = this.props,
-        numberOfMonths = _this$props21.numberOfMonths,
-        orientation = _this$props21.orientation,
-        monthFormat = _this$props21.monthFormat,
-        renderMonthText = _this$props21.renderMonthText,
-        renderWeekHeaderElement = _this$props21.renderWeekHeaderElement,
-        dayPickerNavigationInlineStyles = _this$props21.dayPickerNavigationInlineStyles,
-        navPosition = _this$props21.navPosition,
-        navPrev = _this$props21.navPrev,
-        navNext = _this$props21.navNext,
-        renderNavPrevButton = _this$props21.renderNavPrevButton,
-        renderNavNextButton = _this$props21.renderNavNextButton,
-        noNavButtons = _this$props21.noNavButtons,
-        onOutsideClick = _this$props21.onOutsideClick,
-        withPortal = _this$props21.withPortal,
-        enableOutsideDays = _this$props21.enableOutsideDays,
-        firstDayOfWeek = _this$props21.firstDayOfWeek,
-        renderKeyboardShortcutsButton = _this$props21.renderKeyboardShortcutsButton,
-        renderKeyboardShortcutsPanel = _this$props21.renderKeyboardShortcutsPanel,
-        hideKeyboardShortcutsPanel = _this$props21.hideKeyboardShortcutsPanel,
-        daySize = _this$props21.daySize,
-        focusedInput = _this$props21.focusedInput,
-        renderCalendarDay = _this$props21.renderCalendarDay,
-        renderDayContents = _this$props21.renderDayContents,
-        renderCalendarInfo = _this$props21.renderCalendarInfo,
-        renderMonthElement = _this$props21.renderMonthElement,
-        calendarInfoPosition = _this$props21.calendarInfoPosition,
-        onBlur = _this$props21.onBlur,
-        onShiftTab = _this$props21.onShiftTab,
-        onTab = _this$props21.onTab,
-        isFocused = _this$props21.isFocused,
-        showKeyboardShortcuts = _this$props21.showKeyboardShortcuts,
-        isRTL = _this$props21.isRTL,
-        weekDayFormat = _this$props21.weekDayFormat,
-        dayAriaLabelFormat = _this$props21.dayAriaLabelFormat,
-        verticalHeight = _this$props21.verticalHeight,
-        noBorder = _this$props21.noBorder,
-        transitionDuration = _this$props21.transitionDuration,
-        verticalBorderSpacing = _this$props21.verticalBorderSpacing,
-        horizontalMonthPadding = _this$props21.horizontalMonthPadding;
-    var _this$state6 = this.state,
-        currentMonth = _this$state6.currentMonth,
-        phrases = _this$state6.phrases,
-        visibleDays = _this$state6.visibleDays,
-        disablePrev = _this$state6.disablePrev,
-        disableNext = _this$state6.disableNext;
+    var _this$props22 = this.props,
+        numberOfMonths = _this$props22.numberOfMonths,
+        orientation = _this$props22.orientation,
+        monthFormat = _this$props22.monthFormat,
+        renderMonthText = _this$props22.renderMonthText,
+        renderWeekHeaderElement = _this$props22.renderWeekHeaderElement,
+        dayPickerNavigationInlineStyles = _this$props22.dayPickerNavigationInlineStyles,
+        navPosition = _this$props22.navPosition,
+        navPrev = _this$props22.navPrev,
+        navNext = _this$props22.navNext,
+        renderNavPrevButton = _this$props22.renderNavPrevButton,
+        renderNavNextButton = _this$props22.renderNavNextButton,
+        noNavButtons = _this$props22.noNavButtons,
+        noNavNextButton = _this$props22.noNavNextButton,
+        noNavPrevButton = _this$props22.noNavPrevButton,
+        onOutsideClick = _this$props22.onOutsideClick,
+        withPortal = _this$props22.withPortal,
+        enableOutsideDays = _this$props22.enableOutsideDays,
+        firstDayOfWeek = _this$props22.firstDayOfWeek,
+        renderKeyboardShortcutsButton = _this$props22.renderKeyboardShortcutsButton,
+        renderKeyboardShortcutsPanel = _this$props22.renderKeyboardShortcutsPanel,
+        hideKeyboardShortcutsPanel = _this$props22.hideKeyboardShortcutsPanel,
+        daySize = _this$props22.daySize,
+        focusedInput = _this$props22.focusedInput,
+        renderCalendarDay = _this$props22.renderCalendarDay,
+        renderDayContents = _this$props22.renderDayContents,
+        renderCalendarInfo = _this$props22.renderCalendarInfo,
+        renderMonthElement = _this$props22.renderMonthElement,
+        calendarInfoPosition = _this$props22.calendarInfoPosition,
+        onBlur = _this$props22.onBlur,
+        onShiftTab = _this$props22.onShiftTab,
+        onTab = _this$props22.onTab,
+        isFocused = _this$props22.isFocused,
+        showKeyboardShortcuts = _this$props22.showKeyboardShortcuts,
+        isRTL = _this$props22.isRTL,
+        weekDayFormat = _this$props22.weekDayFormat,
+        dayAriaLabelFormat = _this$props22.dayAriaLabelFormat,
+        verticalHeight = _this$props22.verticalHeight,
+        noBorder = _this$props22.noBorder,
+        transitionDuration = _this$props22.transitionDuration,
+        verticalBorderSpacing = _this$props22.verticalBorderSpacing,
+        horizontalMonthPadding = _this$props22.horizontalMonthPadding;
+    var _this$state7 = this.state,
+        currentMonth = _this$state7.currentMonth,
+        phrases = _this$state7.phrases,
+        visibleDays = _this$state7.visibleDays,
+        disablePrev = _this$state7.disablePrev,
+        disableNext = _this$state7.disableNext;
     return _react["default"].createElement(_DayPicker["default"], {
       orientation: orientation,
       enableOutsideDays: enableOutsideDays,
@@ -7547,7 +6388,8 @@ function (_ref) {
       onTab: onTab,
       onShiftTab: onShiftTab,
       onYearChange: this.onYearChange,
-      onMultiplyScrollableMonths: this.onMultiplyScrollableMonths,
+      onGetNextScrollableMonths: this.onGetNextScrollableMonths,
+      onGetPrevScrollableMonths: this.onGetPrevScrollableMonths,
       monthFormat: monthFormat,
       renderMonthText: renderMonthText,
       renderWeekHeaderElement: renderWeekHeaderElement,
@@ -7567,6 +6409,8 @@ function (_ref) {
       renderNavPrevButton: renderNavPrevButton,
       renderNavNextButton: renderNavNextButton,
       noNavButtons: noNavButtons,
+      noNavPrevButton: noNavPrevButton,
+      noNavNextButton: noNavNextButton,
       renderCalendarDay: renderCalendarDay,
       renderDayContents: renderDayContents,
       renderCalendarInfo: renderCalendarInfo,
@@ -7628,35 +6472,6 @@ var callBind = __webpack_require__("RLeF");
 
 module.exports = function regexTester(regex) {
 	return callBind($test, regex);
-};
-
-
-/***/ }),
-
-/***/ "DGeY":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var GetIntrinsic = __webpack_require__("6ayh");
-
-var has = __webpack_require__("oNNP");
-
-var $assign = GetIntrinsic('%Object%').assign;
-
-module.exports = function assign(target, source) {
-	if ($assign) {
-		return $assign(target, source);
-	}
-
-	// eslint-disable-next-line no-restricted-syntax
-	for (var key in source) {
-		if (has(source, key)) {
-			target[key] = source[key];
-		}
-	}
-	return target;
 };
 
 
@@ -7732,6 +6547,7 @@ module.exports = {
   numericString: noopThunk,
   object: noopThunk,
   or: noopThunk,
+  predicate: noopThunk,
   range: noopThunk,
   ref: noopThunk,
   requiredBy: noopThunk,
@@ -7804,7 +6620,7 @@ function withPerf(methodName) {
 
 
 var getDay = Date.prototype.getDay;
-var tryDateObject = function tryDateObject(value) {
+var tryDateObject = function tryDateGetDayCall(value) {
 	try {
 		getDay.call(value);
 		return true;
@@ -7818,7 +6634,9 @@ var dateClass = '[object Date]';
 var hasToStringTag = typeof Symbol === 'function' && typeof Symbol.toStringTag === 'symbol';
 
 module.exports = function isDateObject(value) {
-	if (typeof value !== 'object' || value === null) { return false; }
+	if (typeof value !== 'object' || value === null) {
+		return false;
+	}
 	return hasToStringTag ? tryDateObject(value) : toStr.call(value) === dateClass;
 };
 
@@ -7870,7 +6688,7 @@ var _constants = __webpack_require__("Fv1B");
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var FANG_PATH_TOP = "M0,".concat(_constants.FANG_HEIGHT_PX, " ").concat(_constants.FANG_WIDTH_PX, ",").concat(_constants.FANG_HEIGHT_PX, " ").concat(_constants.FANG_WIDTH_PX / 2, ",0z");
 var FANG_STROKE_TOP = "M0,".concat(_constants.FANG_HEIGHT_PX, " ").concat(_constants.FANG_WIDTH_PX / 2, ",0 ").concat(_constants.FANG_WIDTH_PX, ",").concat(_constants.FANG_HEIGHT_PX);
@@ -8184,558 +7002,6 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ "DwGB":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var GetIntrinsic = __webpack_require__("6ayh");
-
-var $Object = GetIntrinsic('%Object%');
-var $EvalError = GetIntrinsic('%EvalError%');
-var $TypeError = GetIntrinsic('%TypeError%');
-var $String = GetIntrinsic('%String%');
-var $Date = GetIntrinsic('%Date%');
-var $Number = GetIntrinsic('%Number%');
-var $floor = GetIntrinsic('%Math.floor%');
-var $DateUTC = GetIntrinsic('%Date.UTC%');
-var $abs = GetIntrinsic('%Math.abs%');
-
-var assertRecord = __webpack_require__("xG2L");
-var isPropertyDescriptor = __webpack_require__("//3U");
-var $isNaN = __webpack_require__("IFfy");
-var $isFinite = __webpack_require__("xhJ2");
-var sign = __webpack_require__("WXWk");
-var mod = __webpack_require__("u1Mj");
-var isPrefixOf = __webpack_require__("uVm+");
-var callBound = __webpack_require__("Khql");
-
-var IsCallable = __webpack_require__("IdCN");
-var toPrimitive = __webpack_require__("Lxf3");
-
-var has = __webpack_require__("oNNP");
-
-var $getUTCFullYear = callBound('Date.prototype.getUTCFullYear');
-
-var HoursPerDay = 24;
-var MinutesPerHour = 60;
-var SecondsPerMinute = 60;
-var msPerSecond = 1e3;
-var msPerMinute = msPerSecond * SecondsPerMinute;
-var msPerHour = msPerMinute * MinutesPerHour;
-var msPerDay = 86400000;
-
-// https://es5.github.io/#x9
-var ES5 = {
-	ToPrimitive: toPrimitive,
-
-	ToBoolean: function ToBoolean(value) {
-		return !!value;
-	},
-	ToNumber: function ToNumber(value) {
-		return +value; // eslint-disable-line no-implicit-coercion
-	},
-	ToInteger: function ToInteger(value) {
-		var number = this.ToNumber(value);
-		if ($isNaN(number)) { return 0; }
-		if (number === 0 || !$isFinite(number)) { return number; }
-		return sign(number) * Math.floor(Math.abs(number));
-	},
-	ToInt32: function ToInt32(x) {
-		return this.ToNumber(x) >> 0;
-	},
-	ToUint32: function ToUint32(x) {
-		return this.ToNumber(x) >>> 0;
-	},
-	ToUint16: function ToUint16(value) {
-		var number = this.ToNumber(value);
-		if ($isNaN(number) || number === 0 || !$isFinite(number)) { return 0; }
-		var posInt = sign(number) * Math.floor(Math.abs(number));
-		return mod(posInt, 0x10000);
-	},
-	ToString: function ToString(value) {
-		return $String(value);
-	},
-	ToObject: function ToObject(value) {
-		this.CheckObjectCoercible(value);
-		return $Object(value);
-	},
-	CheckObjectCoercible: function CheckObjectCoercible(value, optMessage) {
-		/* jshint eqnull:true */
-		if (value == null) {
-			throw new $TypeError(optMessage || 'Cannot call method on ' + value);
-		}
-		return value;
-	},
-	IsCallable: IsCallable,
-	SameValue: function SameValue(x, y) {
-		if (x === y) { // 0 === -0, but they are not identical.
-			if (x === 0) { return 1 / x === 1 / y; }
-			return true;
-		}
-		return $isNaN(x) && $isNaN(y);
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-8
-	Type: function Type(x) {
-		if (x === null) {
-			return 'Null';
-		}
-		if (typeof x === 'undefined') {
-			return 'Undefined';
-		}
-		if (typeof x === 'function' || typeof x === 'object') {
-			return 'Object';
-		}
-		if (typeof x === 'number') {
-			return 'Number';
-		}
-		if (typeof x === 'boolean') {
-			return 'Boolean';
-		}
-		if (typeof x === 'string') {
-			return 'String';
-		}
-	},
-
-	// https://ecma-international.org/ecma-262/6.0/#sec-property-descriptor-specification-type
-	IsPropertyDescriptor: function IsPropertyDescriptor(Desc) {
-		return isPropertyDescriptor(this, Desc);
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-8.10.1
-	IsAccessorDescriptor: function IsAccessorDescriptor(Desc) {
-		if (typeof Desc === 'undefined') {
-			return false;
-		}
-
-		assertRecord(this, 'Property Descriptor', 'Desc', Desc);
-
-		if (!has(Desc, '[[Get]]') && !has(Desc, '[[Set]]')) {
-			return false;
-		}
-
-		return true;
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-8.10.2
-	IsDataDescriptor: function IsDataDescriptor(Desc) {
-		if (typeof Desc === 'undefined') {
-			return false;
-		}
-
-		assertRecord(this, 'Property Descriptor', 'Desc', Desc);
-
-		if (!has(Desc, '[[Value]]') && !has(Desc, '[[Writable]]')) {
-			return false;
-		}
-
-		return true;
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-8.10.3
-	IsGenericDescriptor: function IsGenericDescriptor(Desc) {
-		if (typeof Desc === 'undefined') {
-			return false;
-		}
-
-		assertRecord(this, 'Property Descriptor', 'Desc', Desc);
-
-		if (!this.IsAccessorDescriptor(Desc) && !this.IsDataDescriptor(Desc)) {
-			return true;
-		}
-
-		return false;
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-8.10.4
-	FromPropertyDescriptor: function FromPropertyDescriptor(Desc) {
-		if (typeof Desc === 'undefined') {
-			return Desc;
-		}
-
-		assertRecord(this, 'Property Descriptor', 'Desc', Desc);
-
-		if (this.IsDataDescriptor(Desc)) {
-			return {
-				value: Desc['[[Value]]'],
-				writable: !!Desc['[[Writable]]'],
-				enumerable: !!Desc['[[Enumerable]]'],
-				configurable: !!Desc['[[Configurable]]']
-			};
-		} else if (this.IsAccessorDescriptor(Desc)) {
-			return {
-				get: Desc['[[Get]]'],
-				set: Desc['[[Set]]'],
-				enumerable: !!Desc['[[Enumerable]]'],
-				configurable: !!Desc['[[Configurable]]']
-			};
-		} else {
-			throw new $TypeError('FromPropertyDescriptor must be called with a fully populated Property Descriptor');
-		}
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-8.10.5
-	ToPropertyDescriptor: function ToPropertyDescriptor(Obj) {
-		if (this.Type(Obj) !== 'Object') {
-			throw new $TypeError('ToPropertyDescriptor requires an object');
-		}
-
-		var desc = {};
-		if (has(Obj, 'enumerable')) {
-			desc['[[Enumerable]]'] = this.ToBoolean(Obj.enumerable);
-		}
-		if (has(Obj, 'configurable')) {
-			desc['[[Configurable]]'] = this.ToBoolean(Obj.configurable);
-		}
-		if (has(Obj, 'value')) {
-			desc['[[Value]]'] = Obj.value;
-		}
-		if (has(Obj, 'writable')) {
-			desc['[[Writable]]'] = this.ToBoolean(Obj.writable);
-		}
-		if (has(Obj, 'get')) {
-			var getter = Obj.get;
-			if (typeof getter !== 'undefined' && !this.IsCallable(getter)) {
-				throw new TypeError('getter must be a function');
-			}
-			desc['[[Get]]'] = getter;
-		}
-		if (has(Obj, 'set')) {
-			var setter = Obj.set;
-			if (typeof setter !== 'undefined' && !this.IsCallable(setter)) {
-				throw new $TypeError('setter must be a function');
-			}
-			desc['[[Set]]'] = setter;
-		}
-
-		if ((has(desc, '[[Get]]') || has(desc, '[[Set]]')) && (has(desc, '[[Value]]') || has(desc, '[[Writable]]'))) {
-			throw new $TypeError('Invalid property descriptor. Cannot both specify accessors and a value or writable attribute');
-		}
-		return desc;
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-11.9.3
-	'Abstract Equality Comparison': function AbstractEqualityComparison(x, y) {
-		var xType = this.Type(x);
-		var yType = this.Type(y);
-		if (xType === yType) {
-			return x === y; // ES6+ specified this shortcut anyways.
-		}
-		if (x == null && y == null) {
-			return true;
-		}
-		if (xType === 'Number' && yType === 'String') {
-			return this['Abstract Equality Comparison'](x, this.ToNumber(y));
-		}
-		if (xType === 'String' && yType === 'Number') {
-			return this['Abstract Equality Comparison'](this.ToNumber(x), y);
-		}
-		if (xType === 'Boolean') {
-			return this['Abstract Equality Comparison'](this.ToNumber(x), y);
-		}
-		if (yType === 'Boolean') {
-			return this['Abstract Equality Comparison'](x, this.ToNumber(y));
-		}
-		if ((xType === 'String' || xType === 'Number') && yType === 'Object') {
-			return this['Abstract Equality Comparison'](x, this.ToPrimitive(y));
-		}
-		if (xType === 'Object' && (yType === 'String' || yType === 'Number')) {
-			return this['Abstract Equality Comparison'](this.ToPrimitive(x), y);
-		}
-		return false;
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-11.9.6
-	'Strict Equality Comparison': function StrictEqualityComparison(x, y) {
-		var xType = this.Type(x);
-		var yType = this.Type(y);
-		if (xType !== yType) {
-			return false;
-		}
-		if (xType === 'Undefined' || xType === 'Null') {
-			return true;
-		}
-		return x === y; // shortcut for steps 4-7
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-11.8.5
-	// eslint-disable-next-line max-statements
-	'Abstract Relational Comparison': function AbstractRelationalComparison(x, y, LeftFirst) {
-		if (this.Type(LeftFirst) !== 'Boolean') {
-			throw new $TypeError('Assertion failed: LeftFirst argument must be a Boolean');
-		}
-		var px;
-		var py;
-		if (LeftFirst) {
-			px = this.ToPrimitive(x, $Number);
-			py = this.ToPrimitive(y, $Number);
-		} else {
-			py = this.ToPrimitive(y, $Number);
-			px = this.ToPrimitive(x, $Number);
-		}
-		var bothStrings = this.Type(px) === 'String' && this.Type(py) === 'String';
-		if (!bothStrings) {
-			var nx = this.ToNumber(px);
-			var ny = this.ToNumber(py);
-			if ($isNaN(nx) || $isNaN(ny)) {
-				return undefined;
-			}
-			if ($isFinite(nx) && $isFinite(ny) && nx === ny) {
-				return false;
-			}
-			if (nx === 0 && ny === 0) {
-				return false;
-			}
-			if (nx === Infinity) {
-				return false;
-			}
-			if (ny === Infinity) {
-				return true;
-			}
-			if (ny === -Infinity) {
-				return false;
-			}
-			if (nx === -Infinity) {
-				return true;
-			}
-			return nx < ny; // by now, these are both nonzero, finite, and not equal
-		}
-		if (isPrefixOf(py, px)) {
-			return false;
-		}
-		if (isPrefixOf(px, py)) {
-			return true;
-		}
-		return px < py; // both strings, neither a prefix of the other. shortcut for steps c-f
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-15.9.1.10
-	msFromTime: function msFromTime(t) {
-		return mod(t, msPerSecond);
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-15.9.1.10
-	SecFromTime: function SecFromTime(t) {
-		return mod($floor(t / msPerSecond), SecondsPerMinute);
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-15.9.1.10
-	MinFromTime: function MinFromTime(t) {
-		return mod($floor(t / msPerMinute), MinutesPerHour);
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-15.9.1.10
-	HourFromTime: function HourFromTime(t) {
-		return mod($floor(t / msPerHour), HoursPerDay);
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-15.9.1.2
-	Day: function Day(t) {
-		return $floor(t / msPerDay);
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-15.9.1.2
-	TimeWithinDay: function TimeWithinDay(t) {
-		return mod(t, msPerDay);
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-15.9.1.3
-	DayFromYear: function DayFromYear(y) {
-		return (365 * (y - 1970)) + $floor((y - 1969) / 4) - $floor((y - 1901) / 100) + $floor((y - 1601) / 400);
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-15.9.1.3
-	TimeFromYear: function TimeFromYear(y) {
-		return msPerDay * this.DayFromYear(y);
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-15.9.1.3
-	YearFromTime: function YearFromTime(t) {
-		// largest y such that this.TimeFromYear(y) <= t
-		return $getUTCFullYear(new $Date(t));
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-15.9.1.6
-	WeekDay: function WeekDay(t) {
-		return mod(this.Day(t) + 4, 7);
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-15.9.1.3
-	DaysInYear: function DaysInYear(y) {
-		if (mod(y, 4) !== 0) {
-			return 365;
-		}
-		if (mod(y, 100) !== 0) {
-			return 366;
-		}
-		if (mod(y, 400) !== 0) {
-			return 365;
-		}
-		return 366;
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-15.9.1.3
-	InLeapYear: function InLeapYear(t) {
-		var days = this.DaysInYear(this.YearFromTime(t));
-		if (days === 365) {
-			return 0;
-		}
-		if (days === 366) {
-			return 1;
-		}
-		throw new $EvalError('Assertion failed: there are not 365 or 366 days in a year, got: ' + days);
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-15.9.1.4
-	DayWithinYear: function DayWithinYear(t) {
-		return this.Day(t) - this.DayFromYear(this.YearFromTime(t));
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-15.9.1.4
-	MonthFromTime: function MonthFromTime(t) {
-		var day = this.DayWithinYear(t);
-		if (0 <= day && day < 31) {
-			return 0;
-		}
-		var leap = this.InLeapYear(t);
-		if (31 <= day && day < (59 + leap)) {
-			return 1;
-		}
-		if ((59 + leap) <= day && day < (90 + leap)) {
-			return 2;
-		}
-		if ((90 + leap) <= day && day < (120 + leap)) {
-			return 3;
-		}
-		if ((120 + leap) <= day && day < (151 + leap)) {
-			return 4;
-		}
-		if ((151 + leap) <= day && day < (181 + leap)) {
-			return 5;
-		}
-		if ((181 + leap) <= day && day < (212 + leap)) {
-			return 6;
-		}
-		if ((212 + leap) <= day && day < (243 + leap)) {
-			return 7;
-		}
-		if ((243 + leap) <= day && day < (273 + leap)) {
-			return 8;
-		}
-		if ((273 + leap) <= day && day < (304 + leap)) {
-			return 9;
-		}
-		if ((304 + leap) <= day && day < (334 + leap)) {
-			return 10;
-		}
-		if ((334 + leap) <= day && day < (365 + leap)) {
-			return 11;
-		}
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-15.9.1.5
-	DateFromTime: function DateFromTime(t) {
-		var m = this.MonthFromTime(t);
-		var d = this.DayWithinYear(t);
-		if (m === 0) {
-			return d + 1;
-		}
-		if (m === 1) {
-			return d - 30;
-		}
-		var leap = this.InLeapYear(t);
-		if (m === 2) {
-			return d - 58 - leap;
-		}
-		if (m === 3) {
-			return d - 89 - leap;
-		}
-		if (m === 4) {
-			return d - 119 - leap;
-		}
-		if (m === 5) {
-			return d - 150 - leap;
-		}
-		if (m === 6) {
-			return d - 180 - leap;
-		}
-		if (m === 7) {
-			return d - 211 - leap;
-		}
-		if (m === 8) {
-			return d - 242 - leap;
-		}
-		if (m === 9) {
-			return d - 272 - leap;
-		}
-		if (m === 10) {
-			return d - 303 - leap;
-		}
-		if (m === 11) {
-			return d - 333 - leap;
-		}
-		throw new $EvalError('Assertion failed: MonthFromTime returned an impossible value: ' + m);
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-15.9.1.12
-	MakeDay: function MakeDay(year, month, date) {
-		if (!$isFinite(year) || !$isFinite(month) || !$isFinite(date)) {
-			return NaN;
-		}
-		var y = this.ToInteger(year);
-		var m = this.ToInteger(month);
-		var dt = this.ToInteger(date);
-		var ym = y + $floor(m / 12);
-		var mn = mod(m, 12);
-		var t = $DateUTC(ym, mn, 1);
-		if (this.YearFromTime(t) !== ym || this.MonthFromTime(t) !== mn || this.DateFromTime(t) !== 1) {
-			return NaN;
-		}
-		return this.Day(t) + dt - 1;
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-15.9.1.13
-	MakeDate: function MakeDate(day, time) {
-		if (!$isFinite(day) || !$isFinite(time)) {
-			return NaN;
-		}
-		return (day * msPerDay) + time;
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-15.9.1.11
-	MakeTime: function MakeTime(hour, min, sec, ms) {
-		if (!$isFinite(hour) || !$isFinite(min) || !$isFinite(sec) || !$isFinite(ms)) {
-			return NaN;
-		}
-		var h = this.ToInteger(hour);
-		var m = this.ToInteger(min);
-		var s = this.ToInteger(sec);
-		var milli = this.ToInteger(ms);
-		var t = (h * msPerHour) + (m * msPerMinute) + (s * msPerSecond) + milli;
-		return t;
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-15.9.1.14
-	TimeClip: function TimeClip(time) {
-		if (!$isFinite(time) || $abs(time) > 8.64e15) {
-			return NaN;
-		}
-		return $Number(new $Date(this.ToNumber(time)));
-	},
-
-	// https://ecma-international.org/ecma-262/5.1/#sec-5.2
-	modulo: function modulo(x, y) {
-		return mod(x, y);
-	}
-};
-
-module.exports = ES5;
-
-
-/***/ }),
-
 /***/ "DzJC":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8829,7 +7095,7 @@ module.exports = function isPrimitive(value) {
 /***/ (function(module, exports) {
 
 function _iterableToArray(iter) {
-  if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
+  if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
 }
 
 module.exports = _iterableToArray;
@@ -9078,7 +7344,12 @@ exports.MODIFIER_KEY_NAMES = MODIFIER_KEY_NAMES;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+// ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "DatePicker", function() { return /* binding */ calendar_DatePicker; });
+__webpack_require__.d(__webpack_exports__, "createDatePicker", function() { return /* binding */ createDatePicker; });
 
 // EXTERNAL MODULE: external "React"
 var external_React_ = __webpack_require__("cDcd");
@@ -9115,6 +7386,10 @@ var inheritsLoose_default = /*#__PURE__*/__webpack_require__.n(inheritsLoose);
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/defineProperty.js
 var defineProperty = __webpack_require__("lSNA");
 var defineProperty_default = /*#__PURE__*/__webpack_require__.n(defineProperty);
+
+// EXTERNAL MODULE: ./node_modules/deep-equal/index.js
+var deep_equal = __webpack_require__("f66B");
+var deep_equal_default = /*#__PURE__*/__webpack_require__.n(deep_equal);
 
 // EXTERNAL MODULE: external "Popper"
 var external_Popper_ = __webpack_require__("27z4");
@@ -9237,6 +7512,7 @@ var setRef = function setRef(ref, node) {
     }
 };
 // CONCATENATED MODULE: ./node_modules/react-popper/lib/esm/Popper.js
+
 
 
 
@@ -9374,7 +7650,9 @@ function (_React$Component) {
 
   _proto.componentDidUpdate = function componentDidUpdate(prevProps, prevState) {
     // If the Popper.js options have changed, update the instance (destroy + create)
-    if (this.props.placement !== prevProps.placement || this.props.referenceElement !== prevProps.referenceElement || this.props.positionFixed !== prevProps.positionFixed || this.props.modifiers !== prevProps.modifiers) {
+    if (this.props.placement !== prevProps.placement || this.props.referenceElement !== prevProps.referenceElement || this.props.positionFixed !== prevProps.positionFixed || !deep_equal_default()(this.props.modifiers, prevProps.modifiers, {
+      strict: true
+    })) {
       // develop only check that modifiers isn't being updated needlessly
       if (false) {}
 
@@ -9455,18 +7733,16 @@ var react_dates = __webpack_require__("qNGI");
 var constants = __webpack_require__("5f7n");
 
 // CONCATENATED MODULE: ./assets/babel/calendar.jsx
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DatePicker", function() { return calendar_DatePicker; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createDatePicker", function() { return createDatePicker; });
-function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
-
 function _typeof(obj) {
-  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
+  "@babel/helpers - typeof";
+
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
     _typeof = function _typeof(obj) {
-      return _typeof2(obj);
+      return typeof obj;
     };
   } else {
     _typeof = function _typeof(obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
     };
   }
 
@@ -9513,29 +7789,6 @@ function _createClass(Constructor, protoProps, staticProps) {
   return Constructor;
 }
 
-function _possibleConstructorReturn(self, call) {
-  if (call && (_typeof(call) === "object" || typeof call === "function")) {
-    return call;
-  }
-
-  return _assertThisInitialized(self);
-}
-
-function _getPrototypeOf(o) {
-  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
-    return o.__proto__ || Object.getPrototypeOf(o);
-  };
-  return _getPrototypeOf(o);
-}
-
-function _assertThisInitialized(self) {
-  if (self === void 0) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-
-  return self;
-}
-
 function _inherits(subClass, superClass) {
   if (typeof superClass !== "function" && superClass !== null) {
     throw new TypeError("Super expression must either be null or a function");
@@ -9558,6 +7811,61 @@ function _setPrototypeOf(o, p) {
   };
 
   return _setPrototypeOf(o, p);
+}
+
+function _createSuper(Derived) {
+  var hasNativeReflectConstruct = _isNativeReflectConstruct();
+
+  return function _createSuperInternal() {
+    var Super = _getPrototypeOf(Derived),
+        result;
+
+    if (hasNativeReflectConstruct) {
+      var NewTarget = _getPrototypeOf(this).constructor;
+
+      result = Reflect.construct(Super, arguments, NewTarget);
+    } else {
+      result = Super.apply(this, arguments);
+    }
+
+    return _possibleConstructorReturn(this, result);
+  };
+}
+
+function _possibleConstructorReturn(self, call) {
+  if (call && (_typeof(call) === "object" || typeof call === "function")) {
+    return call;
+  }
+
+  return _assertThisInitialized(self);
+}
+
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return self;
+}
+
+function _isNativeReflectConstruct() {
+  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+  if (Reflect.construct.sham) return false;
+  if (typeof Proxy === "function") return true;
+
+  try {
+    Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function _getPrototypeOf(o) {
+  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+    return o.__proto__ || Object.getPrototypeOf(o);
+  };
+  return _getPrototypeOf(o);
 }
 
 
@@ -9608,17 +7916,17 @@ var defaultProps = {
   onChange: function onChange() {},
   onClose: function onClose() {}
 };
-var calendar_DatePicker =
-/*#__PURE__*/
-function (_React$Component) {
+var calendar_DatePicker = /*#__PURE__*/function (_React$Component) {
   _inherits(DatePicker, _React$Component);
+
+  var _super = _createSuper(DatePicker);
 
   function DatePicker(props) {
     var _this;
 
     _classCallCheck(this, DatePicker);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(DatePicker).call(this, props));
+    _this = _super.call(this, props);
 
     if (typeof window.Popper === 'undefined') {
       throw new TypeError('The Calendar require Popper.js (https://popper.js.org/)');
@@ -10008,9 +8316,9 @@ function (_React$Component) {
           behavior: 'flip'
         }
       };
-      return focusedInput && external_React_default.a.createElement(react_outside_click_handler_default.a, {
+      return focusedInput && /*#__PURE__*/external_React_default.a.createElement(react_outside_click_handler_default.a, {
         onOutsideClick: this.onOutsideClick
-      }, external_React_default.a.createElement(Popper, {
+      }, /*#__PURE__*/external_React_default.a.createElement(Popper, {
         placement: "bottom-end",
         referenceElement: this.getReferenceElement(focusedInput),
         modifiers: modifiers
@@ -10019,16 +8327,16 @@ function (_React$Component) {
             style = _ref2.style,
             placement = _ref2.placement,
             arrowProps = _ref2.arrowProps;
-        return external_React_default.a.createElement("div", {
+        return /*#__PURE__*/external_React_default.a.createElement("div", {
           className: "DayPickerPopper",
           ref: ref,
           style: style,
           "data-placement": placement
-        }, external_React_default.a.createElement("div", {
+        }, /*#__PURE__*/external_React_default.a.createElement("div", {
           className: "DayPickerPopper__Arrow",
           ref: arrowProps.ref,
           style: arrowProps.style
-        }), external_React_default.a.createElement(react_dates["DayPickerRangeController"], {
+        }), /*#__PURE__*/external_React_default.a.createElement(react_dates["DayPickerRangeController"], {
           isRTL: isRTL,
           endDate: endDate,
           startDate: startDate,
@@ -10057,7 +8365,7 @@ function (_React$Component) {
 calendar_DatePicker.defaultProps = defaultProps;
 function createDatePicker(searchform, props) {
   var root = searchform.getRootElement().querySelector('.abrs-searchbox__dates');
-  return external_ReactDOM_default.a.render(external_React_default.a.createElement(calendar_DatePicker, _extends({
+  return external_ReactDOM_default.a.render( /*#__PURE__*/external_React_default.a.createElement(calendar_DatePicker, _extends({
     form: searchform
   }, props)), root);
 }
@@ -10073,6 +8381,66 @@ function createDatePicker(searchform, props) {
 
 // eslint-disable-next-line import/no-unresolved
 __webpack_require__("H24B");
+
+
+/***/ }),
+
+/***/ "GPGZ":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var has = __webpack_require__("oNNP");
+
+var GetIntrinsic = __webpack_require__("6ayh");
+
+var $TypeError = GetIntrinsic('%TypeError%');
+
+var Type = __webpack_require__("RIFg");
+var ToBoolean = __webpack_require__("XnxE");
+var IsCallable = __webpack_require__("hemD");
+
+// https://ecma-international.org/ecma-262/5.1/#sec-8.10.5
+
+module.exports = function ToPropertyDescriptor(Obj) {
+	if (Type(Obj) !== 'Object') {
+		throw new $TypeError('ToPropertyDescriptor requires an object');
+	}
+
+	var desc = {};
+	if (has(Obj, 'enumerable')) {
+		desc['[[Enumerable]]'] = ToBoolean(Obj.enumerable);
+	}
+	if (has(Obj, 'configurable')) {
+		desc['[[Configurable]]'] = ToBoolean(Obj.configurable);
+	}
+	if (has(Obj, 'value')) {
+		desc['[[Value]]'] = Obj.value;
+	}
+	if (has(Obj, 'writable')) {
+		desc['[[Writable]]'] = ToBoolean(Obj.writable);
+	}
+	if (has(Obj, 'get')) {
+		var getter = Obj.get;
+		if (typeof getter !== 'undefined' && !IsCallable(getter)) {
+			throw new TypeError('getter must be a function');
+		}
+		desc['[[Get]]'] = getter;
+	}
+	if (has(Obj, 'set')) {
+		var setter = Obj.set;
+		if (typeof setter !== 'undefined' && !IsCallable(setter)) {
+			throw new $TypeError('setter must be a function');
+		}
+		desc['[[Set]]'] = setter;
+	}
+
+	if ((has(desc, '[[Get]]') || has(desc, '[[Set]]')) && (has(desc, '[[Value]]') || has(desc, '[[Writable]]'))) {
+		throw new $TypeError('Invalid property descriptor. Cannot both specify accessors and a value or writable attribute');
+	}
+	return desc;
+};
 
 
 /***/ }),
@@ -10160,6 +8528,40 @@ var _registerCSSInterfaceWithDefaultTheme = _interopRequireDefault(__webpack_req
 
 /***/ }),
 
+/***/ "HH6Z":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var supportsDescriptors = __webpack_require__("82c2").supportsDescriptors;
+var getPolyfill = __webpack_require__("V+xs");
+var gOPD = Object.getOwnPropertyDescriptor;
+var defineProperty = Object.defineProperty;
+var TypeErr = TypeError;
+var getProto = Object.getPrototypeOf;
+var regex = /a/;
+
+module.exports = function shimFlags() {
+	if (!supportsDescriptors || !getProto) {
+		throw new TypeErr('RegExp.prototype.flags requires a true ES5 environment that supports property descriptors');
+	}
+	var polyfill = getPolyfill();
+	var proto = getProto(regex);
+	var descriptor = gOPD(proto, 'flags');
+	if (!descriptor || descriptor.get !== polyfill) {
+		defineProperty(proto, 'flags', {
+			configurable: true,
+			enumerable: false,
+			get: polyfill
+		});
+	}
+	return polyfill;
+};
+
+
+/***/ }),
+
 /***/ "HUEL":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10205,7 +8607,7 @@ var _constants = __webpack_require__("Fv1B");
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var propTypes =  false ? undefined : {};
 var defaultProps = {
@@ -10450,6 +8852,82 @@ exports['default'] = _propTypes2['default'].oneOf((0, _object2['default'])(_cons
 
 /***/ }),
 
+/***/ "HdHG":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var GetIntrinsic = __webpack_require__("6ayh");
+
+var $gOPD = GetIntrinsic('%Object.getOwnPropertyDescriptor%');
+if ($gOPD) {
+	try {
+		$gOPD([], 'length');
+	} catch (e) {
+		// IE 8 has a broken gOPD
+		$gOPD = null;
+	}
+}
+
+module.exports = $gOPD;
+
+
+/***/ }),
+
+/***/ "HgV8":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var GetIntrinsic = __webpack_require__("6ayh");
+
+var $TypeError = GetIntrinsic('%TypeError%');
+
+var DefineOwnProperty = __webpack_require__("Km29");
+
+var FromPropertyDescriptor = __webpack_require__("7IBh");
+var OrdinaryGetOwnProperty = __webpack_require__("fyQZ");
+var IsDataDescriptor = __webpack_require__("hNTQ");
+var IsExtensible = __webpack_require__("NjaY");
+var IsPropertyKey = __webpack_require__("rCmP");
+var SameValue = __webpack_require__("9sGd");
+var Type = __webpack_require__("RIFg");
+
+// https://www.ecma-international.org/ecma-262/6.0/#sec-createdataproperty
+
+module.exports = function CreateDataProperty(O, P, V) {
+	if (Type(O) !== 'Object') {
+		throw new $TypeError('Assertion failed: Type(O) is not Object');
+	}
+	if (!IsPropertyKey(P)) {
+		throw new $TypeError('Assertion failed: IsPropertyKey(P) is not true');
+	}
+	var oldDesc = OrdinaryGetOwnProperty(O, P);
+	var extensible = !oldDesc || IsExtensible(O);
+	var immutable = oldDesc && (!oldDesc['[[Writable]]'] || !oldDesc['[[Configurable]]']);
+	if (immutable || !extensible) {
+		return false;
+	}
+	return DefineOwnProperty(
+		IsDataDescriptor,
+		SameValue,
+		FromPropertyDescriptor,
+		O,
+		P,
+		{
+			'[[Configurable]]': true,
+			'[[Enumerable]]': true,
+			'[[Value]]': V,
+			'[[Writable]]': true
+		}
+	);
+};
+
+
+/***/ }),
+
 /***/ "Hi9J":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10457,13 +8935,13 @@ exports['default'] = _propTypes2['default'].oneOf((0, _object2['default'])(_cons
 
 
 var define = __webpack_require__("82c2");
-var bind = __webpack_require__("D3zA");
+var callBind = __webpack_require__("RLeF");
 
 var implementation = __webpack_require__("l4Qr");
 var getPolyfill = __webpack_require__("gaAG");
 var shim = __webpack_require__("NUgV");
 
-var bound = bind.call(Function.call, implementation);
+var bound = callBind(implementation);
 
 define(bound, {
 	getPolyfill: getPolyfill,
@@ -10505,6 +8983,23 @@ module.exports = Number.isNaN || function isNaN(a) {
 
 
 var fnToStr = Function.prototype.toString;
+var reflectApply = typeof Reflect === 'object' && Reflect !== null && Reflect.apply;
+var badArrayLike;
+var isCallableMarker;
+if (typeof reflectApply === 'function' && typeof Object.defineProperty === 'function') {
+	try {
+		badArrayLike = Object.defineProperty({}, 'length', {
+			get: function () {
+				throw isCallableMarker;
+			}
+		});
+		isCallableMarker = {};
+	} catch (_) {
+		reflectApply = null;
+	}
+} else {
+	reflectApply = null;
+}
 
 var constructorRegex = /^\s*class\b/;
 var isES6ClassFn = function isES6ClassFunction(value) {
@@ -10530,15 +9025,27 @@ var fnClass = '[object Function]';
 var genClass = '[object GeneratorFunction]';
 var hasToStringTag = typeof Symbol === 'function' && typeof Symbol.toStringTag === 'symbol';
 
-module.exports = function isCallable(value) {
-	if (!value) { return false; }
-	if (typeof value !== 'function' && typeof value !== 'object') { return false; }
-	if (typeof value === 'function' && !value.prototype) { return true; }
-	if (hasToStringTag) { return tryFunctionObject(value); }
-	if (isES6ClassFn(value)) { return false; }
-	var strClass = toStr.call(value);
-	return strClass === fnClass || strClass === genClass;
-};
+module.exports = reflectApply
+	? function isCallable(value) {
+		if (!value) { return false; }
+		if (typeof value !== 'function' && typeof value !== 'object') { return false; }
+		if (typeof value === 'function' && !value.prototype) { return true; }
+		try {
+			reflectApply(value, null, badArrayLike);
+		} catch (e) {
+			if (e !== isCallableMarker) { return false; }
+		}
+		return !isES6ClassFn(value);
+	}
+	: function isCallable(value) {
+		if (!value) { return false; }
+		if (typeof value !== 'function' && typeof value !== 'object') { return false; }
+		if (typeof value === 'function' && !value.prototype) { return true; }
+		if (hasToStringTag) { return tryFunctionObject(value); }
+		if (isES6ClassFn(value)) { return false; }
+		var strClass = toStr.call(value);
+		return strClass === fnClass || strClass === genClass;
+	};
 
 
 /***/ }),
@@ -10606,17 +9113,24 @@ function isDayVisible(day, month, numberOfMonths, enableOutsideDays) {
 
 /***/ }),
 
+/***/ "Ii9V":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = __webpack_require__("TVLE");
+
+
+/***/ }),
+
 /***/ "Ijbi":
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayLikeToArray = __webpack_require__("WkPL");
 
 function _arrayWithoutHoles(arr) {
-  if (Array.isArray(arr)) {
-    for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {
-      arr2[i] = arr[i];
-    }
-
-    return arr2;
-  }
+  if (Array.isArray(arr)) return arrayLikeToArray(arr);
 }
 
 module.exports = _arrayWithoutHoles;
@@ -10630,10 +9144,12 @@ var arrayWithHoles = __webpack_require__("wTVA");
 
 var iterableToArrayLimit = __webpack_require__("m0LI");
 
+var unsupportedIterableToArray = __webpack_require__("ZhPi");
+
 var nonIterableRest = __webpack_require__("wkBT");
 
 function _slicedToArray(arr, i) {
-  return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || nonIterableRest();
+  return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || unsupportedIterableToArray(arr, i) || nonIterableRest();
 }
 
 module.exports = _slicedToArray;
@@ -10682,26 +9198,6 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ "JAz1":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var bind = __webpack_require__("D3zA");
-var replace = bind.call(Function.call, String.prototype.replace);
-
-/* eslint-disable no-control-regex */
-var rightWhitespace = /[\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF]*$/;
-/* eslint-enable no-control-regex */
-
-module.exports = function trimRight() {
-	return replace(this, rightWhitespace, '');
-};
-
-
-/***/ }),
-
 /***/ "JORM":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10736,6 +9232,14 @@ var functionsHaveNames = function functionsHaveNames() {
 };
 
 var gOPD = Object.getOwnPropertyDescriptor;
+if (gOPD) {
+	try {
+		gOPD([], 'length');
+	} catch (e) {
+		// IE 8 has a broken gOPD
+		gOPD = null;
+	}
+}
 
 functionsHaveNames.functionsHaveConfigurableNames = function functionsHaveConfigurableNames() {
 	return functionsHaveNames() && gOPD && !!gOPD(function () {}, 'name').configurable;
@@ -10769,10 +9273,11 @@ var hasWeakSet = typeof WeakSet === 'function' && WeakSet.prototype;
 var weakSetHas = hasWeakSet ? WeakSet.prototype.has : null;
 var booleanValueOf = Boolean.prototype.valueOf;
 var objectToString = Object.prototype.toString;
+var functionToString = Function.prototype.toString;
 var match = String.prototype.match;
 var bigIntValueOf = typeof BigInt === 'function' ? BigInt.prototype.valueOf : null;
 
-var inspectCustom = __webpack_require__(12).custom;
+var inspectCustom = __webpack_require__(13).custom;
 var inspectSymbol = inspectCustom && isSymbol(inspectCustom) ? inspectCustom : null;
 
 module.exports = function inspect_(obj, options, depth, seen) {
@@ -10780,6 +9285,27 @@ module.exports = function inspect_(obj, options, depth, seen) {
 
     if (has(opts, 'quoteStyle') && (opts.quoteStyle !== 'single' && opts.quoteStyle !== 'double')) {
         throw new TypeError('option "quoteStyle" must be "single" or "double"');
+    }
+    if (
+        has(opts, 'maxStringLength') && (typeof opts.maxStringLength === 'number'
+            ? opts.maxStringLength < 0 && opts.maxStringLength !== Infinity
+            : opts.maxStringLength !== null
+        )
+    ) {
+        throw new TypeError('option "maxStringLength", if provided, must be a positive integer, Infinity, or `null`');
+    }
+    var customInspect = has(opts, 'customInspect') ? opts.customInspect : true;
+    if (typeof customInspect !== 'boolean') {
+        throw new TypeError('option "customInspect", if provided, must be `true` or `false`');
+    }
+
+    if (
+        has(opts, 'indent')
+        && opts.indent !== null
+        && opts.indent !== '\t'
+        && !(parseInt(opts.indent, 10) === opts.indent && opts.indent > 0)
+    ) {
+        throw new TypeError('options "indent" must be "\\t", an integer > 0, or `null`');
     }
 
     if (typeof obj === 'undefined') {
@@ -10808,8 +9334,10 @@ module.exports = function inspect_(obj, options, depth, seen) {
     var maxDepth = typeof opts.depth === 'undefined' ? 5 : opts.depth;
     if (typeof depth === 'undefined') { depth = 0; }
     if (depth >= maxDepth && maxDepth > 0 && typeof obj === 'object') {
-        return '[Object]';
+        return isArray(obj) ? '[Array]' : '[Object]';
     }
+
+    var indent = getIndent(opts, depth);
 
     if (typeof seen === 'undefined') {
         seen = [];
@@ -10817,17 +9345,26 @@ module.exports = function inspect_(obj, options, depth, seen) {
         return '[Circular]';
     }
 
-    function inspect(value, from) {
+    function inspect(value, from, noIndent) {
         if (from) {
             seen = seen.slice();
             seen.push(from);
+        }
+        if (noIndent) {
+            var newOpts = {
+                depth: opts.depth
+            };
+            if (has(opts, 'quoteStyle')) {
+                newOpts.quoteStyle = opts.quoteStyle;
+            }
+            return inspect_(value, newOpts, depth + 1, seen);
         }
         return inspect_(value, opts, depth + 1, seen);
     }
 
     if (typeof obj === 'function') {
         var name = nameOf(obj);
-        return '[Function' + (name ? ': ' + name : '') + ']';
+        return '[Function' + (name ? ': ' + name : ' (anonymous)') + ']';
     }
     if (isSymbol(obj)) {
         var symString = Symbol.prototype.toString.call(obj);
@@ -10846,14 +9383,18 @@ module.exports = function inspect_(obj, options, depth, seen) {
     }
     if (isArray(obj)) {
         if (obj.length === 0) { return '[]'; }
-        return '[ ' + arrObjKeys(obj, inspect).join(', ') + ' ]';
+        var xs = arrObjKeys(obj, inspect);
+        if (indent && !singleLineValues(xs)) {
+            return '[' + indentedJoin(xs, indent) + ']';
+        }
+        return '[ ' + xs.join(', ') + ' ]';
     }
     if (isError(obj)) {
         var parts = arrObjKeys(obj, inspect);
         if (parts.length === 0) { return '[' + String(obj) + ']'; }
         return '{ [' + String(obj) + '] ' + parts.join(', ') + ' }';
     }
-    if (typeof obj === 'object') {
+    if (typeof obj === 'object' && customInspect) {
         if (inspectSymbol && typeof obj[inspectSymbol] === 'function') {
             return obj[inspectSymbol]();
         } else if (typeof obj.inspect === 'function') {
@@ -10863,16 +9404,16 @@ module.exports = function inspect_(obj, options, depth, seen) {
     if (isMap(obj)) {
         var mapParts = [];
         mapForEach.call(obj, function (value, key) {
-            mapParts.push(inspect(key, obj) + ' => ' + inspect(value, obj));
+            mapParts.push(inspect(key, obj, true) + ' => ' + inspect(value, obj));
         });
-        return collectionOf('Map', mapSize.call(obj), mapParts);
+        return collectionOf('Map', mapSize.call(obj), mapParts, indent);
     }
     if (isSet(obj)) {
         var setParts = [];
         setForEach.call(obj, function (value) {
             setParts.push(inspect(value, obj));
         });
-        return collectionOf('Set', setSize.call(obj), setParts);
+        return collectionOf('Set', setSize.call(obj), setParts, indent);
     }
     if (isWeakMap(obj)) {
         return weakCollectionOf('WeakMap');
@@ -10893,9 +9434,12 @@ module.exports = function inspect_(obj, options, depth, seen) {
         return markBoxed(inspect(String(obj)));
     }
     if (!isDate(obj) && !isRegExp(obj)) {
-        var xs = arrObjKeys(obj, inspect);
-        if (xs.length === 0) { return '{}'; }
-        return '{ ' + xs.join(', ') + ' }';
+        var ys = arrObjKeys(obj, inspect);
+        if (ys.length === 0) { return '{}'; }
+        if (indent) {
+            return '{' + indentedJoin(ys, indent) + '}';
+        }
+        return '{ ' + ys.join(', ') + ' }';
     }
     return String(obj);
 };
@@ -10930,7 +9474,7 @@ function toStr(obj) {
 
 function nameOf(f) {
     if (f.name) { return f.name; }
-    var m = match.call(f, /^function\s*([\w$]+)/);
+    var m = match.call(functionToString.call(f), /^function\s*([\w$]+)/);
     if (m) { return m[1]; }
     return null;
 }
@@ -11016,6 +9560,11 @@ function isElement(x) {
 }
 
 function inspectString(str, opts) {
+    if (str.length > opts.maxStringLength) {
+        var remaining = str.length - opts.maxStringLength;
+        var trailer = '... ' + remaining + ' more character' + (remaining > 1 ? 's' : '');
+        return inspectString(str.slice(0, opts.maxStringLength), opts) + trailer;
+    }
     // eslint-disable-next-line no-control-regex
     var s = str.replace(/(['\\])/g, '\\$1').replace(/[\x00-\x1f]/g, lowbyte);
     return wrapQuotes(s, 'single', opts);
@@ -11038,8 +9587,39 @@ function weakCollectionOf(type) {
     return type + ' { ? }';
 }
 
-function collectionOf(type, size, entries) {
-    return type + ' (' + size + ') {' + entries.join(', ') + '}';
+function collectionOf(type, size, entries, indent) {
+    var joinedEntries = indent ? indentedJoin(entries, indent) : entries.join(', ');
+    return type + ' (' + size + ') {' + joinedEntries + '}';
+}
+
+function singleLineValues(xs) {
+    for (var i = 0; i < xs.length; i++) {
+        if (indexOf(xs[i], '\n') >= 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+function getIndent(opts, depth) {
+    var baseIndent;
+    if (opts.indent === '\t') {
+        baseIndent = '\t';
+    } else if (typeof opts.indent === 'number' && opts.indent > 0) {
+        baseIndent = Array(opts.indent + 1).join(' ');
+    } else {
+        return null;
+    }
+    return {
+        base: baseIndent,
+        prev: Array(depth + 1).join(baseIndent)
+    };
+}
+
+function indentedJoin(xs, indent) {
+    if (xs.length === 0) { return ''; }
+    var lineJoiner = '\n' + indent.prev + indent.base;
+    return lineJoiner + xs.join(',' + lineJoiner) + '\n' + indent.prev;
 }
 
 function arrObjKeys(obj, inspect) {
@@ -11118,6 +9698,59 @@ module.exports = function callBoundIntrinsic(name, allowMissing) {
 
 /***/ }),
 
+/***/ "Km29":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var GetIntrinsic = __webpack_require__("6ayh");
+
+var $defineProperty = GetIntrinsic('%Object.defineProperty%', true);
+
+if ($defineProperty) {
+	try {
+		$defineProperty({}, 'a', { value: 1 });
+	} catch (e) {
+		// IE 8 has a broken defineProperty
+		$defineProperty = null;
+	}
+}
+
+var callBound = __webpack_require__("Khql");
+
+var $isEnumerable = callBound('Object.prototype.propertyIsEnumerable');
+
+// eslint-disable-next-line max-params
+module.exports = function DefineOwnProperty(IsDataDescriptor, SameValue, FromPropertyDescriptor, O, P, desc) {
+	if (!$defineProperty) {
+		if (!IsDataDescriptor(desc)) {
+			// ES3 does not support getters/setters
+			return false;
+		}
+		if (!desc['[[Configurable]]'] || !desc['[[Writable]]']) {
+			return false;
+		}
+
+		// fallback for ES3
+		if (P in O && $isEnumerable(O, P) !== !!desc['[[Enumerable]]']) {
+			// a non-enumerable existing property
+			return false;
+		}
+
+		// property does not exist at all, or exists but is enumerable
+		var V = desc['[[Value]]'];
+		// eslint-disable-next-line no-param-reassign
+		O[P] = V; // will use [[Define]]
+		return SameValue(O[P], V);
+	}
+	$defineProperty(O, P, FromPropertyDescriptor(desc));
+	return true;
+};
+
+
+/***/ }),
+
 /***/ "Kz5y":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11178,109 +9811,6 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ "Lxf3":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var toStr = Object.prototype.toString;
-
-var isPrimitive = __webpack_require__("Teho");
-
-var isCallable = __webpack_require__("IdCN");
-
-// http://ecma-international.org/ecma-262/5.1/#sec-8.12.8
-var ES5internalSlots = {
-	'[[DefaultValue]]': function (O) {
-		var actualHint;
-		if (arguments.length > 1) {
-			actualHint = arguments[1];
-		} else {
-			actualHint = toStr.call(O) === '[object Date]' ? String : Number;
-		}
-
-		if (actualHint === String || actualHint === Number) {
-			var methods = actualHint === String ? ['toString', 'valueOf'] : ['valueOf', 'toString'];
-			var value, i;
-			for (i = 0; i < methods.length; ++i) {
-				if (isCallable(O[methods[i]])) {
-					value = O[methods[i]]();
-					if (isPrimitive(value)) {
-						return value;
-					}
-				}
-			}
-			throw new TypeError('No default value');
-		}
-		throw new TypeError('invalid [[DefaultValue]] hint supplied');
-	}
-};
-
-// http://ecma-international.org/ecma-262/5.1/#sec-9.1
-module.exports = function ToPrimitive(input) {
-	if (isPrimitive(input)) {
-		return input;
-	}
-	if (arguments.length > 1) {
-		return ES5internalSlots['[[DefaultValue]]'](input, arguments[1]);
-	}
-	return ES5internalSlots['[[DefaultValue]]'](input);
-};
-
-
-/***/ }),
-
-/***/ "M1+t":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var GetIntrinsic = __webpack_require__("6ayh");
-
-var originalSetProto = GetIntrinsic('%Object.setPrototypeOf%', true);
-var $ArrayProto = GetIntrinsic('%Array.prototype%');
-
-module.exports = originalSetProto || (
-	// eslint-disable-next-line no-proto, no-negated-condition
-	[].__proto__ !== $ArrayProto
-		? null
-		: function (O, proto) {
-			O.__proto__ = proto; // eslint-disable-line no-proto
-			return O;
-		}
-);
-
-
-/***/ }),
-
-/***/ "N/6a":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var bind = __webpack_require__("D3zA");
-var define = __webpack_require__("82c2");
-
-var implementation = __webpack_require__("JAz1");
-var getPolyfill = __webpack_require__("c9iI");
-var shim = __webpack_require__("QbAi");
-
-var bound = bind.call(Function.call, getPolyfill());
-
-define(bound, {
-	getPolyfill: getPolyfill,
-	implementation: implementation,
-	shim: shim
-});
-
-module.exports = bound;
-
-
-/***/ }),
-
 /***/ "N3k4":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11330,7 +9860,7 @@ var _constants = __webpack_require__("Fv1B");
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var propTypes =  false ? undefined : {};
 var defaultProps = {
@@ -11650,28 +10180,23 @@ exports["default"] = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = shallowEqual;
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _objectIs = _interopRequireDefault(__webpack_require__("bbcx"));
 
-exports['default'] = shallowEqual;
+var _has = _interopRequireDefault(__webpack_require__("oNNP"));
 
-var _objectIs = __webpack_require__("bbcx");
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var _objectIs2 = _interopRequireDefault(_objectIs);
-
-var _has = __webpack_require__("oNNP");
-
-var _has2 = _interopRequireDefault(_has);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 // adapted from https://github.com/facebook/react/blob/144328fe81719e916b946e22660479e31561bb0b/packages/shared/shallowEqual.js#L36-L68
 function shallowEqual(objA, objB) {
-  if ((0, _objectIs2['default'])(objA, objB)) {
+  if ((0, _objectIs["default"])(objA, objB)) {
     return true;
   }
 
-  if (!objA || !objB || (typeof objA === 'undefined' ? 'undefined' : _typeof(objA)) !== 'object' || (typeof objB === 'undefined' ? 'undefined' : _typeof(objB)) !== 'object') {
+  if (!objA || !objB || _typeof(objA) !== 'object' || _typeof(objB) !== 'object') {
     return false;
   }
 
@@ -11683,18 +10208,17 @@ function shallowEqual(objA, objB) {
   }
 
   keysA.sort();
-  keysB.sort();
+  keysB.sort(); // Test for A's keys different from B.
 
-  // Test for A's keys different from B.
   for (var i = 0; i < keysA.length; i += 1) {
-    if (!(0, _has2['default'])(objB, keysA[i]) || !(0, _objectIs2['default'])(objA[keysA[i]], objB[keysA[i]])) {
+    if (!(0, _has["default"])(objB, keysA[i]) || !(0, _objectIs["default"])(objA[keysA[i]], objB[keysA[i]])) {
       return false;
     }
   }
 
   return true;
 }
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL3NyYy9pbmRleC5qcyJdLCJuYW1lcyI6WyJzaGFsbG93RXF1YWwiLCJvYmpBIiwib2JqQiIsImtleXNBIiwiT2JqZWN0Iiwia2V5cyIsImtleXNCIiwibGVuZ3RoIiwic29ydCIsImkiXSwibWFwcGluZ3MiOiI7Ozs7Ozs7O3FCQUl3QkEsWTs7QUFKeEI7Ozs7QUFDQTs7Ozs7O0FBRUE7QUFDZSxTQUFTQSxZQUFULENBQXNCQyxJQUF0QixFQUE0QkMsSUFBNUIsRUFBa0M7QUFDL0MsTUFBSSwyQkFBR0QsSUFBSCxFQUFTQyxJQUFULENBQUosRUFBb0I7QUFDbEIsV0FBTyxJQUFQO0FBQ0Q7O0FBRUQsTUFBSSxDQUFDRCxJQUFELElBQVMsQ0FBQ0MsSUFBVixJQUFrQixRQUFPRCxJQUFQLHlDQUFPQSxJQUFQLE9BQWdCLFFBQWxDLElBQThDLFFBQU9DLElBQVAseUNBQU9BLElBQVAsT0FBZ0IsUUFBbEUsRUFBNEU7QUFDMUUsV0FBTyxLQUFQO0FBQ0Q7O0FBRUQsTUFBTUMsUUFBUUMsT0FBT0MsSUFBUCxDQUFZSixJQUFaLENBQWQ7QUFDQSxNQUFNSyxRQUFRRixPQUFPQyxJQUFQLENBQVlILElBQVosQ0FBZDs7QUFFQSxNQUFJQyxNQUFNSSxNQUFOLEtBQWlCRCxNQUFNQyxNQUEzQixFQUFtQztBQUNqQyxXQUFPLEtBQVA7QUFDRDs7QUFFREosUUFBTUssSUFBTjtBQUNBRixRQUFNRSxJQUFOOztBQUVBO0FBQ0EsT0FBSyxJQUFJQyxJQUFJLENBQWIsRUFBZ0JBLElBQUlOLE1BQU1JLE1BQTFCLEVBQWtDRSxLQUFLLENBQXZDLEVBQTBDO0FBQ3hDLFFBQUksQ0FBQyxzQkFBSVAsSUFBSixFQUFVQyxNQUFNTSxDQUFOLENBQVYsQ0FBRCxJQUF3QixDQUFDLDJCQUFHUixLQUFLRSxNQUFNTSxDQUFOLENBQUwsQ0FBSCxFQUFtQlAsS0FBS0MsTUFBTU0sQ0FBTixDQUFMLENBQW5CLENBQTdCLEVBQWlFO0FBQy9ELGFBQU8sS0FBUDtBQUNEO0FBQ0Y7O0FBRUQsU0FBTyxJQUFQO0FBQ0QiLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgaXMgZnJvbSAnb2JqZWN0LWlzJztcbmltcG9ydCBoYXMgZnJvbSAnaGFzJztcblxuLy8gYWRhcHRlZCBmcm9tIGh0dHBzOi8vZ2l0aHViLmNvbS9mYWNlYm9vay9yZWFjdC9ibG9iLzE0NDMyOGZlODE3MTllOTE2Yjk0NmUyMjY2MDQ3OWUzMTU2MWJiMGIvcGFja2FnZXMvc2hhcmVkL3NoYWxsb3dFcXVhbC5qcyNMMzYtTDY4XG5leHBvcnQgZGVmYXVsdCBmdW5jdGlvbiBzaGFsbG93RXF1YWwob2JqQSwgb2JqQikge1xuICBpZiAoaXMob2JqQSwgb2JqQikpIHtcbiAgICByZXR1cm4gdHJ1ZTtcbiAgfVxuXG4gIGlmICghb2JqQSB8fCAhb2JqQiB8fCB0eXBlb2Ygb2JqQSAhPT0gJ29iamVjdCcgfHwgdHlwZW9mIG9iakIgIT09ICdvYmplY3QnKSB7XG4gICAgcmV0dXJuIGZhbHNlO1xuICB9XG5cbiAgY29uc3Qga2V5c0EgPSBPYmplY3Qua2V5cyhvYmpBKTtcbiAgY29uc3Qga2V5c0IgPSBPYmplY3Qua2V5cyhvYmpCKTtcblxuICBpZiAoa2V5c0EubGVuZ3RoICE9PSBrZXlzQi5sZW5ndGgpIHtcbiAgICByZXR1cm4gZmFsc2U7XG4gIH1cblxuICBrZXlzQS5zb3J0KCk7XG4gIGtleXNCLnNvcnQoKTtcblxuICAvLyBUZXN0IGZvciBBJ3Mga2V5cyBkaWZmZXJlbnQgZnJvbSBCLlxuICBmb3IgKGxldCBpID0gMDsgaSA8IGtleXNBLmxlbmd0aDsgaSArPSAxKSB7XG4gICAgaWYgKCFoYXMob2JqQiwga2V5c0FbaV0pIHx8ICFpcyhvYmpBW2tleXNBW2ldXSwgb2JqQltrZXlzQVtpXV0pKSB7XG4gICAgICByZXR1cm4gZmFsc2U7XG4gICAgfVxuICB9XG5cbiAgcmV0dXJuIHRydWU7XG59XG4iXX0=
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL3NyYy9pbmRleC5qcyJdLCJuYW1lcyI6WyJzaGFsbG93RXF1YWwiLCJvYmpBIiwib2JqQiIsImtleXNBIiwiT2JqZWN0Iiwia2V5cyIsImtleXNCIiwibGVuZ3RoIiwic29ydCIsImkiXSwibWFwcGluZ3MiOiI7Ozs7Ozs7QUFBQTs7QUFDQTs7Ozs7O0FBRUE7QUFDZSxTQUFTQSxZQUFULENBQXNCQyxJQUF0QixFQUE0QkMsSUFBNUIsRUFBa0M7QUFDL0MsTUFBSSwwQkFBR0QsSUFBSCxFQUFTQyxJQUFULENBQUosRUFBb0I7QUFDbEIsV0FBTyxJQUFQO0FBQ0Q7O0FBRUQsTUFBSSxDQUFDRCxJQUFELElBQVMsQ0FBQ0MsSUFBVixJQUFrQixRQUFPRCxJQUFQLE1BQWdCLFFBQWxDLElBQThDLFFBQU9DLElBQVAsTUFBZ0IsUUFBbEUsRUFBNEU7QUFDMUUsV0FBTyxLQUFQO0FBQ0Q7O0FBRUQsTUFBTUMsS0FBSyxHQUFHQyxNQUFNLENBQUNDLElBQVAsQ0FBWUosSUFBWixDQUFkO0FBQ0EsTUFBTUssS0FBSyxHQUFHRixNQUFNLENBQUNDLElBQVAsQ0FBWUgsSUFBWixDQUFkOztBQUVBLE1BQUlDLEtBQUssQ0FBQ0ksTUFBTixLQUFpQkQsS0FBSyxDQUFDQyxNQUEzQixFQUFtQztBQUNqQyxXQUFPLEtBQVA7QUFDRDs7QUFFREosRUFBQUEsS0FBSyxDQUFDSyxJQUFOO0FBQ0FGLEVBQUFBLEtBQUssQ0FBQ0UsSUFBTixHQWpCK0MsQ0FtQi9DOztBQUNBLE9BQUssSUFBSUMsQ0FBQyxHQUFHLENBQWIsRUFBZ0JBLENBQUMsR0FBR04sS0FBSyxDQUFDSSxNQUExQixFQUFrQ0UsQ0FBQyxJQUFJLENBQXZDLEVBQTBDO0FBQ3hDLFFBQUksQ0FBQyxxQkFBSVAsSUFBSixFQUFVQyxLQUFLLENBQUNNLENBQUQsQ0FBZixDQUFELElBQXdCLENBQUMsMEJBQUdSLElBQUksQ0FBQ0UsS0FBSyxDQUFDTSxDQUFELENBQU4sQ0FBUCxFQUFtQlAsSUFBSSxDQUFDQyxLQUFLLENBQUNNLENBQUQsQ0FBTixDQUF2QixDQUE3QixFQUFpRTtBQUMvRCxhQUFPLEtBQVA7QUFDRDtBQUNGOztBQUVELFNBQU8sSUFBUDtBQUNEIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IGlzIGZyb20gJ29iamVjdC1pcyc7XG5pbXBvcnQgaGFzIGZyb20gJ2hhcyc7XG5cbi8vIGFkYXB0ZWQgZnJvbSBodHRwczovL2dpdGh1Yi5jb20vZmFjZWJvb2svcmVhY3QvYmxvYi8xNDQzMjhmZTgxNzE5ZTkxNmI5NDZlMjI2NjA0NzllMzE1NjFiYjBiL3BhY2thZ2VzL3NoYXJlZC9zaGFsbG93RXF1YWwuanMjTDM2LUw2OFxuZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gc2hhbGxvd0VxdWFsKG9iakEsIG9iakIpIHtcbiAgaWYgKGlzKG9iakEsIG9iakIpKSB7XG4gICAgcmV0dXJuIHRydWU7XG4gIH1cblxuICBpZiAoIW9iakEgfHwgIW9iakIgfHwgdHlwZW9mIG9iakEgIT09ICdvYmplY3QnIHx8IHR5cGVvZiBvYmpCICE9PSAnb2JqZWN0Jykge1xuICAgIHJldHVybiBmYWxzZTtcbiAgfVxuXG4gIGNvbnN0IGtleXNBID0gT2JqZWN0LmtleXMob2JqQSk7XG4gIGNvbnN0IGtleXNCID0gT2JqZWN0LmtleXMob2JqQik7XG5cbiAgaWYgKGtleXNBLmxlbmd0aCAhPT0ga2V5c0IubGVuZ3RoKSB7XG4gICAgcmV0dXJuIGZhbHNlO1xuICB9XG5cbiAga2V5c0Euc29ydCgpO1xuICBrZXlzQi5zb3J0KCk7XG5cbiAgLy8gVGVzdCBmb3IgQSdzIGtleXMgZGlmZmVyZW50IGZyb20gQi5cbiAgZm9yIChsZXQgaSA9IDA7IGkgPCBrZXlzQS5sZW5ndGg7IGkgKz0gMSkge1xuICAgIGlmICghaGFzKG9iakIsIGtleXNBW2ldKSB8fCAhaXMob2JqQVtrZXlzQVtpXV0sIG9iakJba2V5c0FbaV1dKSkge1xuICAgICAgcmV0dXJuIGZhbHNlO1xuICAgIH1cbiAgfVxuXG4gIHJldHVybiB0cnVlO1xufVxuIl19
 //# sourceMappingURL=index.js.map
 
 /***/ }),
@@ -12034,6 +10558,34 @@ SingleDatePickerInputController.defaultProps = defaultProps;
 
 /***/ }),
 
+/***/ "NjaY":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var GetIntrinsic = __webpack_require__("6ayh");
+
+var $Object = GetIntrinsic('%Object%');
+
+var isPrimitive = __webpack_require__("E1iy");
+
+var $preventExtensions = $Object.preventExtensions;
+var $isExtensible = $Object.isExtensible;
+
+// https://www.ecma-international.org/ecma-262/6.0/#sec-isextensible-o
+
+module.exports = $preventExtensions
+	? function IsExtensible(obj) {
+		return !isPrimitive(obj) && $isExtensible(obj);
+	}
+	: function IsExtensible(obj) {
+		return !isPrimitive(obj);
+	};
+
+
+/***/ }),
+
 /***/ "Nloh":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12099,6 +10651,8 @@ var _getActiveElement = _interopRequireDefault(__webpack_require__("+51k"));
 
 var _isDayVisible = _interopRequireDefault(__webpack_require__("IgE5"));
 
+var _isSameMonth = _interopRequireDefault(__webpack_require__("ulUS"));
+
 var _ModifiersShape = _interopRequireDefault(__webpack_require__("J7JS"));
 
 var _NavPositionShape = _interopRequireDefault(__webpack_require__("FL7S"));
@@ -12113,13 +10667,15 @@ var _constants = __webpack_require__("Fv1B");
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var MONTH_PADDING = 23;
 var PREV_TRANSITION = 'prev';
 var NEXT_TRANSITION = 'next';
 var MONTH_SELECTION_TRANSITION = 'month_selection';
 var YEAR_SELECTION_TRANSITION = 'year_selection';
+var PREV_NAV = 'prev_nav';
+var NEXT_NAV = 'next_nav';
 var propTypes =  false ? undefined : {};
 var defaultProps = {
   // calendar presentation props
@@ -12155,11 +10711,14 @@ var defaultProps = {
   renderNavPrevButton: null,
   renderNavNextButton: null,
   noNavButtons: false,
+  noNavNextButton: false,
+  noNavPrevButton: false,
   onPrevMonthClick: function onPrevMonthClick() {},
   onNextMonthClick: function onNextMonthClick() {},
   onMonthChange: function onMonthChange() {},
   onYearChange: function onYearChange() {},
-  onMultiplyScrollableMonths: function onMultiplyScrollableMonths() {},
+  onGetNextScrollableMonths: function onGetNextScrollableMonths() {},
+  onGetPrevScrollableMonths: function onGetPrevScrollableMonths() {},
   // month props
   renderMonthText: null,
   renderMonthElement: null,
@@ -12211,6 +10770,7 @@ function (_ref) {
     var translationValue = props.isRTL && _this.isHorizontal() ? -(0, _getCalendarMonthWidth["default"])(props.daySize, horizontalMonthPadding) : 0;
     _this.hasSetInitialVisibleMonth = !props.hidden;
     _this.state = {
+      currentMonthScrollTop: null,
       currentMonth: currentMonth,
       monthTransition: null,
       translationValue: translationValue,
@@ -12242,7 +10802,8 @@ function (_ref) {
     _this.onNextMonthTransition = _this.onNextMonthTransition.bind((0, _assertThisInitialized2["default"])(_this));
     _this.onMonthChange = _this.onMonthChange.bind((0, _assertThisInitialized2["default"])(_this));
     _this.onYearChange = _this.onYearChange.bind((0, _assertThisInitialized2["default"])(_this));
-    _this.multiplyScrollableMonths = _this.multiplyScrollableMonths.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.getNextScrollableMonths = _this.getNextScrollableMonths.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.getPrevScrollableMonths = _this.getPrevScrollableMonths.bind((0, _assertThisInitialized2["default"])(_this));
     _this.updateStateAfterMonthTransition = _this.updateStateAfterMonthTransition.bind((0, _assertThisInitialized2["default"])(_this));
     _this.openKeyboardShortcutsPanel = _this.openKeyboardShortcutsPanel.bind((0, _assertThisInitialized2["default"])(_this));
     _this.closeKeyboardShortcutsPanel = _this.closeKeyboardShortcutsPanel.bind((0, _assertThisInitialized2["default"])(_this));
@@ -12254,30 +10815,28 @@ function (_ref) {
   }
 
   _proto.componentDidMount = function componentDidMount() {
+    var orientation = this.props.orientation;
     var currentMonth = this.state.currentMonth;
-
-    if (this.calendarInfo) {
-      this.setState({
-        isTouchDevice: (0, _isTouchDevice["default"])(),
-        calendarInfoWidth: (0, _calculateDimension["default"])(this.calendarInfo, 'width', true, true)
-      });
-    } else {
-      this.setState({
-        isTouchDevice: (0, _isTouchDevice["default"])()
-      });
-    }
-
+    var calendarInfoWidth = this.calendarInfo ? (0, _calculateDimension["default"])(this.calendarInfo, 'width', true, true) : 0;
+    var currentMonthScrollTop = this.transitionContainer && orientation === _constants.VERTICAL_SCROLLABLE ? this.transitionContainer.scrollHeight - this.transitionContainer.scrollTop : null;
+    this.setState({
+      isTouchDevice: (0, _isTouchDevice["default"])(),
+      calendarInfoWidth: calendarInfoWidth,
+      currentMonthScrollTop: currentMonthScrollTop
+    });
     this.setCalendarMonthWeeks(currentMonth);
   };
 
-  _proto.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+  _proto.componentWillReceiveProps = function componentWillReceiveProps(nextProps, nextState) {
     var hidden = nextProps.hidden,
         isFocused = nextProps.isFocused,
         showKeyboardShortcuts = nextProps.showKeyboardShortcuts,
         onBlur = nextProps.onBlur,
+        orientation = nextProps.orientation,
         renderMonthText = nextProps.renderMonthText,
         horizontalMonthPadding = nextProps.horizontalMonthPadding;
     var currentMonth = this.state.currentMonth;
+    var nextCurrentMonth = nextState.currentMonth;
 
     if (!hidden) {
       if (!this.hasSetInitialVisibleMonth) {
@@ -12326,6 +10885,15 @@ function (_ref) {
       this.setState({
         monthTitleHeight: null
       });
+    } // Capture the scroll position so when previous months are rendered above the current month
+    // we can adjust scroll after the component has updated and the previous current month
+    // stays in view.
+
+
+    if (orientation === _constants.VERTICAL_SCROLLABLE && this.transitionContainer && !(0, _isSameMonth["default"])(currentMonth, nextCurrentMonth)) {
+      this.setState({
+        currentMonthScrollTop: this.transitionContainer.scrollHeight - this.transitionContainer.scrollTop
+      });
     }
   };
 
@@ -12350,13 +10918,15 @@ function (_ref) {
     }
   };
 
-  _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
+  _proto.componentDidUpdate = function componentDidUpdate(prevProps, prevState) {
     var _this$props2 = this.props,
         orientation = _this$props2.orientation,
         daySize = _this$props2.daySize,
         isFocused = _this$props2.isFocused,
         numberOfMonths = _this$props2.numberOfMonths;
     var _this$state = this.state,
+        currentMonth = _this$state.currentMonth,
+        currentMonthScrollTop = _this$state.currentMonthScrollTop,
         focusedDate = _this$state.focusedDate,
         monthTitleHeight = _this$state.monthTitleHeight;
 
@@ -12369,6 +10939,12 @@ function (_ref) {
 
     if (!prevProps.isFocused && isFocused && !focusedDate) {
       this.container.focus();
+    } // If orientation is VERTICAL_SCROLLABLE and currentMonth has changed adjust scrollTop so the
+    // new months rendered above the current month don't push the current month out of view.
+
+
+    if (orientation === _constants.VERTICAL_SCROLLABLE && !(0, _isSameMonth["default"])(prevState.currentMonth, currentMonth) && currentMonthScrollTop && this.transitionContainer) {
+      this.transitionContainer.scrollTop = this.transitionContainer.scrollHeight - currentMonthScrollTop;
     }
   };
 
@@ -12708,6 +11284,34 @@ function (_ref) {
     this.transitionContainer = ref;
   };
 
+  _proto.getNextScrollableMonths = function getNextScrollableMonths(e) {
+    var onGetNextScrollableMonths = this.props.onGetNextScrollableMonths;
+    if (e) e.preventDefault();
+    if (onGetNextScrollableMonths) onGetNextScrollableMonths(e);
+    this.setState(function (_ref2) {
+      var scrollableMonthMultiple = _ref2.scrollableMonthMultiple;
+      return {
+        scrollableMonthMultiple: scrollableMonthMultiple + 1
+      };
+    });
+  };
+
+  _proto.getPrevScrollableMonths = function getPrevScrollableMonths(e) {
+    var _this$props7 = this.props,
+        numberOfMonths = _this$props7.numberOfMonths,
+        onGetPrevScrollableMonths = _this$props7.onGetPrevScrollableMonths;
+    if (e) e.preventDefault();
+    if (onGetPrevScrollableMonths) onGetPrevScrollableMonths(e);
+    this.setState(function (_ref3) {
+      var currentMonth = _ref3.currentMonth,
+          scrollableMonthMultiple = _ref3.scrollableMonthMultiple;
+      return {
+        currentMonth: currentMonth.clone().subtract(numberOfMonths, 'month'),
+        scrollableMonthMultiple: scrollableMonthMultiple + 1
+      };
+    });
+  };
+
   _proto.maybeTransitionNextMonth = function maybeTransitionNextMonth(newFocusedDate) {
     var numberOfMonths = this.props.numberOfMonths;
     var _this$state5 = this.state,
@@ -12742,18 +11346,6 @@ function (_ref) {
     return false;
   };
 
-  _proto.multiplyScrollableMonths = function multiplyScrollableMonths(e) {
-    var onMultiplyScrollableMonths = this.props.onMultiplyScrollableMonths;
-    if (e) e.preventDefault();
-    if (onMultiplyScrollableMonths) onMultiplyScrollableMonths(e);
-    this.setState(function (_ref2) {
-      var scrollableMonthMultiple = _ref2.scrollableMonthMultiple;
-      return {
-        scrollableMonthMultiple: scrollableMonthMultiple + 1
-      };
-    });
-  };
-
   _proto.isHorizontal = function isHorizontal() {
     var orientation = this.props.orientation;
     return orientation === _constants.HORIZONTAL_ORIENTATION;
@@ -12767,13 +11359,13 @@ function (_ref) {
   _proto.updateStateAfterMonthTransition = function updateStateAfterMonthTransition() {
     var _this4 = this;
 
-    var _this$props7 = this.props,
-        onPrevMonthClick = _this$props7.onPrevMonthClick,
-        onNextMonthClick = _this$props7.onNextMonthClick,
-        numberOfMonths = _this$props7.numberOfMonths,
-        onMonthChange = _this$props7.onMonthChange,
-        onYearChange = _this$props7.onYearChange,
-        isRTL = _this$props7.isRTL;
+    var _this$props8 = this.props,
+        onPrevMonthClick = _this$props8.onPrevMonthClick,
+        onNextMonthClick = _this$props8.onNextMonthClick,
+        numberOfMonths = _this$props8.numberOfMonths,
+        onMonthChange = _this$props8.onMonthChange,
+        onYearChange = _this$props8.onYearChange,
+        isRTL = _this$props8.isRTL;
     var _this$state7 = this.state,
         currentMonth = _this$state7.currentMonth,
         monthTransition = _this$state7.monthTransition,
@@ -12854,9 +11446,9 @@ function (_ref) {
   };
 
   _proto.calculateAndSetDayPickerHeight = function calculateAndSetDayPickerHeight() {
-    var _this$props8 = this.props,
-        daySize = _this$props8.daySize,
-        numberOfMonths = _this$props8.numberOfMonths;
+    var _this$props9 = this.props,
+        daySize = _this$props9.daySize,
+        numberOfMonths = _this$props9.numberOfMonths;
     var monthTitleHeight = this.state.monthTitleHeight;
     var visibleCalendarWeeks = this.calendarMonthWeeks.slice(1, numberOfMonths + 1);
     var calendarMonthWeeksHeight = Math.max.apply(Math, [0].concat((0, _toConsumableArray2["default"])(visibleCalendarWeeks))) * (daySize - 1);
@@ -12887,31 +11479,34 @@ function (_ref) {
     });
   };
 
-  _proto.renderNavigation = function renderNavigation() {
-    var _this$props9 = this.props,
-        dayPickerNavigationInlineStyles = _this$props9.dayPickerNavigationInlineStyles,
-        disablePrev = _this$props9.disablePrev,
-        disableNext = _this$props9.disableNext,
-        navPosition = _this$props9.navPosition,
-        navPrev = _this$props9.navPrev,
-        navNext = _this$props9.navNext,
-        noNavButtons = _this$props9.noNavButtons,
-        orientation = _this$props9.orientation,
-        phrases = _this$props9.phrases,
-        renderNavPrevButton = _this$props9.renderNavPrevButton,
-        renderNavNextButton = _this$props9.renderNavNextButton,
-        isRTL = _this$props9.isRTL;
+  _proto.renderNavigation = function renderNavigation(navDirection) {
+    var _this$props10 = this.props,
+        dayPickerNavigationInlineStyles = _this$props10.dayPickerNavigationInlineStyles,
+        disablePrev = _this$props10.disablePrev,
+        disableNext = _this$props10.disableNext,
+        navPosition = _this$props10.navPosition,
+        navPrev = _this$props10.navPrev,
+        navNext = _this$props10.navNext,
+        noNavButtons = _this$props10.noNavButtons,
+        noNavNextButton = _this$props10.noNavNextButton,
+        noNavPrevButton = _this$props10.noNavPrevButton,
+        orientation = _this$props10.orientation,
+        phrases = _this$props10.phrases,
+        renderNavPrevButton = _this$props10.renderNavPrevButton,
+        renderNavNextButton = _this$props10.renderNavNextButton,
+        isRTL = _this$props10.isRTL;
 
     if (noNavButtons) {
       return null;
     }
 
-    var onNextMonthClick = orientation === _constants.VERTICAL_SCROLLABLE ? this.multiplyScrollableMonths : this.onNextMonthClick;
+    var onPrevMonthClick = orientation === _constants.VERTICAL_SCROLLABLE ? this.getPrevScrollableMonths : this.onPrevMonthClick;
+    var onNextMonthClick = orientation === _constants.VERTICAL_SCROLLABLE ? this.getNextScrollableMonths : this.onNextMonthClick;
     return _react["default"].createElement(_DayPickerNavigation["default"], {
       disablePrev: disablePrev,
       disableNext: disableNext,
       inlineStyles: dayPickerNavigationInlineStyles,
-      onPrevMonthClick: this.onPrevMonthClick,
+      onPrevMonthClick: onPrevMonthClick,
       onNextMonthClick: onNextMonthClick,
       navPosition: navPosition,
       navPrev: navPrev,
@@ -12920,17 +11515,19 @@ function (_ref) {
       renderNavNextButton: renderNavNextButton,
       orientation: orientation,
       phrases: phrases,
-      isRTL: isRTL
+      isRTL: isRTL,
+      showNavNextButton: !(noNavNextButton || orientation === _constants.VERTICAL_SCROLLABLE && navDirection === PREV_NAV),
+      showNavPrevButton: !(noNavPrevButton || orientation === _constants.VERTICAL_SCROLLABLE && navDirection === NEXT_NAV)
     });
   };
 
   _proto.renderWeekHeader = function renderWeekHeader(index) {
-    var _this$props10 = this.props,
-        daySize = _this$props10.daySize,
-        horizontalMonthPadding = _this$props10.horizontalMonthPadding,
-        orientation = _this$props10.orientation,
-        renderWeekHeaderElement = _this$props10.renderWeekHeaderElement,
-        styles = _this$props10.styles;
+    var _this$props11 = this.props,
+        daySize = _this$props11.daySize,
+        horizontalMonthPadding = _this$props11.horizontalMonthPadding,
+        orientation = _this$props11.orientation,
+        renderWeekHeaderElement = _this$props11.renderWeekHeaderElement,
+        styles = _this$props11.styles;
     var calendarMonthWidth = this.state.calendarMonthWidth;
     var verticalScrollable = orientation === _constants.VERTICAL_SCROLLABLE;
     var horizontalStyle = {
@@ -12977,40 +11574,40 @@ function (_ref) {
         hasSetHeight = _this$state8.hasSetHeight,
         calendarInfoWidth = _this$state8.calendarInfoWidth,
         monthTitleHeight = _this$state8.monthTitleHeight;
-    var _this$props11 = this.props,
-        enableOutsideDays = _this$props11.enableOutsideDays,
-        numberOfMonths = _this$props11.numberOfMonths,
-        orientation = _this$props11.orientation,
-        modifiers = _this$props11.modifiers,
-        withPortal = _this$props11.withPortal,
-        onDayClick = _this$props11.onDayClick,
-        onDayMouseEnter = _this$props11.onDayMouseEnter,
-        onDayMouseLeave = _this$props11.onDayMouseLeave,
-        firstDayOfWeek = _this$props11.firstDayOfWeek,
-        renderMonthText = _this$props11.renderMonthText,
-        renderCalendarDay = _this$props11.renderCalendarDay,
-        renderDayContents = _this$props11.renderDayContents,
-        renderCalendarInfo = _this$props11.renderCalendarInfo,
-        renderMonthElement = _this$props11.renderMonthElement,
-        renderKeyboardShortcutsButton = _this$props11.renderKeyboardShortcutsButton,
-        renderKeyboardShortcutsPanel = _this$props11.renderKeyboardShortcutsPanel,
-        calendarInfoPosition = _this$props11.calendarInfoPosition,
-        hideKeyboardShortcutsPanel = _this$props11.hideKeyboardShortcutsPanel,
-        onOutsideClick = _this$props11.onOutsideClick,
-        monthFormat = _this$props11.monthFormat,
-        daySize = _this$props11.daySize,
-        isFocused = _this$props11.isFocused,
-        isRTL = _this$props11.isRTL,
-        styles = _this$props11.styles,
-        theme = _this$props11.theme,
-        phrases = _this$props11.phrases,
-        verticalHeight = _this$props11.verticalHeight,
-        dayAriaLabelFormat = _this$props11.dayAriaLabelFormat,
-        noBorder = _this$props11.noBorder,
-        transitionDuration = _this$props11.transitionDuration,
-        verticalBorderSpacing = _this$props11.verticalBorderSpacing,
-        horizontalMonthPadding = _this$props11.horizontalMonthPadding,
-        navPosition = _this$props11.navPosition;
+    var _this$props12 = this.props,
+        enableOutsideDays = _this$props12.enableOutsideDays,
+        numberOfMonths = _this$props12.numberOfMonths,
+        orientation = _this$props12.orientation,
+        modifiers = _this$props12.modifiers,
+        withPortal = _this$props12.withPortal,
+        onDayClick = _this$props12.onDayClick,
+        onDayMouseEnter = _this$props12.onDayMouseEnter,
+        onDayMouseLeave = _this$props12.onDayMouseLeave,
+        firstDayOfWeek = _this$props12.firstDayOfWeek,
+        renderMonthText = _this$props12.renderMonthText,
+        renderCalendarDay = _this$props12.renderCalendarDay,
+        renderDayContents = _this$props12.renderDayContents,
+        renderCalendarInfo = _this$props12.renderCalendarInfo,
+        renderMonthElement = _this$props12.renderMonthElement,
+        renderKeyboardShortcutsButton = _this$props12.renderKeyboardShortcutsButton,
+        renderKeyboardShortcutsPanel = _this$props12.renderKeyboardShortcutsPanel,
+        calendarInfoPosition = _this$props12.calendarInfoPosition,
+        hideKeyboardShortcutsPanel = _this$props12.hideKeyboardShortcutsPanel,
+        onOutsideClick = _this$props12.onOutsideClick,
+        monthFormat = _this$props12.monthFormat,
+        daySize = _this$props12.daySize,
+        isFocused = _this$props12.isFocused,
+        isRTL = _this$props12.isRTL,
+        styles = _this$props12.styles,
+        theme = _this$props12.theme,
+        phrases = _this$props12.phrases,
+        verticalHeight = _this$props12.verticalHeight,
+        dayAriaLabelFormat = _this$props12.dayAriaLabelFormat,
+        noBorder = _this$props12.noBorder,
+        transitionDuration = _this$props12.transitionDuration,
+        verticalBorderSpacing = _this$props12.verticalBorderSpacing,
+        horizontalMonthPadding = _this$props12.horizontalMonthPadding,
+        navPosition = _this$props12.navPosition;
     var dayPickerHorizontalPadding = theme.reactDates.spacing.dayPickerHorizontalPadding;
     var isHorizontal = this.isHorizontal();
     var numOfWeekHeaders = this.isVertical() ? 1 : numberOfMonths;
@@ -13090,7 +11687,7 @@ function (_ref) {
       "aria-label": phrases.calendarLabel
     }), !verticalScrollable && navPosition === _constants.NAV_POSITION_TOP && this.renderNavigation(), _react["default"].createElement("div", (0, _extends2["default"])({}, (0, _reactWithStyles.css)(styles.DayPicker_transitionContainer, shouldAnimateHeight && styles.DayPicker_transitionContainer__horizontal, this.isVertical() && styles.DayPicker_transitionContainer__vertical, verticalScrollable && styles.DayPicker_transitionContainer__verticalScrollable, transitionContainerStyle), {
       ref: this.setTransitionContainerRef
-    }), _react["default"].createElement(_CalendarMonthGrid["default"], {
+    }), verticalScrollable && this.renderNavigation(PREV_NAV), _react["default"].createElement(_CalendarMonthGrid["default"], {
       setMonthTitleHeight: !monthTitleHeight ? this.setMonthTitleHeight : undefined,
       translationValue: translationValue,
       enableOutsideDays: enableOutsideDays,
@@ -13121,7 +11718,7 @@ function (_ref) {
       transitionDuration: transitionDuration,
       verticalBorderSpacing: verticalBorderSpacing,
       horizontalMonthPadding: horizontalMonthPadding
-    }), verticalScrollable && this.renderNavigation()), !verticalScrollable && navPosition === _constants.NAV_POSITION_BOTTOM && this.renderNavigation(), !isTouch && !hideKeyboardShortcutsPanel && _react["default"].createElement(_DayPickerKeyboardShortcuts["default"], {
+    }), verticalScrollable && this.renderNavigation(NEXT_NAV)), !verticalScrollable && navPosition === _constants.NAV_POSITION_BOTTOM && this.renderNavigation(), !isTouch && !hideKeyboardShortcutsPanel && _react["default"].createElement(_DayPickerKeyboardShortcuts["default"], {
       block: this.isVertical() && !withPortal,
       buttonLocation: keyboardShortcutButtonLocation,
       showKeyboardShortcutsPanel: showKeyboardShortcuts,
@@ -13140,13 +11737,13 @@ exports.PureDayPicker = DayPicker;
 DayPicker.propTypes =  false ? undefined : {};
 DayPicker.defaultProps = defaultProps;
 
-var _default = (0, _reactWithStyles.withStyles)(function (_ref3) {
-  var _ref3$reactDates = _ref3.reactDates,
-      color = _ref3$reactDates.color,
-      font = _ref3$reactDates.font,
-      noScrollBarOnVerticalScrollable = _ref3$reactDates.noScrollBarOnVerticalScrollable,
-      spacing = _ref3$reactDates.spacing,
-      zIndex = _ref3$reactDates.zIndex;
+var _default = (0, _reactWithStyles.withStyles)(function (_ref4) {
+  var _ref4$reactDates = _ref4.reactDates,
+      color = _ref4$reactDates.color,
+      font = _ref4$reactDates.font,
+      noScrollBarOnVerticalScrollable = _ref4$reactDates.noScrollBarOnVerticalScrollable,
+      spacing = _ref4$reactDates.spacing,
+      zIndex = _ref4$reactDates.zIndex;
   return {
     DayPicker: {
       background: color.background,
@@ -13438,6 +12035,38 @@ function isPrevMonth(a, b) {
 
 /***/ }),
 
+/***/ "PyeM":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var GetIntrinsic = __webpack_require__("6ayh");
+
+var $match = GetIntrinsic('%Symbol.match%', true);
+
+var hasRegExpMatcher = __webpack_require__("2Nju");
+
+var ToBoolean = __webpack_require__("XnxE");
+
+// https://ecma-international.org/ecma-262/6.0/#sec-isregexp
+
+module.exports = function IsRegExp(argument) {
+	if (!argument || typeof argument !== 'object') {
+		return false;
+	}
+	if ($match) {
+		var isRegExp = argument[$match];
+		if (typeof isRegExp !== 'undefined') {
+			return ToBoolean(isRegExp);
+		}
+	}
+	return hasRegExpMatcher(argument);
+};
+
+
+/***/ }),
+
 /***/ "QEu6":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -13486,23 +12115,44 @@ module.exports = now;
 
 /***/ }),
 
-/***/ "QbAi":
+/***/ "R5T6":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var define = __webpack_require__("82c2");
-var getPolyfill = __webpack_require__("c9iI");
+var GetIntrinsic = __webpack_require__("6ayh");
 
-module.exports = function shimTrimRight() {
-	var polyfill = getPolyfill();
-	define(
-		String.prototype,
-		{ trimRight: polyfill },
-		{ trimRight: function () { return String.prototype.trimRight !== polyfill; } }
-	);
-	return polyfill;
+var $String = GetIntrinsic('%String%');
+var $TypeError = GetIntrinsic('%TypeError%');
+
+// https://www.ecma-international.org/ecma-262/6.0/#sec-tostring
+
+module.exports = function ToString(argument) {
+	if (typeof argument === 'symbol') {
+		throw new $TypeError('Cannot convert a Symbol value to a string');
+	}
+	return $String(argument);
+};
+
+
+/***/ }),
+
+/***/ "RIFg":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var ES5Type = __webpack_require__("UYO7");
+
+// https://ecma-international.org/ecma-262/6.0/#sec-ecmascript-data-types-and-values
+
+module.exports = function Type(x) {
+	if (typeof x === 'symbol') {
+		return 'Symbol';
+	}
+	return ES5Type(x);
 };
 
 
@@ -13515,13 +12165,43 @@ var arrayWithoutHoles = __webpack_require__("Ijbi");
 
 var iterableToArray = __webpack_require__("EbDI");
 
+var unsupportedIterableToArray = __webpack_require__("ZhPi");
+
 var nonIterableSpread = __webpack_require__("Bnag");
 
 function _toConsumableArray(arr) {
-  return arrayWithoutHoles(arr) || iterableToArray(arr) || nonIterableSpread();
+  return arrayWithoutHoles(arr) || iterableToArray(arr) || unsupportedIterableToArray(arr) || nonIterableSpread();
 }
 
 module.exports = _toConsumableArray;
+
+/***/ }),
+
+/***/ "RJ/z":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var GetIntrinsic = __webpack_require__("6ayh");
+
+var $TypeError = GetIntrinsic('%TypeError%');
+
+var IsPropertyKey = __webpack_require__("rCmP");
+var Type = __webpack_require__("RIFg");
+
+// https://ecma-international.org/ecma-262/6.0/#sec-hasproperty
+
+module.exports = function HasProperty(O, P) {
+	if (Type(O) !== 'Object') {
+		throw new $TypeError('Assertion failed: `O` must be an Object');
+	}
+	if (!IsPropertyKey(P)) {
+		throw new $TypeError('Assertion failed: `P` must be a Property Key');
+	}
+	return P in O;
+};
+
 
 /***/ }),
 
@@ -13535,54 +12215,16 @@ var bind = __webpack_require__("D3zA");
 
 var GetIntrinsic = __webpack_require__("6ayh");
 
-var $Function = GetIntrinsic('%Function%');
-var $apply = $Function.apply;
-var $call = $Function.call;
+var $apply = GetIntrinsic('%Function.prototype.apply%');
+var $call = GetIntrinsic('%Function.prototype.call%');
+var $reflectApply = GetIntrinsic('%Reflect.apply%', true) || bind.call($call, $apply);
 
 module.exports = function callBind() {
-	return bind.apply($call, arguments);
+	return $reflectApply(bind, $call, arguments);
 };
 
 module.exports.apply = function applyBind() {
-	return bind.apply($apply, arguments);
-};
-
-
-/***/ }),
-
-/***/ "SrsA":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var GetIntrinsic = __webpack_require__("6ayh");
-
-var callBound = __webpack_require__("Khql");
-
-var $SyntaxError = GetIntrinsic('%SyntaxError%');
-var symToStr = callBound('Symbol.prototype.toString', true);
-
-var getInferredName = __webpack_require__("gvzj");
-
-module.exports = function getSymbolDescription(symbol) {
-	if (!symToStr) {
-		throw new $SyntaxError('Symbols are not supported in this environment');
-	}
-	var str = symToStr(symbol); // will throw if not a symbol
-
-	if (getInferredName) {
-		var name = getInferredName(symbol);
-		if (name === '') { return; }
-		// eslint-disable-next-line consistent-return
-		return name.slice(1, -1); // name.slice('['.length, -']'.length);
-	}
-
-	var desc = str.slice(7, -1); // str.slice('Symbol('.length, -')'.length);
-	if (desc) {
-		// eslint-disable-next-line consistent-return
-		return desc;
-	}
+	return $reflectApply(bind, $apply, arguments);
 };
 
 
@@ -13923,6 +12565,28 @@ if (true) {
 
 /***/ }),
 
+/***/ "TU3P":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var GetIntrinsic = __webpack_require__("6ayh");
+
+var $Object = GetIntrinsic('%Object%');
+
+var RequireObjectCoercible = __webpack_require__("Ii9V");
+
+// https://www.ecma-international.org/ecma-262/6.0/#sec-toobject
+
+module.exports = function ToObject(value) {
+	RequireObjectCoercible(value);
+	return $Object(value);
+};
+
+
+/***/ }),
+
 /***/ "TUgy":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -14061,6 +12725,28 @@ function registerCSSInterfaceWithDefaultTheme() {
 
 /***/ }),
 
+/***/ "TVLE":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var GetIntrinsic = __webpack_require__("6ayh");
+
+var $TypeError = GetIntrinsic('%TypeError%');
+
+// http://www.ecma-international.org/ecma-262/5.1/#sec-9.10
+
+module.exports = function CheckObjectCoercible(value, optMessage) {
+	if (value == null) {
+		throw new $TypeError(optMessage || ('Cannot call method on ' + value));
+	}
+	return value;
+};
+
+
+/***/ }),
+
 /***/ "Teho":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -14141,7 +12827,7 @@ var _constants = __webpack_require__("Fv1B");
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var propTypes =  false ? undefined : {};
 var defaultProps = {
@@ -14431,7 +13117,6 @@ CalendarMonthGrid.defaultProps = defaultProps;
 var _default = (0, _reactWithStyles.withStyles)(function (_ref2) {
   var _ref2$reactDates = _ref2.reactDates,
       color = _ref2$reactDates.color,
-      noScrollBarOnVerticalScrollable = _ref2$reactDates.noScrollBarOnVerticalScrollable,
       spacing = _ref2$reactDates.spacing,
       zIndex = _ref2$reactDates.zIndex;
   return {
@@ -14450,16 +13135,9 @@ var _default = (0, _reactWithStyles.withStyles)(function (_ref2) {
     CalendarMonthGrid__vertical: {
       margin: '0 auto'
     },
-    CalendarMonthGrid__vertical_scrollable: _objectSpread({
-      margin: '0 auto',
-      overflowY: 'scroll'
-    }, noScrollBarOnVerticalScrollable && {
-      '-webkitOverflowScrolling': 'touch',
-      '::-webkit-scrollbar': {
-        '-webkit-appearance': 'none',
-        display: 'none'
-      }
-    }),
+    CalendarMonthGrid__vertical_scrollable: {
+      margin: '0 auto'
+    },
     CalendarMonthGrid_month__horizontal: {
       display: 'inline-block',
       verticalAlign: 'top',
@@ -14496,6 +13174,39 @@ module.exports = _interopRequireDefault;
 
 /***/ }),
 
+/***/ "UBAn":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var GetIntrinsic = __webpack_require__("6ayh");
+
+var $TypeError = GetIntrinsic('%TypeError%');
+
+var CreateDataProperty = __webpack_require__("HgV8");
+var IsPropertyKey = __webpack_require__("rCmP");
+var Type = __webpack_require__("RIFg");
+
+// // https://ecma-international.org/ecma-262/6.0/#sec-createdatapropertyorthrow
+
+module.exports = function CreateDataPropertyOrThrow(O, P, V) {
+	if (Type(O) !== 'Object') {
+		throw new $TypeError('Assertion failed: Type(O) is not Object');
+	}
+	if (!IsPropertyKey(P)) {
+		throw new $TypeError('Assertion failed: IsPropertyKey(P) is not true');
+	}
+	var success = CreateDataProperty(O, P, V);
+	if (!success) {
+		throw new $TypeError('unable to create data property');
+	}
+	return success;
+};
+
+
+/***/ }),
+
 /***/ "UVaH":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -14518,55 +13229,33 @@ module.exports = function hasNativeSymbols() {
 
 /***/ }),
 
-/***/ "UsSR":
+/***/ "UYO7":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var hasSymbols = __webpack_require__("UVaH")();
-var GetIntrinsic = __webpack_require__("6ayh");
-var callBound = __webpack_require__("Khql");
+// https://www.ecma-international.org/ecma-262/5.1/#sec-8
 
-var $iterator = GetIntrinsic('%Symbol.iterator%', true);
-var $arraySlice = callBound('Array.prototype.slice');
-var $arrayJoin = callBound('Array.prototype.join');
-
-module.exports = function getIteratorMethod(ES, iterable) {
-	var usingIterator;
-	if (hasSymbols) {
-		usingIterator = ES.GetMethod(iterable, $iterator);
-	} else if (ES.IsArray(iterable)) {
-		usingIterator = function () {
-			var i = -1;
-			var arr = this; // eslint-disable-line no-invalid-this
-			return {
-				next: function () {
-					i += 1;
-					return {
-						done: i >= arr.length,
-						value: arr[i]
-					};
-				}
-			};
-		};
-	} else if (ES.Type(iterable) === 'String') {
-		usingIterator = function () {
-			var i = 0;
-			return {
-				next: function () {
-					var nextIndex = ES.AdvanceStringIndex(iterable, i, true);
-					var value = $arrayJoin($arraySlice(iterable, i, nextIndex), '');
-					i = nextIndex;
-					return {
-						done: nextIndex > iterable.length,
-						value: value
-					};
-				}
-			};
-		};
+module.exports = function Type(x) {
+	if (x === null) {
+		return 'Null';
 	}
-	return usingIterator;
+	if (typeof x === 'undefined') {
+		return 'Undefined';
+	}
+	if (typeof x === 'function' || typeof x === 'object') {
+		return 'Object';
+	}
+	if (typeof x === 'number') {
+		return 'Number';
+	}
+	if (typeof x === 'boolean') {
+		return 'Boolean';
+	}
+	if (typeof x === 'string') {
+		return 'String';
+	}
 };
 
 
@@ -14596,6 +13285,34 @@ function toLocalizedDateString(date, currentFormat) {
   if (!dateObj) return null;
   return dateObj.format(_constants.DISPLAY_FORMAT);
 }
+
+/***/ }),
+
+/***/ "V+xs":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var implementation = __webpack_require__("VwiP");
+
+var supportsDescriptors = __webpack_require__("82c2").supportsDescriptors;
+var $gOPD = Object.getOwnPropertyDescriptor;
+var $TypeError = TypeError;
+
+module.exports = function getPolyfill() {
+	if (!supportsDescriptors) {
+		throw new $TypeError('RegExp.prototype.flags requires a true ES5 environment that supports property descriptors');
+	}
+	if ((/a/mig).flags === 'gim') {
+		var descriptor = $gOPD(RegExp.prototype, 'flags');
+		if (descriptor && typeof descriptor.get === 'function' && typeof (/a/).dotAll === 'boolean') {
+			return descriptor.get;
+		}
+	}
+	return implementation;
+};
+
 
 /***/ }),
 
@@ -14693,21 +13410,54 @@ module.exports = _inheritsLoose;
 
 /***/ }),
 
-/***/ "Vxjt":
+/***/ "VwiP":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var bind = __webpack_require__("D3zA");
-var replace = bind.call(Function.call, String.prototype.replace);
+var $Object = Object;
+var $TypeError = TypeError;
 
-/* eslint-disable no-control-regex */
-var leftWhitespace = /^[\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF]*/;
-/* eslint-enable no-control-regex */
+module.exports = function flags() {
+	if (this != null && this !== $Object(this)) {
+		throw new $TypeError('RegExp.prototype.flags getter called on non-object');
+	}
+	var result = '';
+	if (this.global) {
+		result += 'g';
+	}
+	if (this.ignoreCase) {
+		result += 'i';
+	}
+	if (this.multiline) {
+		result += 'm';
+	}
+	if (this.dotAll) {
+		result += 's';
+	}
+	if (this.unicode) {
+		result += 'u';
+	}
+	if (this.sticky) {
+		result += 'y';
+	}
+	return result;
+};
 
-module.exports = function trimLeft() {
-	return replace(this, leftWhitespace, '');
+
+/***/ }),
+
+/***/ "WDQk":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var implementation = __webpack_require__("1u+m");
+
+module.exports = function getPolyfill() {
+	return typeof Object.is === 'function' ? Object.is : implementation;
 };
 
 
@@ -14866,6 +13616,23 @@ module.exports = ReactPropTypesSecret;
 
 /***/ }),
 
+/***/ "WkPL":
+/***/ (function(module, exports) {
+
+function _arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+
+  for (var i = 0, arr2 = new Array(len); i < len; i++) {
+    arr2[i] = arr[i];
+  }
+
+  return arr2;
+}
+
+module.exports = _arrayLikeToArray;
+
+/***/ }),
+
 /***/ "WmS1":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -14938,6 +13705,19 @@ module.exports = {
 
 /***/ }),
 
+/***/ "XnxE":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+// http://www.ecma-international.org/ecma-262/5.1/#sec-9.2
+
+module.exports = function ToBoolean(value) { return !!value; };
+
+
+/***/ }),
+
 /***/ "Xtko":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -15005,7 +13785,7 @@ var _getPooledMoment = _interopRequireDefault(__webpack_require__("gtaZ"));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var propTypes =  false ? undefined : {};
 var defaultProps = {
@@ -15041,6 +13821,9 @@ var defaultProps = {
   navNext: null,
   renderNavPrevButton: null,
   renderNavNextButton: null,
+  noNavButtons: false,
+  noNavNextButton: false,
+  noNavPrevButton: false,
   onPrevMonthClick: function onPrevMonthClick() {},
   onNextMonthClick: function onNextMonthClick() {},
   onOutsideClick: function onOutsideClick() {},
@@ -15128,7 +13911,8 @@ function (_ref) {
     _this.onNextMonthClick = _this.onNextMonthClick.bind((0, _assertThisInitialized2["default"])(_this));
     _this.onMonthChange = _this.onMonthChange.bind((0, _assertThisInitialized2["default"])(_this));
     _this.onYearChange = _this.onYearChange.bind((0, _assertThisInitialized2["default"])(_this));
-    _this.onMultiplyScrollableMonths = _this.onMultiplyScrollableMonths.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onGetNextScrollableMonths = _this.onGetNextScrollableMonths.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onGetPrevScrollableMonths = _this.onGetPrevScrollableMonths.bind((0, _assertThisInitialized2["default"])(_this));
     _this.getFirstFocusableDay = _this.getFirstFocusableDay.bind((0, _assertThisInitialized2["default"])(_this));
     return _this;
   }
@@ -15380,7 +14164,7 @@ function (_ref) {
     });
   };
 
-  _proto.onMultiplyScrollableMonths = function onMultiplyScrollableMonths() {
+  _proto.onGetNextScrollableMonths = function onGetNextScrollableMonths() {
     var _this$props7 = this.props,
         numberOfMonths = _this$props7.numberOfMonths,
         enableOutsideDays = _this$props7.enableOutsideDays;
@@ -15395,12 +14179,27 @@ function (_ref) {
     });
   };
 
+  _proto.onGetPrevScrollableMonths = function onGetPrevScrollableMonths() {
+    var _this$props8 = this.props,
+        numberOfMonths = _this$props8.numberOfMonths,
+        enableOutsideDays = _this$props8.enableOutsideDays;
+    var _this$state6 = this.state,
+        currentMonth = _this$state6.currentMonth,
+        visibleDays = _this$state6.visibleDays;
+    var firstPreviousMonth = currentMonth.clone().subtract(numberOfMonths, 'month');
+    var newVisibleDays = (0, _getVisibleDays["default"])(firstPreviousMonth, numberOfMonths, enableOutsideDays, true);
+    this.setState({
+      currentMonth: firstPreviousMonth.clone(),
+      visibleDays: _objectSpread({}, visibleDays, {}, this.getModifiers(newVisibleDays))
+    });
+  };
+
   _proto.getFirstFocusableDay = function getFirstFocusableDay(newMonth) {
     var _this3 = this;
 
-    var _this$props8 = this.props,
-        date = _this$props8.date,
-        numberOfMonths = _this$props8.numberOfMonths;
+    var _this$props9 = this.props,
+        date = _this$props9.date,
+        numberOfMonths = _this$props9.numberOfMonths;
     var focusedDate = newMonth.clone().startOf('month');
 
     if (date) {
@@ -15483,9 +14282,9 @@ function (_ref) {
   };
 
   _proto.isBlocked = function isBlocked(day) {
-    var _this$props9 = this.props,
-        isDayBlocked = _this$props9.isDayBlocked,
-        isOutsideRange = _this$props9.isOutsideRange;
+    var _this$props10 = this.props,
+        isDayBlocked = _this$props10.isDayBlocked,
+        isOutsideRange = _this$props10.isOutsideRange;
     return isDayBlocked(day) || isOutsideRange(day);
   };
 
@@ -15516,47 +14315,50 @@ function (_ref) {
   };
 
   _proto.render = function render() {
-    var _this$props10 = this.props,
-        numberOfMonths = _this$props10.numberOfMonths,
-        orientation = _this$props10.orientation,
-        monthFormat = _this$props10.monthFormat,
-        renderMonthText = _this$props10.renderMonthText,
-        renderWeekHeaderElement = _this$props10.renderWeekHeaderElement,
-        dayPickerNavigationInlineStyles = _this$props10.dayPickerNavigationInlineStyles,
-        navPosition = _this$props10.navPosition,
-        navPrev = _this$props10.navPrev,
-        navNext = _this$props10.navNext,
-        renderNavPrevButton = _this$props10.renderNavPrevButton,
-        renderNavNextButton = _this$props10.renderNavNextButton,
-        onOutsideClick = _this$props10.onOutsideClick,
-        onShiftTab = _this$props10.onShiftTab,
-        onTab = _this$props10.onTab,
-        withPortal = _this$props10.withPortal,
-        focused = _this$props10.focused,
-        enableOutsideDays = _this$props10.enableOutsideDays,
-        hideKeyboardShortcutsPanel = _this$props10.hideKeyboardShortcutsPanel,
-        daySize = _this$props10.daySize,
-        firstDayOfWeek = _this$props10.firstDayOfWeek,
-        renderCalendarDay = _this$props10.renderCalendarDay,
-        renderDayContents = _this$props10.renderDayContents,
-        renderCalendarInfo = _this$props10.renderCalendarInfo,
-        renderMonthElement = _this$props10.renderMonthElement,
-        calendarInfoPosition = _this$props10.calendarInfoPosition,
-        isFocused = _this$props10.isFocused,
-        isRTL = _this$props10.isRTL,
-        phrases = _this$props10.phrases,
-        dayAriaLabelFormat = _this$props10.dayAriaLabelFormat,
-        onBlur = _this$props10.onBlur,
-        showKeyboardShortcuts = _this$props10.showKeyboardShortcuts,
-        weekDayFormat = _this$props10.weekDayFormat,
-        verticalHeight = _this$props10.verticalHeight,
-        noBorder = _this$props10.noBorder,
-        transitionDuration = _this$props10.transitionDuration,
-        verticalBorderSpacing = _this$props10.verticalBorderSpacing,
-        horizontalMonthPadding = _this$props10.horizontalMonthPadding;
-    var _this$state6 = this.state,
-        currentMonth = _this$state6.currentMonth,
-        visibleDays = _this$state6.visibleDays;
+    var _this$props11 = this.props,
+        numberOfMonths = _this$props11.numberOfMonths,
+        orientation = _this$props11.orientation,
+        monthFormat = _this$props11.monthFormat,
+        renderMonthText = _this$props11.renderMonthText,
+        renderWeekHeaderElement = _this$props11.renderWeekHeaderElement,
+        dayPickerNavigationInlineStyles = _this$props11.dayPickerNavigationInlineStyles,
+        navPosition = _this$props11.navPosition,
+        navPrev = _this$props11.navPrev,
+        navNext = _this$props11.navNext,
+        renderNavPrevButton = _this$props11.renderNavPrevButton,
+        renderNavNextButton = _this$props11.renderNavNextButton,
+        noNavButtons = _this$props11.noNavButtons,
+        noNavPrevButton = _this$props11.noNavPrevButton,
+        noNavNextButton = _this$props11.noNavNextButton,
+        onOutsideClick = _this$props11.onOutsideClick,
+        onShiftTab = _this$props11.onShiftTab,
+        onTab = _this$props11.onTab,
+        withPortal = _this$props11.withPortal,
+        focused = _this$props11.focused,
+        enableOutsideDays = _this$props11.enableOutsideDays,
+        hideKeyboardShortcutsPanel = _this$props11.hideKeyboardShortcutsPanel,
+        daySize = _this$props11.daySize,
+        firstDayOfWeek = _this$props11.firstDayOfWeek,
+        renderCalendarDay = _this$props11.renderCalendarDay,
+        renderDayContents = _this$props11.renderDayContents,
+        renderCalendarInfo = _this$props11.renderCalendarInfo,
+        renderMonthElement = _this$props11.renderMonthElement,
+        calendarInfoPosition = _this$props11.calendarInfoPosition,
+        isFocused = _this$props11.isFocused,
+        isRTL = _this$props11.isRTL,
+        phrases = _this$props11.phrases,
+        dayAriaLabelFormat = _this$props11.dayAriaLabelFormat,
+        onBlur = _this$props11.onBlur,
+        showKeyboardShortcuts = _this$props11.showKeyboardShortcuts,
+        weekDayFormat = _this$props11.weekDayFormat,
+        verticalHeight = _this$props11.verticalHeight,
+        noBorder = _this$props11.noBorder,
+        transitionDuration = _this$props11.transitionDuration,
+        verticalBorderSpacing = _this$props11.verticalBorderSpacing,
+        horizontalMonthPadding = _this$props11.horizontalMonthPadding;
+    var _this$state7 = this.state,
+        currentMonth = _this$state7.currentMonth,
+        visibleDays = _this$state7.visibleDays;
     return _react["default"].createElement(_DayPicker["default"], {
       orientation: orientation,
       enableOutsideDays: enableOutsideDays,
@@ -15569,7 +14371,8 @@ function (_ref) {
       onNextMonthClick: this.onNextMonthClick,
       onMonthChange: this.onMonthChange,
       onYearChange: this.onYearChange,
-      onMultiplyScrollableMonths: this.onMultiplyScrollableMonths,
+      onGetNextScrollableMonths: this.onGetNextScrollableMonths,
+      onGetPrevScrollableMonths: this.onGetPrevScrollableMonths,
       monthFormat: monthFormat,
       withPortal: withPortal,
       hidden: !focused,
@@ -15585,6 +14388,9 @@ function (_ref) {
       navNext: navNext,
       renderNavPrevButton: renderNavPrevButton,
       renderNavNextButton: renderNavNextButton,
+      noNavButtons: noNavButtons,
+      noNavNextButton: noNavNextButton,
+      noNavPrevButton: noNavPrevButton,
       renderMonthText: renderMonthText,
       renderWeekHeaderElement: renderWeekHeaderElement,
       renderCalendarDay: renderCalendarDay,
@@ -15669,25 +14475,21 @@ function isInclusivelyBeforeDay(a, b) {
 
 /***/ }),
 
-/***/ "Ym3A":
+/***/ "ZhPi":
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+var arrayLikeToArray = __webpack_require__("WkPL");
 
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return arrayLikeToArray(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return arrayLikeToArray(o, minLen);
+}
 
-var define = __webpack_require__("82c2");
-var getPolyfill = __webpack_require__("jlA6");
-
-module.exports = function shimTrimLeft() {
-	var polyfill = getPolyfill();
-	define(
-		String.prototype,
-		{ trimLeft: polyfill },
-		{ trimLeft: function () { return String.prototype.trimLeft !== polyfill; } }
-	);
-	return polyfill;
-};
-
+module.exports = _unsupportedIterableToArray;
 
 /***/ }),
 
@@ -15769,6 +14571,27 @@ module.exports = function bind(that) {
     }
 
     return bound;
+};
+
+
+/***/ }),
+
+/***/ "aTj1":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var GetIntrinsic = __webpack_require__("6ayh");
+var callBound = __webpack_require__("Khql");
+
+var $apply = GetIntrinsic('%Reflect.apply%', true) || callBound('%Function.prototype.apply%');
+
+// https://www.ecma-international.org/ecma-262/6.0/#sec-call
+
+module.exports = function Call(F, V) {
+	var args = arguments.length > 2 ? arguments[2] : [];
+	return $apply(F, V, args);
 };
 
 
@@ -16050,23 +14873,22 @@ function isPreviousDay(a, b) {
 "use strict";
 
 
-/* https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.is */
+var define = __webpack_require__("82c2");
+var callBind = __webpack_require__("RLeF");
 
-var NumberIsNaN = function (value) {
-	return value !== value;
-};
+var implementation = __webpack_require__("1u+m");
+var getPolyfill = __webpack_require__("WDQk");
+var shim = __webpack_require__("wVpn");
 
-module.exports = function is(a, b) {
-	if (a === 0 && b === 0) {
-		return 1 / a === 1 / b;
-	} else if (a === b) {
-		return true;
-	} else if (NumberIsNaN(a) && NumberIsNaN(b)) {
-		return true;
-	}
-	return false;
-};
+var polyfill = callBind(getPolyfill(), Object);
 
+define(polyfill, {
+	getPolyfill: getPolyfill,
+	implementation: implementation,
+	shim: shim
+});
+
+module.exports = polyfill;
 
 
 /***/ }),
@@ -16098,28 +14920,6 @@ module.exports = {
 
 /***/ }),
 
-/***/ "c9iI":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var implementation = __webpack_require__("JAz1");
-
-module.exports = function getPolyfill() {
-	if (!String.prototype.trimRight) {
-		return implementation;
-	}
-	var zeroWidthSpace = '\u200b';
-	if (zeroWidthSpace.trimRight() !== zeroWidthSpace) {
-		return implementation;
-	}
-	return String.prototype.trimRight;
-};
-
-
-/***/ }),
-
 /***/ "cDcd":
 /***/ (function(module, exports) {
 
@@ -16130,16 +14930,16 @@ module.exports = function getPolyfill() {
 /***/ "cDf5":
 /***/ (function(module, exports) {
 
-function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
-
 function _typeof(obj) {
-  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
+  "@babel/helpers - typeof";
+
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
     module.exports = _typeof = function _typeof(obj) {
-      return _typeof2(obj);
+      return typeof obj;
     };
   } else {
     module.exports = _typeof = function _typeof(obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
     };
   }
 
@@ -16147,6 +14947,26 @@ function _typeof(obj) {
 }
 
 module.exports = _typeof;
+
+/***/ }),
+
+/***/ "ciGR":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var MAX_SAFE_INTEGER = __webpack_require__("sqVN");
+
+var ToInteger = __webpack_require__("wrft");
+
+module.exports = function ToLength(argument) {
+	var len = ToInteger(argument);
+	if (len <= 0) { return 0; } // includes converting -0 to +0
+	if (len > MAX_SAFE_INTEGER) { return MAX_SAFE_INTEGER; }
+	return len;
+};
+
 
 /***/ }),
 
@@ -16207,6 +15027,125 @@ function getComponentName(Component) {
   return null;
 }
 //# sourceMappingURL=getComponentName.js.map
+
+/***/ }),
+
+/***/ "f66B":
+/***/ (function(module, exports, __webpack_require__) {
+
+var objectKeys = __webpack_require__("1seS");
+var isArguments = __webpack_require__("45zb");
+var is = __webpack_require__("bbcx");
+var isRegex = __webpack_require__("2Nju");
+var flags = __webpack_require__("5xAX");
+var isDate = __webpack_require__("DmXP");
+
+var getTime = Date.prototype.getTime;
+
+function deepEqual(actual, expected, options) {
+  var opts = options || {};
+
+  // 7.1. All identical values are equivalent, as determined by ===.
+  if (opts.strict ? is(actual, expected) : actual === expected) {
+    return true;
+  }
+
+  // 7.3. Other pairs that do not both pass typeof value == 'object', equivalence is determined by ==.
+  if (!actual || !expected || (typeof actual !== 'object' && typeof expected !== 'object')) {
+    return opts.strict ? is(actual, expected) : actual == expected;
+  }
+
+  /*
+   * 7.4. For all other Object pairs, including Array objects, equivalence is
+   * determined by having the same number of owned properties (as verified
+   * with Object.prototype.hasOwnProperty.call), the same set of keys
+   * (although not necessarily the same order), equivalent values for every
+   * corresponding key, and an identical 'prototype' property. Note: this
+   * accounts for both named and indexed properties on Arrays.
+   */
+  // eslint-disable-next-line no-use-before-define
+  return objEquiv(actual, expected, opts);
+}
+
+function isUndefinedOrNull(value) {
+  return value === null || value === undefined;
+}
+
+function isBuffer(x) {
+  if (!x || typeof x !== 'object' || typeof x.length !== 'number') {
+    return false;
+  }
+  if (typeof x.copy !== 'function' || typeof x.slice !== 'function') {
+    return false;
+  }
+  if (x.length > 0 && typeof x[0] !== 'number') {
+    return false;
+  }
+  return true;
+}
+
+function objEquiv(a, b, opts) {
+  /* eslint max-statements: [2, 50] */
+  var i, key;
+  if (typeof a !== typeof b) { return false; }
+  if (isUndefinedOrNull(a) || isUndefinedOrNull(b)) { return false; }
+
+  // an identical 'prototype' property.
+  if (a.prototype !== b.prototype) { return false; }
+
+  if (isArguments(a) !== isArguments(b)) { return false; }
+
+  var aIsRegex = isRegex(a);
+  var bIsRegex = isRegex(b);
+  if (aIsRegex !== bIsRegex) { return false; }
+  if (aIsRegex || bIsRegex) {
+    return a.source === b.source && flags(a) === flags(b);
+  }
+
+  if (isDate(a) && isDate(b)) {
+    return getTime.call(a) === getTime.call(b);
+  }
+
+  var aIsBuffer = isBuffer(a);
+  var bIsBuffer = isBuffer(b);
+  if (aIsBuffer !== bIsBuffer) { return false; }
+  if (aIsBuffer || bIsBuffer) { // && would work too, because both are true or both false here
+    if (a.length !== b.length) { return false; }
+    for (i = 0; i < a.length; i++) {
+      if (a[i] !== b[i]) { return false; }
+    }
+    return true;
+  }
+
+  if (typeof a !== typeof b) { return false; }
+
+  try {
+    var ka = objectKeys(a);
+    var kb = objectKeys(b);
+  } catch (e) { // happens when one is a string literal and the other isn't
+    return false;
+  }
+  // having the same number of owned properties (keys incorporates hasOwnProperty)
+  if (ka.length !== kb.length) { return false; }
+
+  // the same set of keys (although not necessarily the same order),
+  ka.sort();
+  kb.sort();
+  // ~~~cheap key test
+  for (i = ka.length - 1; i >= 0; i--) {
+    if (ka[i] != kb[i]) { return false; }
+  }
+  // equivalent values for every corresponding key, and ~~~possibly expensive deep test
+  for (i = ka.length - 1; i >= 0; i--) {
+    key = ka[i];
+    if (!deepEqual(a[key], b[key], opts)) { return false; }
+  }
+
+  return true;
+}
+
+module.exports = deepEqual;
+
 
 /***/ }),
 
@@ -16383,6 +15322,58 @@ module.exports = function() {
 
 /***/ }),
 
+/***/ "fyQZ":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var GetIntrinsic = __webpack_require__("6ayh");
+
+var $gOPD = __webpack_require__("HdHG");
+var $TypeError = GetIntrinsic('%TypeError%');
+
+var callBound = __webpack_require__("Khql");
+
+var $isEnumerable = callBound('Object.prototype.propertyIsEnumerable');
+
+var has = __webpack_require__("oNNP");
+
+var IsArray = __webpack_require__("1Soo");
+var IsPropertyKey = __webpack_require__("rCmP");
+var IsRegExp = __webpack_require__("PyeM");
+var ToPropertyDescriptor = __webpack_require__("GPGZ");
+var Type = __webpack_require__("RIFg");
+
+// https://www.ecma-international.org/ecma-262/6.0/#sec-ordinarygetownproperty
+
+module.exports = function OrdinaryGetOwnProperty(O, P) {
+	if (Type(O) !== 'Object') {
+		throw new $TypeError('Assertion failed: O must be an Object');
+	}
+	if (!IsPropertyKey(P)) {
+		throw new $TypeError('Assertion failed: P must be a Property Key');
+	}
+	if (!has(O, P)) {
+		return void 0;
+	}
+	if (!$gOPD) {
+		// ES3 / IE 8 fallback
+		var arrayLength = IsArray(O) && P === 'length';
+		var regexLastIndex = IsRegExp(O) && P === 'lastIndex';
+		return {
+			'[[Configurable]]': !(arrayLength || regexLastIndex),
+			'[[Enumerable]]': $isEnumerable(O, P),
+			'[[Value]]': O[P],
+			'[[Writable]]': true
+		};
+	}
+	return ToPropertyDescriptor($gOPD(O, P));
+};
+
+
+/***/ }),
+
 /***/ "gZI3":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -16455,24 +15446,6 @@ function getPooledMoment(dayString) {
 
 /***/ }),
 
-/***/ "gvzj":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var getInferredName;
-try {
-	// eslint-disable-next-line no-new-func
-	getInferredName = Function('s', 'return { [s]() {} }[s].name;');
-} catch (e) {}
-
-var inferred = function () {};
-module.exports = getInferredName && inferred.name === 'inferred' ? getInferredName : null;
-
-
-/***/ }),
-
 /***/ "h6xH":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -16500,6 +15473,50 @@ function isBeforeDay(a, b) {
   if (isSameYear) return aMonth < bMonth;
   return aYear < bYear;
 }
+
+/***/ }),
+
+/***/ "hNTQ":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var has = __webpack_require__("oNNP");
+
+var assertRecord = __webpack_require__("xG2L");
+
+var Type = __webpack_require__("RIFg");
+
+// https://www.ecma-international.org/ecma-262/6.0/#sec-isdatadescriptor
+
+module.exports = function IsDataDescriptor(Desc) {
+	if (typeof Desc === 'undefined') {
+		return false;
+	}
+
+	assertRecord(Type, 'Property Descriptor', 'Desc', Desc);
+
+	if (!has(Desc, '[[Value]]') && !has(Desc, '[[Writable]]')) {
+		return false;
+	}
+
+	return true;
+};
+
+
+/***/ }),
+
+/***/ "hemD":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+// http://www.ecma-international.org/ecma-262/5.1/#sec-9.11
+
+module.exports = __webpack_require__("IdCN");
+
 
 /***/ }),
 
@@ -16617,7 +15634,7 @@ var _constants = __webpack_require__("Fv1B");
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var propTypes =  false ? undefined : {};
 var defaultProps = {
@@ -16897,17 +15914,6 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ "i1el":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = __webpack_require__("WZeS");
-
-
-/***/ }),
-
 /***/ "iNdV":
 /***/ (function(module, exports) {
 
@@ -17150,28 +16156,6 @@ function toISOMonthString(date, currentFormat) {
 
 /***/ }),
 
-/***/ "jlA6":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var implementation = __webpack_require__("Vxjt");
-
-module.exports = function getPolyfill() {
-	if (!String.prototype.trimLeft) {
-		return implementation;
-	}
-	var zeroWidthSpace = '\u200b';
-	if (zeroWidthSpace.trimLeft() !== zeroWidthSpace) {
-		return implementation;
-	}
-	return String.prototype.trimLeft;
-};
-
-
-/***/ }),
-
 /***/ "kFtd":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17363,303 +16347,6 @@ var _toMomentObject = _interopRequireDefault(__webpack_require__("WmS1"));
 
 /***/ }),
 
-/***/ "kjJH":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var GetIntrinsic = __webpack_require__("6ayh");
-
-var keys = __webpack_require__("1seS");
-var inspect = __webpack_require__("JxQ3");
-
-var ES2017 = __webpack_require__("sEE1");
-var assign = __webpack_require__("DGeY");
-var forEach = __webpack_require__("yjl6");
-var callBind = __webpack_require__("RLeF");
-var every = __webpack_require__("BWkc");
-var isPrefixOf = __webpack_require__("uVm+");
-
-var $String = GetIntrinsic('%String%');
-var $TypeError = GetIntrinsic('%TypeError%');
-
-var callBound = __webpack_require__("Khql");
-var regexTester = __webpack_require__("D6qd");
-var $isNaN = __webpack_require__("IFfy");
-
-var $SymbolValueOf = callBound('Symbol.prototype.valueOf', true);
-// var $charAt = callBound('String.prototype.charAt');
-var $strSlice = callBound('String.prototype.slice');
-var $indexOf = callBound('String.prototype.indexOf');
-var $parseInt = parseInt;
-
-var isDigit = regexTester(/^[0-9]$/);
-
-var $PromiseResolve = callBound('Promise.resolve', true);
-
-var $isEnumerable = callBound('Object.prototype.propertyIsEnumerable');
-var $pushApply = callBind.apply(GetIntrinsic('%Array.prototype.push%'));
-var $gOPS = $SymbolValueOf ? GetIntrinsic('%Object.getOwnPropertySymbols%') : null;
-
-var padTimeComponent = function padTimeComponent(c, count) {
-	return $strSlice('00' + c, -(count || 2));
-};
-
-var weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-var OwnPropertyKeys = function OwnPropertyKeys(ES, source) {
-	var ownKeys = keys(source);
-	if ($gOPS) {
-		$pushApply(ownKeys, $gOPS(source));
-	}
-	return ownKeys;
-};
-
-var ES2018 = assign(assign({}, ES2017), {
-	EnumerableOwnPropertyNames: ES2017.EnumerableOwnProperties,
-
-	// https://ecma-international.org/ecma-262/9.0/#sec-thissymbolvalue
-	thisSymbolValue: function thisSymbolValue(value) {
-		if (!$SymbolValueOf) {
-			throw new SyntaxError('Symbols are not supported; thisSymbolValue requires that `value` be a Symbol or a Symbol object');
-		}
-		if (this.Type(value) === 'Symbol') {
-			return value;
-		}
-		return $SymbolValueOf(value);
-	},
-
-	// https://www.ecma-international.org/ecma-262/9.0/#sec-isstringprefix
-	IsStringPrefix: function IsStringPrefix(p, q) {
-		if (this.Type(p) !== 'String') {
-			throw new TypeError('Assertion failed: "p" must be a String');
-		}
-
-		if (this.Type(q) !== 'String') {
-			throw new TypeError('Assertion failed: "q" must be a String');
-		}
-
-		return isPrefixOf(p, q);
-		/*
-		if (p === q || p === '') {
-			return true;
-		}
-
-		var pLength = p.length;
-		var qLength = q.length;
-		if (pLength >= qLength) {
-			return false;
-		}
-
-		// assert: pLength < qLength
-
-		for (var i = 0; i < pLength; i += 1) {
-			if ($charAt(p, i) !== $charAt(q, i)) {
-				return false;
-			}
-		}
-		return true;
-		*/
-	},
-
-	// https://www.ecma-international.org/ecma-262/9.0/#sec-tostring-applied-to-the-number-type
-	NumberToString: function NumberToString(m) {
-		if (this.Type(m) !== 'Number') {
-			throw new TypeError('Assertion failed: "m" must be a String');
-		}
-
-		return $String(m);
-	},
-
-	// https://www.ecma-international.org/ecma-262/9.0/#sec-copydataproperties
-	CopyDataProperties: function CopyDataProperties(target, source, excludedItems) {
-		if (this.Type(target) !== 'Object') {
-			throw new TypeError('Assertion failed: "target" must be an Object');
-		}
-
-		if (!this.IsArray(excludedItems)) {
-			throw new TypeError('Assertion failed: "excludedItems" must be a List of Property Keys');
-		}
-		for (var i = 0; i < excludedItems.length; i += 1) {
-			if (!this.IsPropertyKey(excludedItems[i])) {
-				throw new TypeError('Assertion failed: "excludedItems" must be a List of Property Keys');
-			}
-		}
-
-		if (typeof source === 'undefined' || source === null) {
-			return target;
-		}
-
-		var ES = this;
-
-		var fromObj = ES.ToObject(source);
-
-		var sourceKeys = OwnPropertyKeys(ES, fromObj);
-		forEach(sourceKeys, function (nextKey) {
-			var excluded = false;
-
-			forEach(excludedItems, function (e) {
-				if (ES.SameValue(e, nextKey) === true) {
-					excluded = true;
-				}
-			});
-
-			var enumerable = $isEnumerable(fromObj, nextKey) || (
-				// this is to handle string keys being non-enumerable in older engines
-				typeof source === 'string'
-				&& nextKey >= 0
-				&& ES.IsInteger(ES.ToNumber(nextKey))
-			);
-			if (excluded === false && enumerable) {
-				var propValue = ES.Get(fromObj, nextKey);
-				ES.CreateDataProperty(target, nextKey, propValue);
-			}
-		});
-
-		return target;
-	},
-
-	// https://ecma-international.org/ecma-262/9.0/#sec-promise-resolve
-	PromiseResolve: function PromiseResolve(C, x) {
-		if (!$PromiseResolve) {
-			throw new SyntaxError('This environment does not support Promises.');
-		}
-		return $PromiseResolve(C, x);
-	},
-
-	// http://www.ecma-international.org/ecma-262/9.0/#sec-getsubstitution
-	// eslint-disable-next-line max-statements, max-params, max-lines-per-function
-	GetSubstitution: function GetSubstitution(matched, str, position, captures, namedCaptures, replacement) {
-		if (this.Type(matched) !== 'String') {
-			throw new $TypeError('Assertion failed: `matched` must be a String');
-		}
-		var matchLength = matched.length;
-
-		if (this.Type(str) !== 'String') {
-			throw new $TypeError('Assertion failed: `str` must be a String');
-		}
-		var stringLength = str.length;
-
-		if (!this.IsInteger(position) || position < 0 || position > stringLength) {
-			throw new $TypeError('Assertion failed: `position` must be a nonnegative integer, and less than or equal to the length of `string`, got ' + inspect(position));
-		}
-
-		var ES = this;
-		var isStringOrHole = function (capture, index, arr) { return ES.Type(capture) === 'String' || !(index in arr); };
-		if (!this.IsArray(captures) || !every(captures, isStringOrHole)) {
-			throw new $TypeError('Assertion failed: `captures` must be a List of Strings, got ' + inspect(captures));
-		}
-
-		if (this.Type(replacement) !== 'String') {
-			throw new $TypeError('Assertion failed: `replacement` must be a String');
-		}
-
-		var tailPos = position + matchLength;
-		var m = captures.length;
-		if (this.Type(namedCaptures) !== 'Undefined') {
-			namedCaptures = this.ToObject(namedCaptures); // eslint-disable-line no-param-reassign
-		}
-
-		var result = '';
-		for (var i = 0; i < replacement.length; i += 1) {
-			// if this is a $, and it's not the end of the replacement
-			var current = replacement[i];
-			var isLast = (i + 1) >= replacement.length;
-			var nextIsLast = (i + 2) >= replacement.length;
-			if (current === '$' && !isLast) {
-				var next = replacement[i + 1];
-				if (next === '$') {
-					result += '$';
-					i += 1;
-				} else if (next === '&') {
-					result += matched;
-					i += 1;
-				} else if (next === '`') {
-					result += position === 0 ? '' : $strSlice(str, 0, position - 1);
-					i += 1;
-				} else if (next === "'") {
-					result += tailPos >= stringLength ? '' : $strSlice(str, tailPos);
-					i += 1;
-				} else {
-					var nextNext = nextIsLast ? null : replacement[i + 2];
-					if (isDigit(next) && next !== '0' && (nextIsLast || !isDigit(nextNext))) {
-						// $1 through $9, and not followed by a digit
-						var n = $parseInt(next, 10);
-						// if (n > m, impl-defined)
-						result += (n <= m && this.Type(captures[n - 1]) === 'Undefined') ? '' : captures[n - 1];
-						i += 1;
-					} else if (isDigit(next) && (nextIsLast || isDigit(nextNext))) {
-						// $00 through $99
-						var nn = next + nextNext;
-						var nnI = $parseInt(nn, 10) - 1;
-						// if nn === '00' or nn > m, impl-defined
-						result += (nn <= m && this.Type(captures[nnI]) === 'Undefined') ? '' : captures[nnI];
-						i += 2;
-					} else if (next === '<') {
-						// eslint-disable-next-line max-depth
-						if (this.Type(namedCaptures) === 'Undefined') {
-							result += '$<';
-							i += 2;
-						} else {
-							var endIndex = $indexOf(replacement, '>', i);
-							// eslint-disable-next-line max-depth
-							if (endIndex > -1) {
-								var groupName = $strSlice(replacement, i, endIndex);
-								var capture = this.Get(namedCaptures, groupName);
-								// eslint-disable-next-line max-depth
-								if (this.Type(capture) !== 'Undefined') {
-									result += this.ToString(capture);
-								}
-								i += '$<' + groupName + '>'.length;
-							}
-						}
-					} else {
-						result += '$';
-					}
-				}
-			} else {
-				// the final $, or else not a $
-				result += replacement[i];
-			}
-		}
-		return result;
-	},
-
-	// https://www.ecma-international.org/ecma-262/9.0/#sec-datestring
-	DateString: function DateString(tv) {
-		if (this.Type(tv) !== 'Number' || $isNaN(tv)) {
-			throw new $TypeError('Assertion failed: `tv` must be a non-NaN Number');
-		}
-		var weekday = weekdays[this.WeekDay(tv)];
-		var month = months[this.MonthFromTime(tv)];
-		var day = padTimeComponent(this.DateFromTime(tv));
-		var year = padTimeComponent(this.YearFromTime(tv), 4);
-		return weekday + '\x20' + month + '\x20' + day + '\x20' + year;
-	},
-
-	// https://www.ecma-international.org/ecma-262/9.0/#sec-timestring
-	TimeString: function TimeString(tv) {
-		if (this.Type(tv) !== 'Number' || $isNaN(tv)) {
-			throw new $TypeError('Assertion failed: `tv` must be a non-NaN Number');
-		}
-		var hour = this.HourFromTime(tv);
-		var minute = this.MinFromTime(tv);
-		var second = this.SecFromTime(tv);
-		return padTimeComponent(hour) + ':' + padTimeComponent(minute) + ':' + padTimeComponent(second) + '\x20GMT';
-	}
-});
-
-delete ES2018.EnumerableOwnProperties; // replaced with EnumerableOwnPropertyNames
-
-delete ES2018.IsPropertyDescriptor; // not an actual abstract operation
-
-module.exports = ES2018;
-
-
-/***/ }),
-
 /***/ "kpKt":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17688,7 +16375,7 @@ var _constants = __webpack_require__("Fv1B");
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function addModifier(updatedDays, day, modifier, props, state) {
   var numberOfVisibleMonths = props.numberOfMonths,
@@ -17804,23 +16491,23 @@ function deleteModifier(updatedDays, day, modifier, props, state) {
 "use strict";
 
 
-var isCallable = __webpack_require__("IdCN");
+var IsCallable = __webpack_require__("hemD");
 var functionsHaveNames = __webpack_require__("JQAW")();
-var bind = __webpack_require__("D3zA");
-var functionToString = bind.call(Function.call, Function.prototype.toString);
-var stringMatch = bind.call(Function.call, String.prototype.match);
+var callBound = __webpack_require__("Khql");
+var $functionToString = callBound('Function.prototype.toString');
+var $stringMatch = callBound('String.prototype.match');
 
 var classRegex = /^class /;
 
 var isClass = function isClassConstructor(fn) {
-	if (isCallable(fn)) {
+	if (IsCallable(fn)) {
 		return false;
 	}
 	if (typeof fn !== 'function') {
 		return false;
 	}
 	try {
-		var match = stringMatch(functionToString(fn), classRegex);
+		var match = $stringMatch($functionToString(fn), classRegex);
 		return !!match;
 	} catch (e) {}
 	return false;
@@ -17831,7 +16518,7 @@ var regex = /\s*function\s+([^(\s]*)\s*/;
 var functionProto = Function.prototype;
 
 module.exports = function getName() {
-	if (!isClass(this) && !isCallable(this)) {
+	if (!isClass(this) && !IsCallable(this)) {
 		throw new TypeError('Function.prototype.name sham getter called on non-function');
 	}
 	if (functionsHaveNames) {
@@ -17840,8 +16527,8 @@ module.exports = function getName() {
 	if (this === functionProto) {
 		return '';
 	}
-	var str = functionToString(this);
-	var match = stringMatch(str, regex);
+	var str = $functionToString(this);
+	var match = $stringMatch(str, regex);
 	var name = match && match[1];
 	return name;
 };
@@ -17884,10 +16571,7 @@ module.exports = __webpack_require__("VDVV").default;
 /***/ (function(module, exports) {
 
 function _iterableToArrayLimit(arr, i) {
-  if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) {
-    return;
-  }
-
+  if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return;
   var _arr = [];
   var _n = true;
   var _d = false;
@@ -17932,6 +16616,72 @@ function getCalendarMonthWidth(daySize) {
   var calendarMonthPadding = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
   return 7 * daySize + 2 * calendarMonthPadding + 1;
 }
+
+/***/ }),
+
+/***/ "mJ3t":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var GetIntrinsic = __webpack_require__("6ayh");
+
+var $TypeError = GetIntrinsic('%TypeError%');
+
+var MAX_SAFE_INTEGER = __webpack_require__("sqVN");
+
+var Call = __webpack_require__("aTj1");
+var CreateDataPropertyOrThrow = __webpack_require__("UBAn");
+var Get = __webpack_require__("2GRh");
+var HasProperty = __webpack_require__("RJ/z");
+var IsArray = __webpack_require__("1Soo");
+var ToLength = __webpack_require__("ciGR");
+var ToString = __webpack_require__("R5T6");
+
+// https://ecma-international.org/ecma-262/10.0/#sec-flattenintoarray
+
+// eslint-disable-next-line max-params, max-statements
+module.exports = function FlattenIntoArray(target, source, sourceLen, start, depth) {
+	var mapperFunction;
+	if (arguments.length > 5) {
+		mapperFunction = arguments[5];
+	}
+
+	var targetIndex = start;
+	var sourceIndex = 0;
+	while (sourceIndex < sourceLen) {
+		var P = ToString(sourceIndex);
+		var exists = HasProperty(source, P);
+		if (exists === true) {
+			var element = Get(source, P);
+			if (typeof mapperFunction !== 'undefined') {
+				if (arguments.length <= 6) {
+					throw new $TypeError('Assertion failed: thisArg is required when mapperFunction is provided');
+				}
+				element = Call(mapperFunction, arguments[6], [element, sourceIndex, source]);
+			}
+			var shouldFlatten = false;
+			if (depth > 0) {
+				shouldFlatten = IsArray(element);
+			}
+			if (shouldFlatten) {
+				var elementLen = ToLength(Get(element, 'length'));
+				targetIndex = FlattenIntoArray(target, element, elementLen, targetIndex, depth - 1);
+			} else {
+				if (targetIndex >= MAX_SAFE_INTEGER) {
+					throw new $TypeError('index too large');
+				}
+				CreateDataPropertyOrThrow(target, ToString(targetIndex), element);
+				targetIndex += 1;
+			}
+		}
+		sourceIndex += 1;
+	}
+
+	return targetIndex;
+};
+
 
 /***/ }),
 
@@ -17996,7 +16746,7 @@ var _constants = __webpack_require__("Fv1B");
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var propTypes =  false ? undefined : {};
 var defaultProps = {
@@ -18637,17 +17387,6 @@ module.exports = Symbol;
 
 /***/ }),
 
-/***/ "oMlu":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = __webpack_require__("2gq3");
-
-
-/***/ }),
-
 /***/ "oNNP":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -18843,7 +17582,7 @@ exports["default"] = _default;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/** @license React v16.12.0
+/** @license React v16.13.1
  * react-is.production.min.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -18852,12 +17591,66 @@ exports["default"] = _default;
  * LICENSE file in the root directory of this source tree.
  */
 
-Object.defineProperty(exports,"__esModule",{value:!0});
-var b="function"===typeof Symbol&&Symbol.for,c=b?Symbol.for("react.element"):60103,d=b?Symbol.for("react.portal"):60106,e=b?Symbol.for("react.fragment"):60107,f=b?Symbol.for("react.strict_mode"):60108,g=b?Symbol.for("react.profiler"):60114,h=b?Symbol.for("react.provider"):60109,k=b?Symbol.for("react.context"):60110,l=b?Symbol.for("react.async_mode"):60111,m=b?Symbol.for("react.concurrent_mode"):60111,n=b?Symbol.for("react.forward_ref"):60112,p=b?Symbol.for("react.suspense"):60113,q=b?Symbol.for("react.suspense_list"):
-60120,r=b?Symbol.for("react.memo"):60115,t=b?Symbol.for("react.lazy"):60116,v=b?Symbol.for("react.fundamental"):60117,w=b?Symbol.for("react.responder"):60118,x=b?Symbol.for("react.scope"):60119;function y(a){if("object"===typeof a&&null!==a){var u=a.$$typeof;switch(u){case c:switch(a=a.type,a){case l:case m:case e:case g:case f:case p:return a;default:switch(a=a&&a.$$typeof,a){case k:case n:case t:case r:case h:return a;default:return u}}case d:return u}}}function z(a){return y(a)===m}
-exports.typeOf=y;exports.AsyncMode=l;exports.ConcurrentMode=m;exports.ContextConsumer=k;exports.ContextProvider=h;exports.Element=c;exports.ForwardRef=n;exports.Fragment=e;exports.Lazy=t;exports.Memo=r;exports.Portal=d;exports.Profiler=g;exports.StrictMode=f;exports.Suspense=p;
-exports.isValidElementType=function(a){return"string"===typeof a||"function"===typeof a||a===e||a===m||a===g||a===f||a===p||a===q||"object"===typeof a&&null!==a&&(a.$$typeof===t||a.$$typeof===r||a.$$typeof===h||a.$$typeof===k||a.$$typeof===n||a.$$typeof===v||a.$$typeof===w||a.$$typeof===x)};exports.isAsyncMode=function(a){return z(a)||y(a)===l};exports.isConcurrentMode=z;exports.isContextConsumer=function(a){return y(a)===k};exports.isContextProvider=function(a){return y(a)===h};
-exports.isElement=function(a){return"object"===typeof a&&null!==a&&a.$$typeof===c};exports.isForwardRef=function(a){return y(a)===n};exports.isFragment=function(a){return y(a)===e};exports.isLazy=function(a){return y(a)===t};exports.isMemo=function(a){return y(a)===r};exports.isPortal=function(a){return y(a)===d};exports.isProfiler=function(a){return y(a)===g};exports.isStrictMode=function(a){return y(a)===f};exports.isSuspense=function(a){return y(a)===p};
+var b="function"===typeof Symbol&&Symbol.for,c=b?Symbol.for("react.element"):60103,d=b?Symbol.for("react.portal"):60106,e=b?Symbol.for("react.fragment"):60107,f=b?Symbol.for("react.strict_mode"):60108,g=b?Symbol.for("react.profiler"):60114,h=b?Symbol.for("react.provider"):60109,k=b?Symbol.for("react.context"):60110,l=b?Symbol.for("react.async_mode"):60111,m=b?Symbol.for("react.concurrent_mode"):60111,n=b?Symbol.for("react.forward_ref"):60112,p=b?Symbol.for("react.suspense"):60113,q=b?
+Symbol.for("react.suspense_list"):60120,r=b?Symbol.for("react.memo"):60115,t=b?Symbol.for("react.lazy"):60116,v=b?Symbol.for("react.block"):60121,w=b?Symbol.for("react.fundamental"):60117,x=b?Symbol.for("react.responder"):60118,y=b?Symbol.for("react.scope"):60119;
+function z(a){if("object"===typeof a&&null!==a){var u=a.$$typeof;switch(u){case c:switch(a=a.type,a){case l:case m:case e:case g:case f:case p:return a;default:switch(a=a&&a.$$typeof,a){case k:case n:case t:case r:case h:return a;default:return u}}case d:return u}}}function A(a){return z(a)===m}exports.AsyncMode=l;exports.ConcurrentMode=m;exports.ContextConsumer=k;exports.ContextProvider=h;exports.Element=c;exports.ForwardRef=n;exports.Fragment=e;exports.Lazy=t;exports.Memo=r;exports.Portal=d;
+exports.Profiler=g;exports.StrictMode=f;exports.Suspense=p;exports.isAsyncMode=function(a){return A(a)||z(a)===l};exports.isConcurrentMode=A;exports.isContextConsumer=function(a){return z(a)===k};exports.isContextProvider=function(a){return z(a)===h};exports.isElement=function(a){return"object"===typeof a&&null!==a&&a.$$typeof===c};exports.isForwardRef=function(a){return z(a)===n};exports.isFragment=function(a){return z(a)===e};exports.isLazy=function(a){return z(a)===t};
+exports.isMemo=function(a){return z(a)===r};exports.isPortal=function(a){return z(a)===d};exports.isProfiler=function(a){return z(a)===g};exports.isStrictMode=function(a){return z(a)===f};exports.isSuspense=function(a){return z(a)===p};
+exports.isValidElementType=function(a){return"string"===typeof a||"function"===typeof a||a===e||a===m||a===g||a===f||a===p||a===q||"object"===typeof a&&null!==a&&(a.$$typeof===t||a.$$typeof===r||a.$$typeof===h||a.$$typeof===k||a.$$typeof===n||a.$$typeof===w||a.$$typeof===x||a.$$typeof===y||a.$$typeof===v)};exports.typeOf=z;
+
+
+/***/ }),
+
+/***/ "qjSr":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var GetIntrinsic = __webpack_require__("6ayh");
+
+var $Array = GetIntrinsic('%Array%');
+var $species = GetIntrinsic('%Symbol.species%', true);
+var $TypeError = GetIntrinsic('%TypeError%');
+
+var Get = __webpack_require__("2GRh");
+var IsArray = __webpack_require__("1Soo");
+var IsConstructor = __webpack_require__("zODz");
+var IsInteger = __webpack_require__("1l3A");
+var Type = __webpack_require__("RIFg");
+
+// https://ecma-international.org/ecma-262/6.0/#sec-arrayspeciescreate
+
+module.exports = function ArraySpeciesCreate(originalArray, length) {
+	if (!IsInteger(length) || length < 0) {
+		throw new $TypeError('Assertion failed: length must be an integer >= 0');
+	}
+	var len = length === 0 ? 0 : length;
+	var C;
+	var isArray = IsArray(originalArray);
+	if (isArray) {
+		C = Get(originalArray, 'constructor');
+		// TODO: figure out how to make a cross-realm normal Array, a same-realm Array
+		// if (IsConstructor(C)) {
+		// 	if C is another realm's Array, C = undefined
+		// 	Object.getPrototypeOf(Object.getPrototypeOf(Object.getPrototypeOf(Array))) === null ?
+		// }
+		if ($species && Type(C) === 'Object') {
+			C = Get(C, $species);
+			if (C === null) {
+				C = void 0;
+			}
+		}
+	}
+	if (typeof C === 'undefined') {
+		return $Array(len);
+	}
+	if (!IsConstructor(C)) {
+		throw new $TypeError('C must be a constructor');
+	}
+	return new C(len); // Construct(C, len);
+};
+
 
 
 /***/ }),
@@ -18886,22 +17679,38 @@ function getPreviousMonthMemoLast(month) {
 
 /***/ }),
 
+/***/ "rCmP":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+// https://www.ecma-international.org/ecma-262/6.0/#sec-ispropertykey
+
+module.exports = function IsPropertyKey(argument) {
+	return typeof argument === 'string' || typeof argument === 'symbol';
+};
+
+
+/***/ }),
+
 /***/ "rQy3":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var ES = __webpack_require__("oMlu");
 var has = __webpack_require__("oNNP");
-var bind = __webpack_require__("D3zA");
-var isEnumerable = bind.call(Function.call, Object.prototype.propertyIsEnumerable);
+var RequireObjectCoercible = __webpack_require__("Ii9V");
+var callBound = __webpack_require__("Khql");
+
+var $isEnumerable = callBound('Object.prototype.propertyIsEnumerable');
 
 module.exports = function values(O) {
-	var obj = ES.RequireObjectCoercible(O);
+	var obj = RequireObjectCoercible(O);
 	var vals = [];
 	for (var key in obj) {
-		if (has(obj, key) && isEnumerable(obj, key)) {
+		if (has(obj, key) && $isEnumerable(obj, key)) {
 			vals.push(obj[key]);
 		}
 	}
@@ -18956,85 +17765,6 @@ exports['default'] = _propTypes2['default'].shape({
   setState: _propTypes2['default'].func,
   subscribe: _propTypes2['default'].func
 });
-
-/***/ }),
-
-/***/ "sEE1":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var GetIntrinsic = __webpack_require__("6ayh");
-
-var ES2016 = __webpack_require__("2gq3");
-var assign = __webpack_require__("DGeY");
-var forEach = __webpack_require__("yjl6");
-var callBind = __webpack_require__("RLeF");
-
-var $TypeError = GetIntrinsic('%TypeError%');
-var callBound = __webpack_require__("Khql");
-var $isEnumerable = callBound('Object.prototype.propertyIsEnumerable');
-var $pushApply = callBind.apply(GetIntrinsic('%Array.prototype.push%'));
-var $arrayPush = callBound('Array.prototype.push');
-
-var ES2017 = assign(assign({}, ES2016), {
-	ToIndex: function ToIndex(value) {
-		if (typeof value === 'undefined') {
-			return 0;
-		}
-		var integerIndex = this.ToInteger(value);
-		if (integerIndex < 0) {
-			throw new RangeError('index must be >= 0');
-		}
-		var index = this.ToLength(integerIndex);
-		if (!this.SameValueZero(integerIndex, index)) {
-			throw new RangeError('index must be >= 0 and < 2 ** 53 - 1');
-		}
-		return index;
-	},
-
-	// https://www.ecma-international.org/ecma-262/8.0/#sec-enumerableownproperties
-	EnumerableOwnProperties: function EnumerableOwnProperties(O, kind) {
-		var keys = ES2016.EnumerableOwnNames(O);
-		if (kind === 'key') {
-			return keys;
-		}
-		if (kind === 'value' || kind === 'key+value') {
-			var results = [];
-			forEach(keys, function (key) {
-				if ($isEnumerable(O, key)) {
-					$pushApply(results, [
-						kind === 'value' ? O[key] : [key, O[key]]
-					]);
-				}
-			});
-			return results;
-		}
-		throw new $TypeError('Assertion failed: "kind" is not "key", "value", or "key+value": ' + kind);
-	},
-
-	// https://www.ecma-international.org/ecma-262/8.0/#sec-iterabletolist
-	IterableToList: function IterableToList(items, method) {
-		var iterator = this.GetIterator(items, method);
-		var values = [];
-		var next = true;
-		while (next) {
-			next = this.IteratorStep(iterator);
-			if (next) {
-				var nextValue = this.IteratorValue(next);
-				$arrayPush(values, nextValue);
-			}
-		}
-		return values;
-	}
-});
-
-delete ES2017.EnumerableOwnNames; // replaced with EnumerableOwnProperties
-delete ES2017.IterableToArrayLike; // replaced with IterableToList
-
-module.exports = ES2017;
-
 
 /***/ }),
 
@@ -19455,15 +18185,47 @@ module.exports = toNumber;
 
 /***/ }),
 
-/***/ "u1Mj":
+/***/ "toeb":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = function mod(number, modulo) {
-	var remain = number % modulo;
-	return Math.floor(remain >= 0 ? remain : remain + modulo);
+var has = __webpack_require__("oNNP");
+
+var assertRecord = __webpack_require__("xG2L");
+
+var Type = __webpack_require__("RIFg");
+
+// https://www.ecma-international.org/ecma-262/6.0/#sec-isaccessordescriptor
+
+module.exports = function IsAccessorDescriptor(Desc) {
+	if (typeof Desc === 'undefined') {
+		return false;
+	}
+
+	assertRecord(Type, 'Property Descriptor', 'Desc', Desc);
+
+	if (!has(Desc, '[[Get]]') && !has(Desc, '[[Set]]')) {
+		return false;
+	}
+
+	return true;
+};
+
+
+/***/ }),
+
+/***/ "u1xu":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+// http://www.ecma-international.org/ecma-262/5.1/#sec-9.3
+
+module.exports = function ToNumber(value) {
+	return +value; // eslint-disable-line no-implicit-coercion
 };
 
 
@@ -19529,27 +18291,6 @@ function getVisibleDays(month, numberOfMonths, enableOutsideDays, withoutTransit
 
   return visibleDaysByMonth;
 }
-
-/***/ }),
-
-/***/ "uVm+":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var $strSlice = __webpack_require__("Khql")('String.prototype.slice');
-
-module.exports = function isPrefixOf(prefix, string) {
-	if (prefix === string) {
-		return true;
-	}
-	if (prefix.length > string.length) {
-		return false;
-	}
-	return $strSlice(string, 0, prefix.length) === prefix;
-};
-
 
 /***/ }),
 
@@ -19875,125 +18616,6 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ "vzEZ":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var trimStart = __webpack_require__("wGa9");
-var trimEnd = __webpack_require__("N/6a");
-var inspect = __webpack_require__("JxQ3");
-
-var ES2018 = __webpack_require__("kjJH");
-var assign = __webpack_require__("DGeY");
-var MAX_SAFE_INTEGER = __webpack_require__("sqVN");
-
-var GetIntrinsic = __webpack_require__("6ayh");
-
-var $TypeError = GetIntrinsic('%TypeError%');
-
-var ES2019 = assign(assign({}, ES2018), {
-	// https://tc39.es/ecma262/#sec-add-entries-from-iterable
-	AddEntriesFromIterable: function AddEntriesFromIterable(target, iterable, adder) {
-		if (!this.IsCallable(adder)) {
-			throw new $TypeError('Assertion failed: `adder` is not callable');
-		}
-		if (iterable == null) {
-			throw new $TypeError('Assertion failed: `iterable` is present, and not nullish');
-		}
-		var iteratorRecord = this.GetIterator(iterable);
-		while (true) { // eslint-disable-line no-constant-condition
-			var next = this.IteratorStep(iteratorRecord);
-			if (!next) {
-				return target;
-			}
-			var nextItem = this.IteratorValue(next);
-			if (this.Type(nextItem) !== 'Object') {
-				var error = new $TypeError('iterator next must return an Object, got ' + inspect(nextItem));
-				return this.IteratorClose(
-					iteratorRecord,
-					function () { throw error; } // eslint-disable-line no-loop-func
-				);
-			}
-			try {
-				var k = this.Get(nextItem, '0');
-				var v = this.Get(nextItem, '1');
-				this.Call(adder, target, [k, v]);
-			} catch (e) {
-				return this.IteratorClose(
-					iteratorRecord,
-					function () { throw e; } // eslint-disable-line no-loop-func
-				);
-			}
-		}
-	},
-
-	// https://ecma-international.org/ecma-262/10.0/#sec-flattenintoarray
-	// eslint-disable-next-line max-params, max-statements
-	FlattenIntoArray: function FlattenIntoArray(target, source, sourceLen, start, depth) {
-		var mapperFunction;
-		if (arguments.length > 5) {
-			mapperFunction = arguments[5];
-		}
-
-		var targetIndex = start;
-		var sourceIndex = 0;
-		while (sourceIndex < sourceLen) {
-			var P = this.ToString(sourceIndex);
-			var exists = this.HasProperty(source, P);
-			if (exists === true) {
-				var element = this.Get(source, P);
-				if (typeof mapperFunction !== 'undefined') {
-					if (arguments.length <= 6) {
-						throw new $TypeError('Assertion failed: thisArg is required when mapperFunction is provided');
-					}
-					element = this.Call(mapperFunction, arguments[6], [element, sourceIndex, source]);
-				}
-				var shouldFlatten = false;
-				if (depth > 0) {
-					shouldFlatten = this.IsArray(element);
-				}
-				if (shouldFlatten) {
-					var elementLen = this.ToLength(this.Get(element, 'length'));
-					targetIndex = this.FlattenIntoArray(target, element, elementLen, targetIndex, depth - 1);
-				} else {
-					if (targetIndex >= MAX_SAFE_INTEGER) {
-						throw new $TypeError('index too large');
-					}
-					this.CreateDataPropertyOrThrow(target, this.ToString(targetIndex), element);
-					targetIndex += 1;
-				}
-			}
-			sourceIndex += 1;
-		}
-
-		return targetIndex;
-	},
-
-	// https://ecma-international.org/ecma-262/10.0/#sec-trimstring
-	TrimString: function TrimString(string, where) {
-		var str = this.RequireObjectCoercible(string);
-		var S = this.ToString(str);
-		var T;
-		if (where === 'start') {
-			T = trimStart(S);
-		} else if (where === 'end') {
-			T = trimEnd(S);
-		} else if (where === 'start+end') {
-			T = trimStart(trimEnd(S));
-		} else {
-			throw new $TypeError('Assertion failed: invalid `where` value; must be "start", "end", or "start+end"');
-		}
-		return T;
-	}
-});
-
-module.exports = ES2019;
-
-
-/***/ }),
-
 /***/ "w0iJ":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -20020,32 +18642,6 @@ function getResponsiveContainerStyles(anchorDirection, currentOffset, containerE
 
 /***/ }),
 
-/***/ "wGa9":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var bind = __webpack_require__("D3zA");
-var define = __webpack_require__("82c2");
-
-var implementation = __webpack_require__("Vxjt");
-var getPolyfill = __webpack_require__("jlA6");
-var shim = __webpack_require__("Ym3A");
-
-var bound = bind.call(Function.call, getPolyfill());
-
-define(bound, {
-	getPolyfill: getPolyfill,
-	implementation: implementation,
-	shim: shim
-});
-
-module.exports = bound;
-
-
-/***/ }),
-
 /***/ "wTVA":
 /***/ (function(module, exports) {
 
@@ -20057,14 +18653,56 @@ module.exports = _arrayWithHoles;
 
 /***/ }),
 
+/***/ "wVpn":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var getPolyfill = __webpack_require__("WDQk");
+var define = __webpack_require__("82c2");
+
+module.exports = function shimObjectIs() {
+	var polyfill = getPolyfill();
+	define(Object, { is: polyfill }, {
+		is: function testObjectIs() {
+			return Object.is !== polyfill;
+		}
+	});
+	return polyfill;
+};
+
+
+/***/ }),
+
 /***/ "wkBT":
 /***/ (function(module, exports) {
 
 function _nonIterableRest() {
-  throw new TypeError("Invalid attempt to destructure non-iterable instance");
+  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 
 module.exports = _nonIterableRest;
+
+/***/ }),
+
+/***/ "wrft":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var ES5ToInteger = __webpack_require__("0yco");
+
+var ToNumber = __webpack_require__("1Fze");
+
+// https://www.ecma-international.org/ecma-262/6.0/#sec-tointeger
+
+module.exports = function ToInteger(value) {
+	var number = ToNumber(value);
+	return ES5ToInteger(number);
+};
+
 
 /***/ }),
 
@@ -20204,8 +18842,8 @@ var has = __webpack_require__("oNNP");
 
 var predicates = {
 	// https://ecma-international.org/ecma-262/6.0/#sec-property-descriptor-specification-type
-	'Property Descriptor': function isPropertyDescriptor(ES, Desc) {
-		if (ES.Type(Desc) !== 'Object') {
+	'Property Descriptor': function isPropertyDescriptor(Type, Desc) {
+		if (Type(Desc) !== 'Object') {
 			return false;
 		}
 		var allowed = {
@@ -20232,12 +18870,12 @@ var predicates = {
 	}
 };
 
-module.exports = function assertRecord(ES, recordType, argumentName, value) {
+module.exports = function assertRecord(Type, recordType, argumentName, value) {
 	var predicate = predicates[recordType];
 	if (typeof predicate !== 'function') {
 		throw new $SyntaxError('unknown record type: ' + recordType);
 	}
-	if (!predicate(ES, value)) {
+	if (!predicate(Type, value)) {
 		throw new $TypeError(argumentName + ' must be a ' + recordType);
 	}
 };
@@ -20625,19 +19263,24 @@ module.exports = g;
 "use strict";
 
 
-var ES = __webpack_require__("vzEZ");
+var ArraySpeciesCreate = __webpack_require__("qjSr");
+var FlattenIntoArray = __webpack_require__("mJ3t");
+var Get = __webpack_require__("2GRh");
+var ToInteger = __webpack_require__("wrft");
+var ToLength = __webpack_require__("ciGR");
+var ToObject = __webpack_require__("TU3P");
 
 module.exports = function flat() {
-	var O = ES.ToObject(this);
-	var sourceLen = ES.ToLength(ES.Get(O, 'length'));
+	var O = ToObject(this);
+	var sourceLen = ToLength(Get(O, 'length'));
 
 	var depthNum = 1;
 	if (arguments.length > 0 && typeof arguments[0] !== 'undefined') {
-		depthNum = ES.ToInteger(arguments[0]);
+		depthNum = ToInteger(arguments[0]);
 	}
 
-	var A = ES.ArraySpeciesCreate(O, 0);
-	ES.FlattenIntoArray(A, O, sourceLen, 0, depthNum);
+	var A = ArraySpeciesCreate(O, 0);
+	FlattenIntoArray(A, O, sourceLen, 0, depthNum);
 	return A;
 };
 
@@ -20716,28 +19359,13 @@ var _propTypes = _interopRequireDefault(__webpack_require__("17x9"));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function getPhrasePropTypes(defaultPhrases) {
   return Object.keys(defaultPhrases).reduce(function (phrases, key) {
     return _objectSpread({}, phrases, (0, _defineProperty2["default"])({}, key, _propTypes["default"].oneOfType([_propTypes["default"].string, _propTypes["default"].func, _propTypes["default"].node])));
   }, {});
 }
-
-/***/ }),
-
-/***/ "yjl6":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function forEach(array, callback) {
-	for (var i = 0; i < array.length; i += 1) {
-		callback(array[i], i, array); // eslint-disable-line callback-return
-	}
-};
-
 
 /***/ }),
 
@@ -20768,7 +19396,7 @@ var _reactWithStyles = __webpack_require__("TG4+");
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var propTypes =  false ? undefined : {};
 var defaultProps = {
@@ -20833,6 +19461,54 @@ var _default = (0, _reactWithStyles.withStyles)(function (_ref2) {
 })(KeyboardShortcutRow);
 
 exports["default"] = _default;
+
+/***/ }),
+
+/***/ "zODz":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var GetIntrinsic = __webpack_require__("6ayh");
+
+var $construct = GetIntrinsic('%Reflect.construct%', true);
+
+var DefinePropertyOrThrow = __webpack_require__("9N1e");
+try {
+	DefinePropertyOrThrow({}, '', { '[[Get]]': function () {} });
+} catch (e) {
+	// Accessor properties aren't supported
+	DefinePropertyOrThrow = null;
+}
+
+// https://www.ecma-international.org/ecma-262/6.0/#sec-isconstructor
+
+if (DefinePropertyOrThrow && $construct) {
+	var isConstructorMarker = {};
+	var badArrayLike = {};
+	DefinePropertyOrThrow(badArrayLike, 'length', {
+		'[[Get]]': function () {
+			throw isConstructorMarker;
+		},
+		'[[Enumerable]]': true
+	});
+
+	module.exports = function IsConstructor(argument) {
+		try {
+			// `Reflect.construct` invokes `IsConstructor(target)` before `Get(args, 'length')`:
+			$construct(argument, badArrayLike);
+		} catch (err) {
+			return err === isConstructorMarker;
+		}
+	};
+} else {
+	module.exports = function IsConstructor(argument) {
+		// unfortunately there's no way to truly check this without try/catch `new argument` in old environments
+		return typeof argument === 'function' && !!argument.prototype;
+	};
+}
+
 
 /***/ }),
 
@@ -20941,9 +19617,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
+var _enzymeShallowEqual = _interopRequireDefault(__webpack_require__("NE9H"));
+
 var _extends2 = _interopRequireDefault(__webpack_require__("pVnL"));
 
 var _toConsumableArray2 = _interopRequireDefault(__webpack_require__("RIqP"));
+
+var _inheritsLoose2 = _interopRequireDefault(__webpack_require__("VbXa"));
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__("lSNA"));
 
@@ -20977,7 +19657,7 @@ var _constants = __webpack_require__("Fv1B");
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var propTypes =  false ? undefined : {};
 var defaultProps = {
@@ -20994,118 +19674,158 @@ var defaultProps = {
   // internationalization
   phrases: _defaultPhrases.DayPickerNavigationPhrases,
   renderNavPrevButton: null,
-  renderNavNextButton: null
+  renderNavNextButton: null,
+  showNavPrevButton: true,
+  showNavNextButton: true
 };
 
-function DayPickerNavigation(_ref) {
-  var inlineStyles = _ref.inlineStyles,
-      isRTL = _ref.isRTL,
-      disablePrev = _ref.disablePrev,
-      disableNext = _ref.disableNext,
-      navPosition = _ref.navPosition,
-      navPrev = _ref.navPrev,
-      navNext = _ref.navNext,
-      onPrevMonthClick = _ref.onPrevMonthClick,
-      onNextMonthClick = _ref.onNextMonthClick,
-      orientation = _ref.orientation,
-      phrases = _ref.phrases,
-      renderNavPrevButton = _ref.renderNavPrevButton,
-      renderNavNextButton = _ref.renderNavNextButton,
-      styles = _ref.styles;
-  var isHorizontal = orientation === _constants.HORIZONTAL_ORIENTATION;
-  var isVertical = orientation !== _constants.HORIZONTAL_ORIENTATION;
-  var isVerticalScrollable = orientation === _constants.VERTICAL_SCROLLABLE;
-  var isBottomNavPosition = navPosition === _constants.NAV_POSITION_BOTTOM;
-  var hasInlineStyles = !!inlineStyles;
-  var navPrevIcon = navPrev;
-  var navNextIcon = navNext;
-  var isDefaultNavPrev = false;
-  var isDefaultNavNext = false;
-  var navPrevTabIndex = {};
-  var navNextTabIndex = {};
+var DayPickerNavigation =
+/*#__PURE__*/
+function (_ref) {
+  (0, _inheritsLoose2["default"])(DayPickerNavigation, _ref);
 
-  if (!navPrevIcon) {
-    navPrevTabIndex = {
-      tabIndex: '0'
-    };
-    isDefaultNavPrev = true;
-    var Icon = isVertical ? _ChevronUp["default"] : _LeftArrow["default"];
-
-    if (isRTL && !isVertical) {
-      Icon = _RightArrow["default"];
-    }
-
-    navPrevIcon = _react["default"].createElement(Icon, (0, _reactWithStyles.css)(isHorizontal && styles.DayPickerNavigation_svg__horizontal, isVertical && styles.DayPickerNavigation_svg__vertical, disablePrev && styles.DayPickerNavigation_svg__disabled));
+  function DayPickerNavigation() {
+    return _ref.apply(this, arguments) || this;
   }
 
-  if (!navNextIcon) {
-    navNextTabIndex = {
-      tabIndex: '0'
-    };
-    isDefaultNavNext = true;
+  var _proto = DayPickerNavigation.prototype;
 
-    var _Icon = isVertical ? _ChevronDown["default"] : _RightArrow["default"];
+  _proto[!_react["default"].PureComponent && "shouldComponentUpdate"] = function (nextProps, nextState) {
+    return !(0, _enzymeShallowEqual["default"])(this.props, nextProps) || !(0, _enzymeShallowEqual["default"])(this.state, nextState);
+  };
 
-    if (isRTL && !isVertical) {
-      _Icon = _LeftArrow["default"];
+  _proto.render = function render() {
+    var _this$props = this.props,
+        inlineStyles = _this$props.inlineStyles,
+        isRTL = _this$props.isRTL,
+        disablePrev = _this$props.disablePrev,
+        disableNext = _this$props.disableNext,
+        navPosition = _this$props.navPosition,
+        navPrev = _this$props.navPrev,
+        navNext = _this$props.navNext,
+        onPrevMonthClick = _this$props.onPrevMonthClick,
+        onNextMonthClick = _this$props.onNextMonthClick,
+        orientation = _this$props.orientation,
+        phrases = _this$props.phrases,
+        renderNavPrevButton = _this$props.renderNavPrevButton,
+        renderNavNextButton = _this$props.renderNavNextButton,
+        showNavPrevButton = _this$props.showNavPrevButton,
+        showNavNextButton = _this$props.showNavNextButton,
+        styles = _this$props.styles;
+
+    if (!showNavNextButton && !showNavPrevButton) {
+      return null;
     }
 
-    navNextIcon = _react["default"].createElement(_Icon, (0, _reactWithStyles.css)(isHorizontal && styles.DayPickerNavigation_svg__horizontal, isVertical && styles.DayPickerNavigation_svg__vertical, disableNext && styles.DayPickerNavigation_svg__disabled));
-  }
+    var isHorizontal = orientation === _constants.HORIZONTAL_ORIENTATION;
+    var isVertical = orientation !== _constants.HORIZONTAL_ORIENTATION;
+    var isVerticalScrollable = orientation === _constants.VERTICAL_SCROLLABLE;
+    var isBottomNavPosition = navPosition === _constants.NAV_POSITION_BOTTOM;
+    var hasInlineStyles = !!inlineStyles;
+    var navPrevIcon = navPrev;
+    var navNextIcon = navNext;
+    var isDefaultNavPrev = false;
+    var isDefaultNavNext = false;
+    var navPrevTabIndex = {};
+    var navNextTabIndex = {};
 
-  var isDefaultNav = isVerticalScrollable ? isDefaultNavNext : isDefaultNavNext || isDefaultNavPrev;
-  return _react["default"].createElement("div", _reactWithStyles.css.apply(void 0, [styles.DayPickerNavigation, isHorizontal && styles.DayPickerNavigation__horizontal].concat((0, _toConsumableArray2["default"])(isVertical ? [styles.DayPickerNavigation__vertical, isDefaultNav && styles.DayPickerNavigation__verticalDefault] : []), (0, _toConsumableArray2["default"])(isVerticalScrollable ? [styles.DayPickerNavigation__verticalScrollable, isDefaultNav && styles.DayPickerNavigation__verticalScrollableDefault] : []), (0, _toConsumableArray2["default"])(isBottomNavPosition ? [styles.DayPickerNavigation__bottom, isDefaultNav && styles.DayPickerNavigation__bottomDefault] : []), [hasInlineStyles && inlineStyles])), !isVerticalScrollable && (renderNavPrevButton ? renderNavPrevButton({
-    ariaLabel: phrases.jumpToPrevMonth,
-    disabled: disablePrev,
-    onClick: disablePrev ? undefined : onPrevMonthClick,
-    onKeyUp: disablePrev ? undefined : function (e) {
-      var key = e.key;
-      if (key === 'Enter' || key === ' ') onPrevMonthClick(e);
-    },
-    onMouseUp: disablePrev ? undefined : function (e) {
-      e.currentTarget.blur();
+    if (!navPrevIcon && !renderNavPrevButton && showNavPrevButton) {
+      navPrevTabIndex = {
+        tabIndex: '0'
+      };
+      isDefaultNavPrev = true;
+      var Icon = isVertical ? _ChevronUp["default"] : _LeftArrow["default"];
+
+      if (isRTL && !isVertical) {
+        Icon = _RightArrow["default"];
+      }
+
+      navPrevIcon = _react["default"].createElement(Icon, (0, _reactWithStyles.css)(isHorizontal && styles.DayPickerNavigation_svg__horizontal, isVertical && styles.DayPickerNavigation_svg__vertical, disablePrev && styles.DayPickerNavigation_svg__disabled));
     }
-  }) : _react["default"].createElement("div", (0, _extends2["default"])({
-    // eslint-disable-line jsx-a11y/interactive-supports-focus
-    role: "button"
-  }, navPrevTabIndex, _reactWithStyles.css.apply(void 0, [styles.DayPickerNavigation_button, isDefaultNavPrev && styles.DayPickerNavigation_button__default, disablePrev && styles.DayPickerNavigation_button__disabled].concat((0, _toConsumableArray2["default"])(isHorizontal ? [styles.DayPickerNavigation_button__horizontal].concat((0, _toConsumableArray2["default"])(isDefaultNavPrev ? [styles.DayPickerNavigation_button__horizontalDefault, isBottomNavPosition && styles.DayPickerNavigation_bottomButton__horizontalDefault, !isRTL && styles.DayPickerNavigation_leftButton__horizontalDefault, isRTL && styles.DayPickerNavigation_rightButton__horizontalDefault] : [])) : []), (0, _toConsumableArray2["default"])(isVertical ? [styles.DayPickerNavigation_button__vertical].concat((0, _toConsumableArray2["default"])(isDefaultNavPrev ? [styles.DayPickerNavigation_button__verticalDefault, styles.DayPickerNavigation_prevButton__verticalDefault] : [])) : []))), {
-    "aria-disabled": disablePrev ? true : undefined,
-    "aria-label": phrases.jumpToPrevMonth,
-    onClick: disablePrev ? undefined : onPrevMonthClick,
-    onKeyUp: disablePrev ? undefined : function (e) {
-      var key = e.key;
-      if (key === 'Enter' || key === ' ') onPrevMonthClick(e);
-    },
-    onMouseUp: disablePrev ? undefined : function (e) {
-      e.currentTarget.blur();
+
+    if (!navNextIcon && !renderNavNextButton && showNavNextButton) {
+      navNextTabIndex = {
+        tabIndex: '0'
+      };
+      isDefaultNavNext = true;
+
+      var _Icon = isVertical ? _ChevronDown["default"] : _RightArrow["default"];
+
+      if (isRTL && !isVertical) {
+        _Icon = _LeftArrow["default"];
+      }
+
+      navNextIcon = _react["default"].createElement(_Icon, (0, _reactWithStyles.css)(isHorizontal && styles.DayPickerNavigation_svg__horizontal, isVertical && styles.DayPickerNavigation_svg__vertical, disableNext && styles.DayPickerNavigation_svg__disabled));
     }
-  }), navPrevIcon)), renderNavNextButton ? renderNavNextButton({
-    ariaLabel: phrases.jumpToNextMonth,
-    disabled: disableNext,
-    onClick: disableNext ? undefined : onNextMonthClick,
-    onKeyUp: disableNext ? undefined : function (e) {
-      var key = e.key;
-      if (key === 'Enter' || key === ' ') onNextMonthClick(e);
-    },
-    onMouseUp: disableNext ? undefined : function (e) {
-      e.currentTarget.blur();
-    }
-  }) : _react["default"].createElement("div", (0, _extends2["default"])({
-    // eslint-disable-line jsx-a11y/interactive-supports-focus
-    role: "button"
-  }, navNextTabIndex, _reactWithStyles.css.apply(void 0, [styles.DayPickerNavigation_button, isDefaultNavNext && styles.DayPickerNavigation_button__default, disableNext && styles.DayPickerNavigation_button__disabled].concat((0, _toConsumableArray2["default"])(isHorizontal ? [styles.DayPickerNavigation_button__horizontal].concat((0, _toConsumableArray2["default"])(isDefaultNavNext ? [styles.DayPickerNavigation_button__horizontalDefault, isBottomNavPosition && styles.DayPickerNavigation_bottomButton__horizontalDefault, isRTL && styles.DayPickerNavigation_leftButton__horizontalDefault, !isRTL && styles.DayPickerNavigation_rightButton__horizontalDefault] : [])) : []), (0, _toConsumableArray2["default"])(isVertical ? [styles.DayPickerNavigation_button__vertical, styles.DayPickerNavigation_nextButton__vertical].concat((0, _toConsumableArray2["default"])(isDefaultNavNext ? [styles.DayPickerNavigation_button__verticalDefault, styles.DayPickerNavigation_nextButton__verticalDefault, isVerticalScrollable && styles.DayPickerNavigation_nextButton__verticalScrollableDefault] : [])) : []))), {
-    "aria-disabled": disableNext ? true : undefined,
-    "aria-label": phrases.jumpToNextMonth,
-    onClick: disableNext ? undefined : onNextMonthClick,
-    onKeyUp: disableNext ? undefined : function (e) {
-      var key = e.key;
-      if (key === 'Enter' || key === ' ') onNextMonthClick(e);
-    },
-    onMouseUp: disableNext ? undefined : function (e) {
-      e.currentTarget.blur();
-    }
-  }), navNextIcon));
-}
+
+    var isDefaultNav = isDefaultNavNext || isDefaultNavPrev;
+    return _react["default"].createElement("div", _reactWithStyles.css.apply(void 0, [styles.DayPickerNavigation, isHorizontal && styles.DayPickerNavigation__horizontal].concat((0, _toConsumableArray2["default"])(isVertical ? [styles.DayPickerNavigation__vertical, isDefaultNav && styles.DayPickerNavigation__verticalDefault] : []), (0, _toConsumableArray2["default"])(isVerticalScrollable ? [styles.DayPickerNavigation__verticalScrollable, isDefaultNav && styles.DayPickerNavigation__verticalScrollableDefault, showNavPrevButton && styles.DayPickerNavigation__verticalScrollable_prevNav] : []), (0, _toConsumableArray2["default"])(isBottomNavPosition ? [styles.DayPickerNavigation__bottom, isDefaultNav && styles.DayPickerNavigation__bottomDefault] : []), [hasInlineStyles && inlineStyles])), showNavPrevButton && (renderNavPrevButton ? renderNavPrevButton({
+      ariaLabel: phrases.jumpToPrevMonth,
+      disabled: disablePrev,
+      onClick: disablePrev ? undefined : onPrevMonthClick,
+      onKeyUp: disablePrev ? undefined : function (e) {
+        var key = e.key;
+
+        if (key === 'Enter' || key === ' ') {
+          onPrevMonthClick(e);
+        }
+      },
+      onMouseUp: disablePrev ? undefined : function (e) {
+        e.currentTarget.blur();
+      }
+    }) : _react["default"].createElement("div", (0, _extends2["default"])({
+      // eslint-disable-line jsx-a11y/interactive-supports-focus
+      role: "button"
+    }, navPrevTabIndex, _reactWithStyles.css.apply(void 0, [styles.DayPickerNavigation_button, isDefaultNavPrev && styles.DayPickerNavigation_button__default, disablePrev && styles.DayPickerNavigation_button__disabled].concat((0, _toConsumableArray2["default"])(isHorizontal ? [styles.DayPickerNavigation_button__horizontal].concat((0, _toConsumableArray2["default"])(isDefaultNavPrev ? [styles.DayPickerNavigation_button__horizontalDefault, isBottomNavPosition && styles.DayPickerNavigation_bottomButton__horizontalDefault, !isRTL && styles.DayPickerNavigation_leftButton__horizontalDefault, isRTL && styles.DayPickerNavigation_rightButton__horizontalDefault] : [])) : []), (0, _toConsumableArray2["default"])(isVertical ? [styles.DayPickerNavigation_button__vertical].concat((0, _toConsumableArray2["default"])(isDefaultNavPrev ? [styles.DayPickerNavigation_button__verticalDefault, styles.DayPickerNavigation_prevButton__verticalDefault, isVerticalScrollable && styles.DayPickerNavigation_prevButton__verticalScrollableDefault] : [])) : []))), {
+      "aria-disabled": disablePrev ? true : undefined,
+      "aria-label": phrases.jumpToPrevMonth,
+      onClick: disablePrev ? undefined : onPrevMonthClick,
+      onKeyUp: disablePrev ? undefined : function (e) {
+        var key = e.key;
+
+        if (key === 'Enter' || key === ' ') {
+          onPrevMonthClick(e);
+        }
+      },
+      onMouseUp: disablePrev ? undefined : function (e) {
+        e.currentTarget.blur();
+      }
+    }), navPrevIcon)), showNavNextButton && (renderNavNextButton ? renderNavNextButton({
+      ariaLabel: phrases.jumpToNextMonth,
+      disabled: disableNext,
+      onClick: disableNext ? undefined : onNextMonthClick,
+      onKeyUp: disableNext ? undefined : function (e) {
+        var key = e.key;
+
+        if (key === 'Enter' || key === ' ') {
+          onNextMonthClick(e);
+        }
+      },
+      onMouseUp: disableNext ? undefined : function (e) {
+        e.currentTarget.blur();
+      }
+    }) : _react["default"].createElement("div", (0, _extends2["default"])({
+      // eslint-disable-line jsx-a11y/interactive-supports-focus
+      role: "button"
+    }, navNextTabIndex, _reactWithStyles.css.apply(void 0, [styles.DayPickerNavigation_button, isDefaultNavNext && styles.DayPickerNavigation_button__default, disableNext && styles.DayPickerNavigation_button__disabled].concat((0, _toConsumableArray2["default"])(isHorizontal ? [styles.DayPickerNavigation_button__horizontal].concat((0, _toConsumableArray2["default"])(isDefaultNavNext ? [styles.DayPickerNavigation_button__horizontalDefault, isBottomNavPosition && styles.DayPickerNavigation_bottomButton__horizontalDefault, isRTL && styles.DayPickerNavigation_leftButton__horizontalDefault, !isRTL && styles.DayPickerNavigation_rightButton__horizontalDefault] : [])) : []), (0, _toConsumableArray2["default"])(isVertical ? [styles.DayPickerNavigation_button__vertical].concat((0, _toConsumableArray2["default"])(isDefaultNavNext ? [styles.DayPickerNavigation_button__verticalDefault, styles.DayPickerNavigation_nextButton__verticalDefault, isVerticalScrollable && styles.DayPickerNavigation_nextButton__verticalScrollableDefault] : [])) : []))), {
+      "aria-disabled": disableNext ? true : undefined,
+      "aria-label": phrases.jumpToNextMonth,
+      onClick: disableNext ? undefined : onNextMonthClick,
+      onKeyUp: disableNext ? undefined : function (e) {
+        var key = e.key;
+
+        if (key === 'Enter' || key === ' ') {
+          onNextMonthClick(e);
+        }
+      },
+      onMouseUp: disableNext ? undefined : function (e) {
+        e.currentTarget.blur();
+      }
+    }), navNextIcon)));
+  };
+
+  return DayPickerNavigation;
+}(_react["default"].PureComponent || _react["default"].Component);
 
 DayPickerNavigation.propTypes =  false ? undefined : {};
 DayPickerNavigation.defaultProps = defaultProps;
@@ -21124,6 +19844,10 @@ var _default = (0, _reactWithStyles.withStyles)(function (_ref2) {
     },
     DayPickerNavigation__vertical: {},
     DayPickerNavigation__verticalScrollable: {},
+    DayPickerNavigation__verticalScrollable_prevNav: {
+      zIndex: zIndex + 1 // zIndex + 2 causes the button to show on top of the day of week headers
+
+    },
     DayPickerNavigation__verticalDefault: {
       position: 'absolute',
       width: '100%',
@@ -21214,6 +19938,9 @@ var _default = (0, _reactWithStyles.withStyles)(function (_ref2) {
     DayPickerNavigation_nextButton__verticalScrollableDefault: {
       width: '100%'
     },
+    DayPickerNavigation_prevButton__verticalScrollableDefault: {
+      width: '100%'
+    },
     DayPickerNavigation_svg__horizontal: {
       height: 19,
       width: 19,
@@ -21234,6 +19961,26 @@ var _default = (0, _reactWithStyles.withStyles)(function (_ref2) {
 })(DayPickerNavigation);
 
 exports["default"] = _default;
+
+/***/ }),
+
+/***/ "zkC3":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var toPrimitive = __webpack_require__("WZeS");
+
+// https://www.ecma-international.org/ecma-262/6.0/#sec-toprimitive
+
+module.exports = function ToPrimitive(input) {
+	if (arguments.length > 1) {
+		return toPrimitive(input, arguments[1]);
+	}
+	return toPrimitive(input);
+};
+
 
 /***/ })
 

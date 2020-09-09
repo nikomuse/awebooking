@@ -124,9 +124,7 @@ function _createClass(Constructor, protoProps, staticProps) {
 
   var data = window._awebookingRooms || {};
 
-  var RoomsGenerator =
-  /*#__PURE__*/
-  function () {
+  var RoomsGenerator = /*#__PURE__*/function () {
     function RoomsGenerator() {
       _classCallCheck(this, RoomsGenerator);
 

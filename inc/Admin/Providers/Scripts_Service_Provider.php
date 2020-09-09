@@ -42,6 +42,7 @@ class Scripts_Service_Provider extends Service_Provider {
 		wp_register_script( 'awebooking-edit-room-type', abrs_asset_url( 'js/admin/edit-room-type' . $min . '.js' ), [ 'awebooking-admin', 'sortable', 'jquery-effects-highlight' ], $version, true );
 		wp_register_script( 'awebooking-page-rates', abrs_asset_url( 'js/admin/page-pricing' . $min . '.js' ), [ 'awebooking-admin', 'awebooking-scheduler', 'jquery-ui-dialog' ], $version, true );
 		wp_register_script( 'awebooking-page-calendar', abrs_asset_url( 'js/admin/page-calendar' . $min . '.js' ), [ 'awebooking-admin', 'awebooking-scheduler', 'jquery-ui-dialog' ], $version, true );
+        wp_register_script( 'fi-page-calendar', abrs_asset_url( 'js/admin/fi-page-calendar' . $min . '.js' ), [ 'awebooking-admin', 'awebooking-scheduler', 'jquery-ui-dialog' ], $version, true );
 	}
 
 	/**
@@ -119,6 +120,7 @@ class Scripts_Service_Provider extends Service_Provider {
 				wp_enqueue_style( 'wp-jquery-ui-dialog' );
 				wp_enqueue_style( 'awebooking-scheduler' );
 				wp_enqueue_script( 'awebooking-page-calendar' );
+                wp_enqueue_script( 'fi-page-calendar' );
 				break;
 
 			case abrs_admin_route_is( '/settings' ):

@@ -4,7 +4,7 @@ const plugin = window.awebooking
 
 const DATE_FORMAT = 'YYYY-MM-DD'
 
-class BookingScheduler {
+export default class BookingScheduler {
   /**
    * Constructor.
    *
@@ -154,12 +154,3 @@ class BookingScheduler {
     })
   }
 }
-
-/**
- * Document ready!
- *
- * @return {void}
- */
-$(function () {
-  new BookingScheduler()
-})
