@@ -4,7 +4,13 @@
   'use strict'
 
   let COLUMN_WIDTH = 60
+  /* &ForceInteractive : add column width for hour display */
+  let COLUMN_WIDTH_HOUR = 27;
+  /* END ForceInteractive */
   const DATE_FORMAT = 'YYYY-MM-DD'
+  /* &ForceInteractive : add an hour format */
+  const DATE_FORMAT_HOUR = 'YYYY-MM-DD HH:mm:ss';
+  /* END ForceInteractive */
 
   const Selection = Backbone.Model.extend({
     defaults: {
@@ -48,6 +54,7 @@
       marker: '.scheduler__marker',
       popper: '.scheduler__popper > .scheduler__actions',
       granularity: 'nightly', // 'daily'
+      scheduleType: 'day'
     },
 
     events: {
@@ -57,6 +64,9 @@
 
     initialize(options) {
       this.isRTL = $('html').attr('dir') === 'rtl'
+      /* &ForceInteractive : add schedular type to options (day, hour, ...) */
+      this.options.scheduleType = jQuery('.scheduler__container').data('scheduletype');
+      /* END ForceInteractive */
 
       this.options = _.defaults(options || {}, this.options)
       this.model = new Selection
@@ -135,15 +145,22 @@
     setSelectionDate(e) {
       const $target = $(e.currentTarget)
       const setUnit = this.getUnitByElement($target)
-      const clickDate = moment($target.data('date'))
+
+      /*
+      &ForceInteractive : get type of schedule calendar (hour, day, ...)
+      and get data of type concerned
+      */
+      const clickDate = moment($target.data(this.getDataByGranularity(this.options.scheduleType)));
+      /* END ForceInteractive */
 
       if (this.model.has('startDate') && this.model.has('endDate')) {
         this.model.clearSelectedDate(setUnit)
         return
       }
 
+      /* &ForceInteractive change 'day' by this.options.scheduleType */
       if (this.model.has('calendar') && setUnit !== this.model.get('calendar')
-        || this.model.has('startDate') && clickDate.isBefore(this.model.get('startDate'), 'day')) {
+        || this.model.has('startDate') && clickDate.isBefore(this.model.get('startDate'), this.options.scheduleType)) {
         this.model.clearSelectedDate(setUnit)
       }
 
@@ -157,7 +174,7 @@
       }
 
       // Require 1 night for granularity by nightly.
-      if ('nightly' === this.options.granularity && clickDate.diff(this.model.get('startDate'), 'days') < 1) {
+      if (this.options.scheduleType !== 'hour' && 'nightly' === this.options.granularity && clickDate.diff(this.model.get('startDate'), 'days') < 1) {
         return
       }
 
@@ -192,7 +209,10 @@
         this.$marker.show().css(atts)
       } else {
         const $endDateEl = this.getElementByDate(this.model.get('calendar'), endDate)
-        this.$marker.css('width', ($endDateEl.index() - $startDateEl.index() + 1) * COLUMN_WIDTH)
+        /* &ForceInteractive : change column width if display is hour */
+        const colWidth = this.options.scheduleType === 'hour' ? COLUMN_WIDTH_HOUR : COLUMN_WIDTH;
+        this.$marker.css('width', ($endDateEl.index() - $startDateEl.index() + 1) * colWidth);
+        /* END ForceInteractive */
       }
     },
 
@@ -207,26 +227,53 @@
         return
       }
 
-      const hoverDate = moment($target.data('date'))
+      /*
+      &ForceInteractive : get schedule calendar type (hour, day, ...)
+      and get data of the type concerned
+      */
+      const hoverDate = moment($target.data(this.getDataByGranularity(this.options.scheduleType)));
+      /* END ForceInteractive */
       const startDate = this.model.get('startDate')
 
-      if (startDate.isSameOrBefore(hoverDate, 'day')) {
-        const $startDateEl = this.getElementByDate(targetUnit, startDate)
+      /* &ForceInteractive : set the granularity to schedule type */
+      if (startDate.isSameOrBefore(hoverDate, this.options.scheduleType)) {
+        const $startDateEl = this.getElementByDate(targetUnit, startDate);
         const days = ($target.index() - $startDateEl.index() + 1)
+        /* &ForceInteractive : change column width if display is hour */
+        const colWidth = this.options.scheduleType === 'hour' ? COLUMN_WIDTH_HOUR : COLUMN_WIDTH;
 
-        this.$marker.css('width', days * COLUMN_WIDTH)
+        this.$marker.css('width', days * colWidth);
+        /* END ForceInteractive */
         this.$marker.find('span').text('daily' === this.options.granularity ? days : days - 1)
       }
     },
 
+    /* &ForceInteractive : check which data retrieve in function of granularity */
+    getDataByGranularity(granularity) {
+      let data_type = 'date'; // For day
+      if(granularity === 'hour') { // For hour
+        data_type = 'hour';
+      }
+      return data_type;
+    },
+    /* END ForceInteractive */
+
     getElementByDate(calendar, date) {
       if (typeof date === 'object') {
-        date = date.format(DATE_FORMAT)
+        /* &ForceInteractive : change date format in function of granularity */
+        if(this.options.scheduleType === 'hour') {
+            date = date.format(DATE_FORMAT_HOUR)
+        } else {
+            date = date.format(DATE_FORMAT)
+        }
+        /* END ForceInteractive */
       }
 
       return this.$el
                  .find('[data-calendar="' + calendar + '"]')
-                 .find('.scheduler__date[data-date="' + date + '"]')
+                 /* &ForceInteractive : load data in function of granularity */
+                 .find('.scheduler__date[data-' + this.getDataByGranularity(this.options.scheduleType) +'="' + date + '"]')
+                 /* END ForceInteractive */
     },
 
     getUnitByElement(element) {

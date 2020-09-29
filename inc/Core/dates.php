@@ -216,11 +216,15 @@ function abrs_date_classes( $date ) {
 		? $date->get_start_date()
 		: abrs_date_time( $date );
 
-	$classes = [];
+	$now = \Cake\Chronos\Chronos::now($date->tz);
 
+	$classes = [];
 	// Is current day is today, future or past.
 	if ( $date->isToday() ) {
 		$classes[] = 'today';
+		if($date->hour === $now->hour) {
+		    $classes[] = 'samehour';
+        }
 	} elseif ( $date->isPast() ) {
 		$classes[] = 'past';
 	} elseif ( $date->isFuture() ) {

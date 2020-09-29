@@ -86,22 +86,14 @@
 /************************************************************************/
 /******/ ({
 
-/***/ 7:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("8Oi3");
-
-
-/***/ }),
-
-/***/ "8Oi3":
+/***/ "./assets/babel/admin/fi-page-calendar.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("xeH2");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("jquery");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _page_calendar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("dz+X");
+/* harmony import */ var _page_calendar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("./assets/babel/admin/page-calendar.js");
 function _typeof(obj) {
   "@babel/helpers - typeof";
 
@@ -222,7 +214,6 @@ function _getPrototypeOf(o) {
 
 
 var plugin = window.awebooking;
-var DATE_FORMAT = 'YYYY-MM-DD';
 
 var AdminCalendar = /*#__PURE__*/function (_BookingScheduler) {
   _inherits(AdminCalendar, _BookingScheduler);
@@ -235,7 +226,6 @@ var AdminCalendar = /*#__PURE__*/function (_BookingScheduler) {
     _classCallCheck(this, AdminCalendar);
 
     _this = _super.call(this);
-    console.log("C'est moi");
 
     _this.scheduler.on('action:book', _this.handleBookRoom.bind(_assertThisInitialized(_this)));
 
@@ -264,13 +254,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
 
 /***/ }),
 
-/***/ "dz+X":
+/***/ "./assets/babel/admin/page-calendar.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return BookingScheduler; });
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("xeH2");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("jquery");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -471,7 +461,15 @@ var BookingScheduler = /*#__PURE__*/function () {
 
 /***/ }),
 
-/***/ "xeH2":
+/***/ 7:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("./assets/babel/admin/fi-page-calendar.js");
+
+
+/***/ }),
+
+/***/ "jquery":
 /***/ (function(module, exports) {
 
 (function() { module.exports = this["jQuery"]; }());
@@ -479,3 +477,4 @@ var BookingScheduler = /*#__PURE__*/function () {
 /***/ })
 
 /******/ })));
+//# sourceMappingURL=fi-page-calendar.js.map

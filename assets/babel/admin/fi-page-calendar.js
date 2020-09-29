@@ -3,13 +3,10 @@ import BookingScheduler from './page-calendar';
 
 const plugin = window.awebooking;
 
-const DATE_FORMAT = 'YYYY-MM-DD';
-
 class AdminCalendar extends BookingScheduler {
 
     constructor() {
         super();
-        console.log("C'est moi");
         this.scheduler.on('action:book', this.handleBookRoom.bind(this))
     }
 

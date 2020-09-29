@@ -86,15 +86,7 @@
 /************************************************************************/
 /******/ ({
 
-/***/ 11:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("3ux1");
-
-
-/***/ }),
-
-/***/ "3ux1":
+/***/ "./assets/babel/admin/settings.js":
 /***/ (function(module, exports) {
 
 (function ($, plugin) {
@@ -245,6 +237,15 @@ module.exports = __webpack_require__("3ux1");
   });
 })(jQuery, window.awebooking);
 
+/***/ }),
+
+/***/ 11:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("./assets/babel/admin/settings.js");
+
+
 /***/ })
 
 /******/ })));
+//# sourceMappingURL=settings.js.map

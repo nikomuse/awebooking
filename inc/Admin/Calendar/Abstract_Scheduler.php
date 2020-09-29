@@ -2,6 +2,8 @@
 
 namespace AweBooking\Admin\Calendar;
 
+use App\Tools\OptionsTools;
+use AweBooking\Calendar\Period\Hour;
 use WP_Query;
 use AweBooking\Constants;
 use AweBooking\Model\Room_Type;
@@ -96,6 +98,8 @@ abstract class Abstract_Scheduler {
 	 */
 	protected $main_layout = 'scheduler.php';
 
+	protected $display_type = 'day';
+
 	/**
 	 * Prepares the Scheduler before it is sent to the client.
 	 *
@@ -117,9 +121,24 @@ abstract class Abstract_Scheduler {
 			$duration = 90;
 		}
 
-		// Create the period.
-		$this->period = Iterator_Period::createFromDuration( abrs_date( $this->datepoint ), "+{$duration} days" )
-		                               ->moveStartDate( '-2 days' );
+		/* &ForceInteractive manage prestation and time interval */
+		$prestation = $request->filled('prestation') ? $request->get('prestation') : OptionsTools::getFirstPrestation();
+
+		if(!$prestation) {
+		    return;
+        }
+        
+        switch ($prestation) {
+            case OptionsTools::RESTAURANT :
+                //$this->period = new Hour(abrs_date( $this->datepoint ), "P3D");
+                $this->display_type = 'hour';
+                $this->period = Iterator_Period::createFromDuration( abrs_date( $this->datepoint ), "+3 days" );
+                break;
+            default:
+                $this->period = Iterator_Period::createFromDuration( abrs_date( $this->datepoint ), "+{$duration} days" )
+                    ->moveStartDate( '-2 days' );
+        }
+        /* END &ForceInteractive */
 
 		// Create the scheduler.
 		$this->scheduler = $this->create_scheduler();
@@ -266,6 +285,7 @@ abstract class Abstract_Scheduler {
 	 */
 	protected function display_main_toolbar() {
 		echo '<div class="abrs-spacer"></div>';
+        $this->template( 'main-toolbar/prestation-filter.php' );
 		$this->template( 'main-toolbar/hotel-filter.php' );
 	}
 

@@ -86,15 +86,7 @@
 /************************************************************************/
 /******/ ({
 
-/***/ 10:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("6673");
-
-
-/***/ }),
-
-/***/ "6673":
+/***/ "./assets/babel/admin/schedule-calendar.js":
 /***/ (function(module, exports) {
 
 function _typeof(obj) {
@@ -119,7 +111,17 @@ function _typeof(obj) {
   'use strict';
 
   var COLUMN_WIDTH = 60;
+  /* &ForceInteractive : add column width for hour display */
+
+  var COLUMN_WIDTH_HOUR = 27;
+  /* END ForceInteractive */
+
   var DATE_FORMAT = 'YYYY-MM-DD';
+  /* &ForceInteractive : add an hour format */
+
+  var DATE_FORMAT_HOUR = 'YYYY-MM-DD HH:mm:ss';
+  /* END ForceInteractive */
+
   var Selection = Backbone.Model.extend({
     defaults: {
       endDate: null,
@@ -157,8 +159,9 @@ function _typeof(obj) {
       debug: false,
       marker: '.scheduler__marker',
       popper: '.scheduler__popper > .scheduler__actions',
-      granularity: 'nightly' // 'daily'
-
+      granularity: 'nightly',
+      // 'daily'
+      scheduleType: 'day'
     },
     events: {
       'click      .scheduler__body .scheduler__date': 'setSelectionDate',
@@ -166,6 +169,11 @@ function _typeof(obj) {
     },
     initialize: function initialize(options) {
       this.isRTL = $('html').attr('dir') === 'rtl';
+      /* &ForceInteractive : add schedular type to options (day, hour, ...) */
+
+      this.options.scheduleType = jQuery('.scheduler__container').data('scheduletype');
+      /* END ForceInteractive */
+
       this.options = _.defaults(options || {}, this.options);
       this.model = new Selection();
       var testColumnWith = this.$el.find('.scheduler__column').first().outerWidth();
@@ -233,14 +241,22 @@ function _typeof(obj) {
     setSelectionDate: function setSelectionDate(e) {
       var $target = $(e.currentTarget);
       var setUnit = this.getUnitByElement($target);
-      var clickDate = moment($target.data('date'));
+      /*
+      &ForceInteractive : get type of schedule calendar (hour, day, ...)
+      and get data of type concerned
+      */
+
+      var clickDate = moment($target.data(this.getDataByGranularity(this.options.scheduleType)));
+      /* END ForceInteractive */
 
       if (this.model.has('startDate') && this.model.has('endDate')) {
         this.model.clearSelectedDate(setUnit);
         return;
       }
+      /* &ForceInteractive change 'day' by this.options.scheduleType */
 
-      if (this.model.has('calendar') && setUnit !== this.model.get('calendar') || this.model.has('startDate') && clickDate.isBefore(this.model.get('startDate'), 'day')) {
+
+      if (this.model.has('calendar') && setUnit !== this.model.get('calendar') || this.model.has('startDate') && clickDate.isBefore(this.model.get('startDate'), this.options.scheduleType)) {
         this.model.clearSelectedDate(setUnit);
       } // Set the start date first.
 
@@ -253,7 +269,7 @@ function _typeof(obj) {
       } // Require 1 night for granularity by nightly.
 
 
-      if ('nightly' === this.options.granularity && clickDate.diff(this.model.get('startDate'), 'days') < 1) {
+      if (this.options.scheduleType !== 'hour' && 'nightly' === this.options.granularity && clickDate.diff(this.model.get('startDate'), 'days') < 1) {
         return;
       }
 
@@ -286,7 +302,11 @@ function _typeof(obj) {
         this.$marker.show().css(atts);
       } else {
         var $endDateEl = this.getElementByDate(this.model.get('calendar'), endDate);
-        this.$marker.css('width', ($endDateEl.index() - $startDateEl.index() + 1) * COLUMN_WIDTH);
+        /* &ForceInteractive : change column width if display is hour */
+
+        var colWidth = this.options.scheduleType === 'hour' ? COLUMN_WIDTH_HOUR : COLUMN_WIDTH;
+        this.$marker.css('width', ($endDateEl.index() - $startDateEl.index() + 1) * colWidth);
+        /* END ForceInteractive */
       }
     },
     drawMarkerOnHover: function drawMarkerOnHover(e) {
@@ -296,23 +316,60 @@ function _typeof(obj) {
       if (!this.model.has('calendar') || this.model.get('calendar') !== targetUnit || !this.model.has('startDate') || this.model.has('startDate') && this.model.has('endDate')) {
         return;
       }
+      /*
+      &ForceInteractive : get schedule calendar type (hour, day, ...)
+      and get data of the type concerned
+      */
 
-      var hoverDate = moment($target.data('date'));
+
+      var hoverDate = moment($target.data(this.getDataByGranularity(this.options.scheduleType)));
+      /* END ForceInteractive */
+
       var startDate = this.model.get('startDate');
+      /* &ForceInteractive : set the granularity to schedule type */
 
-      if (startDate.isSameOrBefore(hoverDate, 'day')) {
+      if (startDate.isSameOrBefore(hoverDate, this.options.scheduleType)) {
         var $startDateEl = this.getElementByDate(targetUnit, startDate);
         var days = $target.index() - $startDateEl.index() + 1;
-        this.$marker.css('width', days * COLUMN_WIDTH);
+        /* &ForceInteractive : change column width if display is hour */
+
+        var colWidth = this.options.scheduleType === 'hour' ? COLUMN_WIDTH_HOUR : COLUMN_WIDTH;
+        this.$marker.css('width', days * colWidth);
+        /* END ForceInteractive */
+
         this.$marker.find('span').text('daily' === this.options.granularity ? days : days - 1);
       }
     },
-    getElementByDate: function getElementByDate(calendar, date) {
-      if (_typeof(date) === 'object') {
-        date = date.format(DATE_FORMAT);
+
+    /* &ForceInteractive : check which data retrieve in function of granularity */
+    getDataByGranularity: function getDataByGranularity(granularity) {
+      var data_type = 'date'; // For day
+
+      if (granularity === 'hour') {
+        // For hour
+        data_type = 'hour';
       }
 
-      return this.$el.find('[data-calendar="' + calendar + '"]').find('.scheduler__date[data-date="' + date + '"]');
+      return data_type;
+    },
+
+    /* END ForceInteractive */
+    getElementByDate: function getElementByDate(calendar, date) {
+      if (_typeof(date) === 'object') {
+        /* &ForceInteractive : change date format in function of granularity */
+        if (this.options.scheduleType === 'hour') {
+          date = date.format(DATE_FORMAT_HOUR);
+        } else {
+          date = date.format(DATE_FORMAT);
+        }
+        /* END ForceInteractive */
+
+      }
+
+      return this.$el.find('[data-calendar="' + calendar + '"]')
+      /* &ForceInteractive : load data in function of granularity */
+      .find('.scheduler__date[data-' + this.getDataByGranularity(this.options.scheduleType) + '="' + date + '"]');
+      /* END ForceInteractive */
     },
     getUnitByElement: function getUnitByElement(element) {
       var calendar = $(element).data('calendar');
@@ -399,6 +456,15 @@ function _typeof(obj) {
   });
 })(jQuery, window.flatpickr, window.moment);
 
+/***/ }),
+
+/***/ 10:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("./assets/babel/admin/schedule-calendar.js");
+
+
 /***/ })
 
 /******/ })));
+//# sourceMappingURL=schedule-calendar.js.map

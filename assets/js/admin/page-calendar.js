@@ -86,21 +86,13 @@
 /************************************************************************/
 /******/ ({
 
-/***/ 8:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("dz+X");
-
-
-/***/ }),
-
-/***/ "dz+X":
+/***/ "./assets/babel/admin/page-calendar.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return BookingScheduler; });
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("xeH2");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("jquery");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -301,7 +293,15 @@ var BookingScheduler = /*#__PURE__*/function () {
 
 /***/ }),
 
-/***/ "xeH2":
+/***/ 8:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__("./assets/babel/admin/page-calendar.js");
+
+
+/***/ }),
+
+/***/ "jquery":
 /***/ (function(module, exports) {
 
 (function() { module.exports = this["jQuery"]; }());
@@ -309,3 +309,4 @@ var BookingScheduler = /*#__PURE__*/function () {
 /***/ })
 
 /******/ })));
+//# sourceMappingURL=page-calendar.js.map

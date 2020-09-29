@@ -6,7 +6,7 @@
 
 	<?php $this->template( 'partials/header.php', compact( 'calendar' ) ); ?>
 
-	<div class="scheduler__container">
+	<div class="scheduler__container scheduler-type-<?php echo $calendar->display_type; ?>" data-scheduletype="<?php echo $calendar->display_type; ?>">
 
 		<aside class="scheduler__aside">
 			<span class="scheduler__month-label"><?php echo esc_html( $calendar->period->format( 'Y-m' ) ); ?></span>
@@ -36,7 +36,11 @@
 
 						<?php foreach ( $loop_scheduler as $loop_calendar ) : ?>
 							<div class="scheduler__row" data-calendar="<?php echo esc_attr( $loop_calendar->get_uid() ); ?>">
-								<?php $this->template( 'partials/row-days.php', compact( 'calendar', 'loop_calendar', 'loop_scheduler' ) ); ?>
+                                <?php if($calendar->display_type === 'hour') : ?>
+                                    <?php $this->template( 'partials/row-hours.php', compact( 'calendar', 'loop_calendar', 'loop_scheduler' ) ); ?>
+                                <?php else: ?>
+								    <?php $this->template( 'partials/row-days.php', compact( 'calendar', 'loop_calendar', 'loop_scheduler' ) ); ?>
+                                <?php endif; ?>
 
 								<?php $this->template( 'partials/row-events.php', compact( 'calendar', 'loop_calendar', 'loop_scheduler' ) ); ?>
 							</div><!-- /.scheduler__row -->

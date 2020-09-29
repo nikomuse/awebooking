@@ -86,24 +86,155 @@
 /************************************************************************/
 /******/ ({
 
-/***/ 0:
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__("SU20");
-__webpack_require__("VjC/");
-__webpack_require__("yCXB");
-__webpack_require__("jJUo");
-__webpack_require__("l+pI");
-module.exports = __webpack_require__("Zpi2");
-
-
-/***/ }),
-
-/***/ "7l0f":
+/***/ "./assets/babel/awebooking.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("9T72");
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("jquery");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var accounting__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("./node_modules/accounting/accounting.js");
+/* harmony import */ var accounting__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(accounting__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _core_dropdown__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("./assets/babel/core/dropdown.js");
+/* harmony import */ var _core_util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("./assets/babel/core/util.js");
+/* harmony import */ var _utils_date_utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("./assets/babel/utils/date-utils.js");
+
+
+
+
+
+var plugin = window.awebooking = {}; // Main objects
+
+plugin.utils = {};
+plugin.instances = {};
+plugin.i18n = window._awebooking_i18n || {};
+plugin.config = Object.assign({}, {
+  route: window.location.origin + '?awebooking_route=/',
+  ajax_url: window.location.origin + '/wp-admin/admin-ajax.php'
+}, window._awebooking);
+
+plugin.utils.dropdown = function (el, config) {
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()(el).each(function () {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).data('abrs-dropdown', new _core_dropdown__WEBPACK_IMPORTED_MODULE_2__["default"](this, config));
+  });
+};
+
+plugin.utils.dates = {
+  format: _utils_date_utils__WEBPACK_IMPORTED_MODULE_4__["formatDateString"]
+};
+/**
+ * The admin route.
+ *
+ * @param  {string} route
+ * @return {string}
+ */
+
+plugin.route = function (route) {
+  return this.config.route + (route || '').replace(/^\//g, '');
+};
+/**
+ * Create new datepicker.
+ *
+ * @see https://flatpickr.js.org/options/
+ *
+ * @return {flatpickr}
+ */
+
+
+plugin.datepicker = function (instance, options) {
+  var i18n = plugin.i18n;
+  var defaults = plugin.config.datepicker;
+  var disableDays = defaults.disableDays,
+      disableDates = defaults.disableDates;
+  var disable = !Array.isArray(disableDates) ? disableDates.split(/,\s?/) : disableDates;
+
+  if (Array.isArray(disableDays) && disableDays.length > 0) {
+    disable.push(function (date) {
+      return disableDays.includes(date.getDay());
+    });
+  }
+
+  var minDate = new Date();
+  var maxDate = null; // Limit available days from today
+
+  if (Date.prototype.fp_incr && defaults.minDate > 0) {
+    minDate = minDate.fp_incr(defaults.minDate || 0);
+  } // TODO: Disable "maxDate", this doesn't work as maxNights as expected.
+
+
+  if (Date.prototype.fp_incr && defaults.maxNights > 0) {// maxDate = minDate.fp_incr(defaults.maxNights)
+  }
+
+  var _defaults = {
+    dateFormat: 'Y-m-d',
+    ariaDateFormat: i18n.dateFormat,
+    minDate: minDate,
+    maxDate: maxDate,
+    disable: disable,
+    showMonths: defaults.showMonths || 1,
+    enableTime: false,
+    enableSeconds: false,
+    disableMobile: false,
+    onReady: function onReady(_, __, fp) {
+      fp.calendarContainer.classList.add('awebooking-datepicker');
+    }
+  };
+
+  if (_core_util__WEBPACK_IMPORTED_MODULE_3__["default"].isMobile()) {
+    _defaults.showMonths = 1;
+  }
+
+  return flatpickr(instance, jquery__WEBPACK_IMPORTED_MODULE_0___default.a.extend({}, _defaults, options));
+};
+/**
+ * Format the price.
+ *
+ * @param amount
+ * @returns {string}
+ */
+
+
+plugin.formatPrice = function (amount) {
+  return accounting__WEBPACK_IMPORTED_MODULE_1___default.a.formatMoney(amount, {
+    format: plugin.i18n.priceFormat,
+    symbol: plugin.i18n.currencySymbol,
+    decimal: plugin.i18n.decimalSeparator,
+    thousand: plugin.i18n.priceThousandSeparator,
+    precision: plugin.i18n.numberDecimals
+  });
+};
+/**
+ * Document ready.
+ *
+ * @return {void}
+ */
+
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
+  tippy('[data-awebooking="tooltip"]', {
+    theme: 'awebooking-tooltip'
+  });
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()('[data-init="awebooking-dialog"]').each(function (e, el) {
+    var dialog = new window.A11yDialog(el);
+    dialog.on('show', function () {
+      el.classList.add('open');
+      el.removeAttribute('aria-hidden');
+    });
+    dialog.on('hide', function () {
+      el.classList.remove('open');
+      el.setAttribute('aria-hidden', true);
+    });
+  });
+});
+
+/***/ }),
+
+/***/ "./assets/babel/core/dropdown.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./assets/babel/core/util.js");
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -221,7 +352,7 @@ var Dropdown = function ($, Popper) {
         this.element.setAttribute('aria-expanded', false);
         this.drop.removeAttribute('aria-hidden');
         this.drop.classList.remove('open--transition');
-        _util__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"].onTransitionEnd(this.drop, function () {
+        _util__WEBPACK_IMPORTED_MODULE_0__["default"].onTransitionEnd(this.drop, function () {
           _this2.drop.classList.remove('open');
         });
       }
@@ -277,7 +408,7 @@ var Dropdown = function ($, Popper) {
       value: function _getDropElement() {
         if (!this.drop) {
           var parent = this.element.parentNode;
-          var target = _util__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"].getTargetFromElement(this.element);
+          var target = _util__WEBPACK_IMPORTED_MODULE_0__["default"].getTargetFromElement(this.element);
 
           if (target) {
             this.drop = document.querySelector(target);
@@ -349,121 +480,20 @@ var Dropdown = function ($, Popper) {
   return Dropdown;
 }(jQuery, window.Popper);
 
-/* harmony default export */ __webpack_exports__["a"] = (Dropdown);
+/* harmony default export */ __webpack_exports__["default"] = (Dropdown);
 
 /***/ }),
 
-/***/ "8jRI":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var token = '%[a-f0-9]{2}';
-var singleMatcher = new RegExp(token, 'gi');
-var multiMatcher = new RegExp('(' + token + ')+', 'gi');
-
-function decodeComponents(components, split) {
-	try {
-		// Try to decode the entire string first
-		return decodeURIComponent(components.join(''));
-	} catch (err) {
-		// Do nothing
-	}
-
-	if (components.length === 1) {
-		return components;
-	}
-
-	split = split || 1;
-
-	// Split the array in 2 parts
-	var left = components.slice(0, split);
-	var right = components.slice(split);
-
-	return Array.prototype.concat.call([], decodeComponents(left), decodeComponents(right));
-}
-
-function decode(input) {
-	try {
-		return decodeURIComponent(input);
-	} catch (err) {
-		var tokens = input.match(singleMatcher);
-
-		for (var i = 1; i < tokens.length; i++) {
-			input = decodeComponents(tokens, i).join('');
-
-			tokens = input.match(singleMatcher);
-		}
-
-		return input;
-	}
-}
-
-function customDecodeURIComponent(input) {
-	// Keep track of all the replacements and prefill the map with the `BOM`
-	var replaceMap = {
-		'%FE%FF': '\uFFFD\uFFFD',
-		'%FF%FE': '\uFFFD\uFFFD'
-	};
-
-	var match = multiMatcher.exec(input);
-	while (match) {
-		try {
-			// Decode as big chunks as possible
-			replaceMap[match[0]] = decodeURIComponent(match[0]);
-		} catch (err) {
-			var result = decode(match[0]);
-
-			if (result !== match[0]) {
-				replaceMap[match[0]] = result;
-			}
-		}
-
-		match = multiMatcher.exec(input);
-	}
-
-	// Add `%C2` at the end of the map to make sure it does not replace the combinator before everything else
-	replaceMap['%C2'] = '\uFFFD';
-
-	var entries = Object.keys(replaceMap);
-
-	for (var i = 0; i < entries.length; i++) {
-		// Replace all decoded components
-		var key = entries[i];
-		input = input.replace(new RegExp(key, 'g'), replaceMap[key]);
-	}
-
-	return input;
-}
-
-module.exports = function (encodedURI) {
-	if (typeof encodedURI !== 'string') {
-		throw new TypeError('Expected `encodedURI` to be of type `string`, got `' + typeof encodedURI + '`');
-	}
-
-	try {
-		encodedURI = encodedURI.replace(/\+/g, ' ');
-
-		// Try the built in decoder first
-		return decodeURIComponent(encodedURI);
-	} catch (err) {
-		// Fallback to a more advanced decoder
-		return customDecodeURIComponent(encodedURI);
-	}
-};
-
-
-/***/ }),
-
-/***/ "9T72":
+/***/ "./assets/babel/core/util.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var debounce__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("sBL/");
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var debounce__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./node_modules/debounce/index.js");
 /* harmony import */ var debounce__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(debounce__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var is_mobile__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("jfjY");
+/* harmony import */ var is_mobile__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("./node_modules/is-mobile/index.js");
 /* harmony import */ var is_mobile__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(is_mobile__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("cr+I");
+/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("./node_modules/query-string/index.js");
 /* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(query_string__WEBPACK_IMPORTED_MODULE_2__);
 
 
@@ -542,11 +572,68 @@ var Utils = function ($) {
   };
 }(jQuery);
 
-/* harmony default export */ __webpack_exports__["a"] = (Utils);
+/* harmony default export */ __webpack_exports__["default"] = (Utils);
 
 /***/ }),
 
-/***/ "9UV2":
+/***/ "./assets/babel/utils/date-utils.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "formatDateString", function() { return formatDateString; });
+/* harmony import */ var _wordpress_date__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("@wordpress/date");
+/* harmony import */ var _wordpress_date__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_date__WEBPACK_IMPORTED_MODULE_0__);
+
+function formatDateString(dateString, format) {
+  var _ref = window.awebooking || {},
+      i18n = _ref.i18n;
+
+  if (!dateString) {
+    return '';
+  }
+
+  return Object(_wordpress_date__WEBPACK_IMPORTED_MODULE_0__["date"])(format || i18n.dateFormat, dateString);
+}
+
+/***/ }),
+
+/***/ "./assets/scss/admin.scss":
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ "./assets/scss/awebooking-colour.scss":
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ "./assets/scss/awebooking.scss":
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ "./assets/scss/react-datepicker.scss":
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ "./assets/scss/schedule-calendar.scss":
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ "./node_modules/accounting/accounting.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -944,14 +1031,229 @@ var Utils = function ($) {
 
 /***/ }),
 
-/***/ "FqII":
+/***/ "./node_modules/debounce/index.js":
 /***/ (function(module, exports) {
 
-(function() { module.exports = this["wp"]["date"]; }());
+/**
+ * Returns a function, that, as long as it continues to be invoked, will not
+ * be triggered. The function will be called after it stops being called for
+ * N milliseconds. If `immediate` is passed, trigger the function on the
+ * leading edge, instead of the trailing. The function also has a property 'clear' 
+ * that is a function which will clear the timer to prevent previously scheduled executions. 
+ *
+ * @source underscore.js
+ * @see http://unscriptable.com/2009/03/20/debouncing-javascript-methods/
+ * @param {Function} function to wrap
+ * @param {Number} timeout in ms (`100`)
+ * @param {Boolean} whether to execute at the beginning (`false`)
+ * @api public
+ */
+function debounce(func, wait, immediate){
+  var timeout, args, context, timestamp, result;
+  if (null == wait) wait = 100;
+
+  function later() {
+    var last = Date.now() - timestamp;
+
+    if (last < wait && last >= 0) {
+      timeout = setTimeout(later, wait - last);
+    } else {
+      timeout = null;
+      if (!immediate) {
+        result = func.apply(context, args);
+        context = args = null;
+      }
+    }
+  };
+
+  var debounced = function(){
+    context = this;
+    args = arguments;
+    timestamp = Date.now();
+    var callNow = immediate && !timeout;
+    if (!timeout) timeout = setTimeout(later, wait);
+    if (callNow) {
+      result = func.apply(context, args);
+      context = args = null;
+    }
+
+    return result;
+  };
+
+  debounced.clear = function() {
+    if (timeout) {
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  };
+  
+  debounced.flush = function() {
+    if (timeout) {
+      result = func.apply(context, args);
+      context = args = null;
+      
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  };
+
+  return debounced;
+};
+
+// Adds compatibility for ES modules
+debounce.debounce = debounce;
+
+module.exports = debounce;
+
 
 /***/ }),
 
-/***/ "MgzW":
+/***/ "./node_modules/decode-uri-component/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var token = '%[a-f0-9]{2}';
+var singleMatcher = new RegExp(token, 'gi');
+var multiMatcher = new RegExp('(' + token + ')+', 'gi');
+
+function decodeComponents(components, split) {
+	try {
+		// Try to decode the entire string first
+		return decodeURIComponent(components.join(''));
+	} catch (err) {
+		// Do nothing
+	}
+
+	if (components.length === 1) {
+		return components;
+	}
+
+	split = split || 1;
+
+	// Split the array in 2 parts
+	var left = components.slice(0, split);
+	var right = components.slice(split);
+
+	return Array.prototype.concat.call([], decodeComponents(left), decodeComponents(right));
+}
+
+function decode(input) {
+	try {
+		return decodeURIComponent(input);
+	} catch (err) {
+		var tokens = input.match(singleMatcher);
+
+		for (var i = 1; i < tokens.length; i++) {
+			input = decodeComponents(tokens, i).join('');
+
+			tokens = input.match(singleMatcher);
+		}
+
+		return input;
+	}
+}
+
+function customDecodeURIComponent(input) {
+	// Keep track of all the replacements and prefill the map with the `BOM`
+	var replaceMap = {
+		'%FE%FF': '\uFFFD\uFFFD',
+		'%FF%FE': '\uFFFD\uFFFD'
+	};
+
+	var match = multiMatcher.exec(input);
+	while (match) {
+		try {
+			// Decode as big chunks as possible
+			replaceMap[match[0]] = decodeURIComponent(match[0]);
+		} catch (err) {
+			var result = decode(match[0]);
+
+			if (result !== match[0]) {
+				replaceMap[match[0]] = result;
+			}
+		}
+
+		match = multiMatcher.exec(input);
+	}
+
+	// Add `%C2` at the end of the map to make sure it does not replace the combinator before everything else
+	replaceMap['%C2'] = '\uFFFD';
+
+	var entries = Object.keys(replaceMap);
+
+	for (var i = 0; i < entries.length; i++) {
+		// Replace all decoded components
+		var key = entries[i];
+		input = input.replace(new RegExp(key, 'g'), replaceMap[key]);
+	}
+
+	return input;
+}
+
+module.exports = function (encodedURI) {
+	if (typeof encodedURI !== 'string') {
+		throw new TypeError('Expected `encodedURI` to be of type `string`, got `' + typeof encodedURI + '`');
+	}
+
+	try {
+		encodedURI = encodedURI.replace(/\+/g, ' ');
+
+		// Try the built in decoder first
+		return decodeURIComponent(encodedURI);
+	} catch (err) {
+		// Fallback to a more advanced decoder
+		return customDecodeURIComponent(encodedURI);
+	}
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/is-mobile/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = isMobile
+module.exports.isMobile = isMobile
+module.exports.default = isMobile
+
+var mobileRE = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series[46]0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i
+
+var tabletRE = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series[46]0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino|android|ipad|playbook|silk/i
+
+function isMobile (opts) {
+  if (!opts) opts = {}
+  var ua = opts.ua
+  if (!ua && typeof navigator !== 'undefined') ua = navigator.userAgent
+  if (ua && ua.headers && typeof ua.headers['user-agent'] === 'string') {
+    ua = ua.headers['user-agent']
+  }
+  if (typeof ua !== 'string') return false
+
+  var result = opts.tablet ? tabletRE.test(ua) : mobileRE.test(ua)
+
+  if (
+    !result &&
+    opts.tablet &&
+    opts.featureDetect &&
+    navigator &&
+    navigator.maxTouchPoints > 1 &&
+    ua.indexOf('Macintosh') !== -1 &&
+    ua.indexOf('Safari') !== -1
+  ) {
+    result = true
+  }
+
+  return result
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/object-assign/index.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1049,206 +1351,14 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 /***/ }),
 
-/***/ "SU20":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("xeH2");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var accounting__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("9UV2");
-/* harmony import */ var accounting__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(accounting__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _core_dropdown__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("7l0f");
-/* harmony import */ var _core_util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("9T72");
-/* harmony import */ var _utils_date_utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("a00X");
-
-
-
-
-
-var plugin = window.awebooking = {}; // Main objects
-
-plugin.utils = {};
-plugin.instances = {};
-plugin.i18n = window._awebooking_i18n || {};
-plugin.config = Object.assign({}, {
-  route: window.location.origin + '?awebooking_route=/',
-  ajax_url: window.location.origin + '/wp-admin/admin-ajax.php'
-}, window._awebooking);
-
-plugin.utils.dropdown = function (el, config) {
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()(el).each(function () {
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).data('abrs-dropdown', new _core_dropdown__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"](this, config));
-  });
-};
-
-plugin.utils.dates = {
-  format: _utils_date_utils__WEBPACK_IMPORTED_MODULE_4__[/* formatDateString */ "a"]
-};
-/**
- * The admin route.
- *
- * @param  {string} route
- * @return {string}
- */
-
-plugin.route = function (route) {
-  return this.config.route + (route || '').replace(/^\//g, '');
-};
-/**
- * Create new datepicker.
- *
- * @see https://flatpickr.js.org/options/
- *
- * @return {flatpickr}
- */
-
-
-plugin.datepicker = function (instance, options) {
-  var i18n = plugin.i18n;
-  var defaults = plugin.config.datepicker;
-  var disableDays = defaults.disableDays,
-      disableDates = defaults.disableDates;
-  var disable = !Array.isArray(disableDates) ? disableDates.split(/,\s?/) : disableDates;
-
-  if (Array.isArray(disableDays) && disableDays.length > 0) {
-    disable.push(function (date) {
-      return disableDays.includes(date.getDay());
-    });
-  }
-
-  var minDate = new Date();
-  var maxDate = null; // Limit available days from today
-
-  if (Date.prototype.fp_incr && defaults.minDate > 0) {
-    minDate = minDate.fp_incr(defaults.minDate || 0);
-  } // TODO: Disable "maxDate", this doesn't work as maxNights as expected.
-
-
-  if (Date.prototype.fp_incr && defaults.maxNights > 0) {// maxDate = minDate.fp_incr(defaults.maxNights)
-  }
-
-  var _defaults = {
-    dateFormat: 'Y-m-d',
-    ariaDateFormat: i18n.dateFormat,
-    minDate: minDate,
-    maxDate: maxDate,
-    disable: disable,
-    showMonths: defaults.showMonths || 1,
-    enableTime: false,
-    enableSeconds: false,
-    disableMobile: false,
-    onReady: function onReady(_, __, fp) {
-      fp.calendarContainer.classList.add('awebooking-datepicker');
-    }
-  };
-
-  if (_core_util__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"].isMobile()) {
-    _defaults.showMonths = 1;
-  }
-
-  return flatpickr(instance, jquery__WEBPACK_IMPORTED_MODULE_0___default.a.extend({}, _defaults, options));
-};
-/**
- * Format the price.
- *
- * @param amount
- * @returns {string}
- */
-
-
-plugin.formatPrice = function (amount) {
-  return accounting__WEBPACK_IMPORTED_MODULE_1___default.a.formatMoney(amount, {
-    format: plugin.i18n.priceFormat,
-    symbol: plugin.i18n.currencySymbol,
-    decimal: plugin.i18n.decimalSeparator,
-    thousand: plugin.i18n.priceThousandSeparator,
-    precision: plugin.i18n.numberDecimals
-  });
-};
-/**
- * Document ready.
- *
- * @return {void}
- */
-
-
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
-  tippy('[data-awebooking="tooltip"]', {
-    theme: 'awebooking-tooltip'
-  });
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()('[data-init="awebooking-dialog"]').each(function (e, el) {
-    var dialog = new window.A11yDialog(el);
-    dialog.on('show', function () {
-      el.classList.add('open');
-      el.removeAttribute('aria-hidden');
-    });
-    dialog.on('hide', function () {
-      el.classList.remove('open');
-      el.setAttribute('aria-hidden', true);
-    });
-  });
-});
-
-/***/ }),
-
-/***/ "VjC/":
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ "ZFOp":
+/***/ "./node_modules/query-string/index.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-module.exports = function (str) {
-	return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
-		return '%' + c.charCodeAt(0).toString(16).toUpperCase();
-	});
-};
-
-
-/***/ }),
-
-/***/ "Zpi2":
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ "a00X":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return formatDateString; });
-/* harmony import */ var _wordpress_date__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("FqII");
-/* harmony import */ var _wordpress_date__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_date__WEBPACK_IMPORTED_MODULE_0__);
-
-function formatDateString(dateString, format) {
-  var _ref = window.awebooking || {},
-      i18n = _ref.i18n;
-
-  if (!dateString) {
-    return '';
-  }
-
-  return Object(_wordpress_date__WEBPACK_IMPORTED_MODULE_0__["date"])(format || i18n.dateFormat, dateString);
-}
-
-/***/ }),
-
-/***/ "cr+I":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var strictUriEncode = __webpack_require__("ZFOp");
-var objectAssign = __webpack_require__("MgzW");
-var decodeComponent = __webpack_require__("8jRI");
+var strictUriEncode = __webpack_require__("./node_modules/strict-uri-encode/index.js");
+var objectAssign = __webpack_require__("./node_modules/object-assign/index.js");
+var decodeComponent = __webpack_require__("./node_modules/decode-uri-component/index.js");
 
 function encoderForArrayFormat(opts) {
 	switch (opts.arrayFormat) {
@@ -1473,152 +1583,46 @@ exports.parseUrl = function (str, opts) {
 
 /***/ }),
 
-/***/ "jJUo":
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ "jfjY":
+/***/ "./node_modules/strict-uri-encode/index.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-
-module.exports = isMobile
-module.exports.isMobile = isMobile
-module.exports.default = isMobile
-
-var mobileRE = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series[46]0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i
-
-var tabletRE = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series[46]0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino|android|ipad|playbook|silk/i
-
-function isMobile (opts) {
-  if (!opts) opts = {}
-  var ua = opts.ua
-  if (!ua && typeof navigator !== 'undefined') ua = navigator.userAgent
-  if (ua && ua.headers && typeof ua.headers['user-agent'] === 'string') {
-    ua = ua.headers['user-agent']
-  }
-  if (typeof ua !== 'string') return false
-
-  var result = opts.tablet ? tabletRE.test(ua) : mobileRE.test(ua)
-
-  if (
-    !result &&
-    opts.tablet &&
-    opts.featureDetect &&
-    navigator &&
-    navigator.maxTouchPoints > 1 &&
-    ua.indexOf('Macintosh') !== -1 &&
-    ua.indexOf('Safari') !== -1
-  ) {
-    result = true
-  }
-
-  return result
-}
-
-
-/***/ }),
-
-/***/ "l+pI":
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ "sBL/":
-/***/ (function(module, exports) {
-
-/**
- * Returns a function, that, as long as it continues to be invoked, will not
- * be triggered. The function will be called after it stops being called for
- * N milliseconds. If `immediate` is passed, trigger the function on the
- * leading edge, instead of the trailing. The function also has a property 'clear' 
- * that is a function which will clear the timer to prevent previously scheduled executions. 
- *
- * @source underscore.js
- * @see http://unscriptable.com/2009/03/20/debouncing-javascript-methods/
- * @param {Function} function to wrap
- * @param {Number} timeout in ms (`100`)
- * @param {Boolean} whether to execute at the beginning (`false`)
- * @api public
- */
-function debounce(func, wait, immediate){
-  var timeout, args, context, timestamp, result;
-  if (null == wait) wait = 100;
-
-  function later() {
-    var last = Date.now() - timestamp;
-
-    if (last < wait && last >= 0) {
-      timeout = setTimeout(later, wait - last);
-    } else {
-      timeout = null;
-      if (!immediate) {
-        result = func.apply(context, args);
-        context = args = null;
-      }
-    }
-  };
-
-  var debounced = function(){
-    context = this;
-    args = arguments;
-    timestamp = Date.now();
-    var callNow = immediate && !timeout;
-    if (!timeout) timeout = setTimeout(later, wait);
-    if (callNow) {
-      result = func.apply(context, args);
-      context = args = null;
-    }
-
-    return result;
-  };
-
-  debounced.clear = function() {
-    if (timeout) {
-      clearTimeout(timeout);
-      timeout = null;
-    }
-  };
-  
-  debounced.flush = function() {
-    if (timeout) {
-      result = func.apply(context, args);
-      context = args = null;
-      
-      clearTimeout(timeout);
-      timeout = null;
-    }
-  };
-
-  return debounced;
+module.exports = function (str) {
+	return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
+		return '%' + c.charCodeAt(0).toString(16).toUpperCase();
+	});
 };
 
-// Adds compatibility for ES modules
-debounce.debounce = debounce;
 
-module.exports = debounce;
+/***/ }),
+
+/***/ 0:
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__("./assets/babel/awebooking.js");
+__webpack_require__("./assets/scss/admin.scss");
+__webpack_require__("./assets/scss/awebooking-colour.scss");
+__webpack_require__("./assets/scss/awebooking.scss");
+__webpack_require__("./assets/scss/react-datepicker.scss");
+module.exports = __webpack_require__("./assets/scss/schedule-calendar.scss");
 
 
 /***/ }),
 
-/***/ "xeH2":
+/***/ "@wordpress/date":
+/***/ (function(module, exports) {
+
+(function() { module.exports = this["wp"]["date"]; }());
+
+/***/ }),
+
+/***/ "jquery":
 /***/ (function(module, exports) {
 
 (function() { module.exports = this["jQuery"]; }());
 
-/***/ }),
-
-/***/ "yCXB":
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
 /***/ })
 
 /******/ })));
+//# sourceMappingURL=awebooking.js.map

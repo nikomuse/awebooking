@@ -86,7 +86,7 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "/axs":
+/***/ "./assets/babel/admin/edit-booking.js":
 /***/ (function(module, exports) {
 
 function _classCallCheck(instance, Constructor) {
@@ -269,9 +269,10 @@ function _createClass(Constructor, protoProps, staticProps) {
 /***/ 5:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__("/axs");
+module.exports = __webpack_require__("./assets/babel/admin/edit-booking.js");
 
 
 /***/ })
 
 /******/ })));
+//# sourceMappingURL=edit-booking.js.map
