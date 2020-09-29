@@ -12,6 +12,7 @@ use AweBooking\Calendar\Period\Iterator_Period;
 use AweBooking\Support\Carbonate;
 use WPLibs\Http\Request;
 use Illuminate\Support\Arr;
+use App\Model\Restaurant;
 
 /**
  * Class Abstract_Scheduler
@@ -122,14 +123,14 @@ abstract class Abstract_Scheduler {
 		}
 
 		/* &ForceInteractive manage prestation and time interval */
-		$prestation = $request->filled('prestation') ? $request->get('prestation') : OptionsTools::getFirstPrestation();
+		$prestation = $request->filled('prestation') ? $request->get('prestation') : OptionsTools::getFirstService();
 
 		if(!$prestation) {
 		    return;
         }
         
         switch ($prestation) {
-            case OptionsTools::RESTAURANT :
+            case RESTAURANT::SLUG :
                 //$this->period = new Hour(abrs_date( $this->datepoint ), "P3D");
                 $this->display_type = 'hour';
                 $this->period = Iterator_Period::createFromDuration( abrs_date( $this->datepoint ), "+3 days" );
