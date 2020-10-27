@@ -129,7 +129,7 @@ abstract class Abstract_Scheduler {
 		}
 
 		/* &ForceInteractive manage prestation and time interval */
-		$this->prestation_type = $request->filled('prestation') ? $request->get('prestation') : OptionsTools::getFirstService();
+		$this->prestation_type = $request->filled('prestation') ? $request->get('prestation') : OptionsTools::getFirstAvailableActivityType();
 
 		if(!$this->prestation_type) {
 		    return;

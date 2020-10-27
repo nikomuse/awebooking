@@ -1,5 +1,5 @@
 <?php
-$available_prestations = \App\Tools\OptionsTools::getAvailableServices(true);
+$available_prestations = \App\Tools\OptionsTools::getAvailableActivityTypes(true);
 if ( ! $available_prestations || empty($available_prestations) ) {
 	return;
 }
