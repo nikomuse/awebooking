@@ -2,6 +2,9 @@
 
 namespace AweBooking\Admin\Calendar;
 
+use App\Model\ActivityType;
+use App\Model\Guide;
+use App\Model\Transport;
 use App\Tools\OptionsTools;
 use AweBooking\Calendar\Period\Hour;
 use WP_Query;
@@ -99,7 +102,10 @@ abstract class Abstract_Scheduler {
 	 */
 	protected $main_layout = 'scheduler.php';
 
+	/* &ForceInteractive : add custom variables */
 	protected $display_type = 'day';
+	protected $prestation_type;
+	/* END ForceInteractive */
 
 	/**
 	 * Prepares the Scheduler before it is sent to the client.
@@ -123,15 +129,17 @@ abstract class Abstract_Scheduler {
 		}
 
 		/* &ForceInteractive manage prestation and time interval */
-		$prestation = $request->filled('prestation') ? $request->get('prestation') : OptionsTools::getFirstService();
+		$this->prestation_type = $request->filled('prestation') ? $request->get('prestation') : OptionsTools::getFirstService();
 
-		if(!$prestation) {
+		if(!$this->prestation_type) {
 		    return;
         }
         
-        switch ($prestation) {
+        switch ($this->prestation_type) {
             case RESTAURANT::SLUG :
-                //$this->period = new Hour(abrs_date( $this->datepoint ), "P3D");
+            case Transport::SLUG :
+            case Guide::SLUG :
+            case ActivityType::SLUG :
                 $this->display_type = 'hour';
                 $this->period = Iterator_Period::createFromDuration( abrs_date( $this->datepoint ), "+3 days" );
                 break;
