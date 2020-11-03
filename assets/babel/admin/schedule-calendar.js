@@ -5,7 +5,7 @@
 
   let COLUMN_WIDTH = 60
   /* &ForceInteractive : add column width for hour display */
-  let COLUMN_WIDTH_HOUR = 27;
+  let COLUMN_WIDTH_HOUR = 60;
   /* END ForceInteractive */
   const DATE_FORMAT = 'YYYY-MM-DD'
   /* &ForceInteractive : add an hour format */

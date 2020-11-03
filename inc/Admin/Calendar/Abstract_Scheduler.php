@@ -134,19 +134,9 @@ abstract class Abstract_Scheduler {
 		if(!$this->prestation_type) {
 		    return;
         }
-        
-        switch ($this->prestation_type) {
-            case RESTAURANT::SLUG :
-            case Transport::SLUG :
-            case Guide::SLUG :
-            case ActivityType::SLUG :
-                $this->display_type = 'hour';
-                $this->period = Iterator_Period::createFromDuration( abrs_date( $this->datepoint ), "+3 days" );
-                break;
-            default:
-                $this->period = Iterator_Period::createFromDuration( abrs_date( $this->datepoint ), "+{$duration} days" )
-                    ->moveStartDate( '-2 days' );
-        }
+
+        $this->period = Iterator_Period::createFromDuration( abrs_date( $this->datepoint ), "+{$duration} days" )
+            ->moveStartDate( '-2 days' );
         /* END &ForceInteractive */
 
 		// Create the scheduler.

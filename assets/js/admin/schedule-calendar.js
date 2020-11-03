@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 10);
+/******/ 	return __webpack_require__(__webpack_require__.s = 9);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -113,7 +113,7 @@ function _typeof(obj) {
   var COLUMN_WIDTH = 60;
   /* &ForceInteractive : add column width for hour display */
 
-  var COLUMN_WIDTH_HOUR = 27;
+  var COLUMN_WIDTH_HOUR = 60;
   /* END ForceInteractive */
 
   var DATE_FORMAT = 'YYYY-MM-DD';
@@ -458,7 +458,7 @@ function _typeof(obj) {
 
 /***/ }),
 
-/***/ 10:
+/***/ 9:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__("./assets/babel/admin/schedule-calendar.js");
