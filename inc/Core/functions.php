@@ -318,11 +318,12 @@ function abrs_list_dropdown_currencies() {
  * @return string
  */
 function abrs_normalize_option_name( $language = null ) {
+	$option_name = apply_filters( 'abrs_option_name', Constants::OPTION_KEY );
 	if ( ! $language || in_array( $language, [ 'en', 'all', 'default', 'original' ] ) ) {
-		return Constants::OPTION_KEY;
+		return $option_name;
 	}
 
-	return Constants::OPTION_KEY . '_' . trim( $language );
+	return $option_name . '_' . trim( $language );
 }
 
 /**

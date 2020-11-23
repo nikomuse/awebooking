@@ -161,7 +161,7 @@ trait Plugin_Options {
 	 * @return void
 	 */
 	public function retrieve_options() {
-		$this->options          = new Fluent( get_option( $option = Constants::OPTION_KEY, [] ) );
+		$this->options          = new Fluent( get_option( $option = abrs_normalize_option_name('original'), [] ) );
 		$this->original_options = clone $this->options;
 
 		$this->current_option = $this->original_option = $option;
