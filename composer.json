@@ -14,10 +14,24 @@
             "email": "anhskohbo@gmail.com"
         }
     ],
+    "repositories": [
+        {
+            "type":"package",
+            "package": {
+                "name": "nikomuse/awethemes-container",
+                "version":"dev-master",
+                "source": {
+                    "url": "https://github.com/nikomuse/awethemes-container.git",
+                    "type": "git",
+                    "reference":"master"
+                }
+            }
+        }
+    ],
     "require": {
         "php": ">=5.6.4",
         "a5hleyrich/wp-background-processing": "^1.0",
-        "awethemes/container": "5.4.*",
+        "nikomuse/awethemes-container": "dev-master",
         "awethemes/wp-object": "1.*",
         "cakephp/chronos": "^1.2",
         "league/period": "^3.4",
