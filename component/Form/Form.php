@@ -319,7 +319,7 @@ class Form extends \CMB2 implements \ArrayAccess, \IteratorAggregate {
 		 * @param BaseModelTrait|null $original_object Model object using BaseModelTrait
 		 * @param Form   $form     This form object.
 		 */
-		$classes = apply_filters( 'abrs_set_original_form_object', $this->original_object, $this );
+		$this->original_object = apply_filters( 'abrs_set_original_form_object', $this->original_object, $this );
 	}
 
 	/**
