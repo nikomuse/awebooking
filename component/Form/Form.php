@@ -1,6 +1,7 @@
 <?php
 namespace AweBooking\Component\Form;
 
+use App\Model\Core\BaseModelTrait;
 use WPLibs\Http\Request;
 use AweBooking\Model\Model;
 use AweBooking\Support\Fluent;
@@ -22,6 +23,8 @@ class Form extends \CMB2 implements \ArrayAccess, \IteratorAggregate {
 	 */
 	protected $render_callback;
 
+	protected $original_object;
+
 	/**
 	 * Constructor.
 	 *
@@ -30,6 +33,7 @@ class Form extends \CMB2 implements \ArrayAccess, \IteratorAggregate {
 	 * @param string $object_type The object type (post type slug, or 'user', 'term', 'comment', or 'options-page').
 	 */
 	public function __construct( $form_id, $object_id = 0, $object_type = '' ) {
+		$this->setOriginalObject();
 		// Sets the form ID.
 		$this->form_id = $form_id;
 		$this->cmb_id  =& $this->form_id;
@@ -300,5 +304,30 @@ class Form extends \CMB2 implements \ArrayAccess, \IteratorAggregate {
 			default:
 				return parent::__get( $property );
 		}
+	}
+
+	/**
+	 * Set original object if not in the original language
+	 * (in order to set default values in fields definitions
+	 */
+	protected function setOriginalObject() {
+		/**
+		 * Globally filter original object
+		 *
+		 * @since nikomuse/laravel-5.8+Compat
+		 *
+		 * @param BaseModelTrait|null $original_object Model object using BaseModelTrait
+		 * @param Form   $form     This form object.
+		 */
+		$classes = apply_filters( 'abrs_set_original_form_object', $this->original_object, $this );
+	}
+
+	/**
+	 * Get the object in original language if exists
+	 *
+	 * @return BaseModelTrait|null
+	 */
+	public function getOriginalObject() {
+		return $this->original_object;
 	}
 }
